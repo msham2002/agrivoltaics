@@ -1,6 +1,6 @@
 # UC Agrivoltaics Senior Design - Project Description
-## Team (name TBD)
-Alex Campbell (EE) - campb4ja@mail.uc.edu  
+## Team - Da Boyz
+James Campbell (EE) - campb4ja@mail.uc.edu  
 Anthony Napolitano (EE) - napoliaj@mail.uc.edu  
 William Hopkins (CS) - hopkinwe@mail.uc.edu  
 Yulia Martinez (CS) - martinyg@mail.uc.edu  
