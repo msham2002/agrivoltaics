@@ -1,1 +1,0 @@
-# agrivoltaics-senior-design
