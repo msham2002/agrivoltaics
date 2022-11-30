@@ -8,7 +8,7 @@ Rose Saalman (CE) - saalmark@mail.uc.edu
 Keith Springs (CE) - springkh@mail.uc.edu  
 
 ## Advisors
-Dr. Mohsen Rezayat – mohsen.rezayat@omid-usa.org​
+Dr. Mohsen Rezayat – mohsen.rezayat@omid-usa.org​  
 Dr. Je-Hyeong Bahk – bahkjg@ucmail.uc.edu
 
 ## Project Topic Area
