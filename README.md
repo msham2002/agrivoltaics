@@ -1,6 +1,6 @@
 # UC Agrivoltaics Senior Design
 ## Team Information
-### Team - Yueithony Roillex
+### Team - Da Boyz (Yueithony Roillex)
 Alex Campbell (EE) - campb4ja@mail.uc.edu  
 William Hopkins (CS) - hopkinwe@mail.uc.edu  
 Yulia Martinez (CS) - martinyg@mail.uc.edu  
@@ -26,6 +26,9 @@ In this project, we will develop a wireless microclimate sensor system that is c
 * [Task List](./assignments/task-list/task-list.md)
 * [Timeline/Effort Matrix](./assignments/milestones-timeline-effort-matrix/Senior%20Design%20Gantt%20Chart.xlsx)
 
+## Concerns Essay
+* [Project Constraints Essay](./assignments/project-constraints-essay/Project%20Constraint%20Essay.pdf)
+
 ## Slideshow
 * [Slideshow](./assignments/slideshow/slideshow.pdf)
 
@@ -42,3 +45,6 @@ link here
 
 ## Budget
 * [Budget](./assignments/fall-design-report/budget.md)
+
+## Appendix
+* [Appendix](./assignments/fall-design-report/appendix)
