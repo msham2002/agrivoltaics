@@ -21,3 +21,7 @@ link here
 ## User Stories and Design Diagrams
 * [User Stories](./assignments/user-stories/user-stories.md)
 * [Design Diagrams](./assignments/design-diagrams/Assignment%20%234%20-%20Design%20Diagrams.pdf)
+
+## Project Tasks and Timeline
+* [Task List](./assignments/task-list/task-list.md)
+* [Timeline/Effort Matrix](./assignments/milestones-timeline-effort-matrix/Senior%20Design%20Gantt%20Chart.xlsx)
