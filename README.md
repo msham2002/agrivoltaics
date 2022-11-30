@@ -36,12 +36,12 @@ In this project, we will develop a wireless microclimate sensor system that is c
 link here
 
 ## Professional Biographies
-* [Alex Campbell](./professional-bios/james-campbell-ee.pdf)
-* [William Hopkins](./professional-bios/will-hopkins-cs.md)
-* [Yulia Martinez](./professional-bios/yulia-martinez-cs.md)
-* [Anthony Napolitano](./professional-bios/anthony-napolitano-ee.pdf)
-* [Rose Saalman](./professional-bios/Rose%20Saalman_CompE_SeniorDesign.pdf)
-* [Keith Springs](./professional-bios/Rose%20Saalman_CompE_SeniorDesign.pdf)
+* [Alex Campbell](./assignments/professional-bios/james-campbell-ee.pdf)
+* [William Hopkins](./assignments/professional-bios/will-hopkins-cs.md)
+* [Yulia Martinez](./assignments/professional-bios/yulia-martinez-cs.md)
+* [Anthony Napolitano](./assignments/professional-bios/anthony-napolitano-ee.pdf)
+* [Rose Saalman](./assignments/professional-bios/Rose%20Saalman_CompE_SeniorDesign.pdf)
+* [Keith Springs](./assignments/professional-bios/Rose%20Saalman_CompE_SeniorDesign.pdf)
 
 ## Budget
 * [Budget](./assignments/fall-design-report/budget.md)
