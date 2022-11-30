@@ -20,7 +20,7 @@ In this project, we will develop a wireless microclimate sensor system that is c
 
 ## User Stories and Design Diagrams
 * [User Stories](./assignments/user-stories/user-stories.md)
-* [Design Diagrams](./assignments/design-diagrams/Assignment%20%234%20-%20Design%20Diagrams.pdf)
+* [Design Diagrams](./assignments/design-diagrams/Assignment%20%234%20-%20Design%20Diagrams_R1.pdf)
 
 ## Project Tasks and Timeline
 * [Task List](./assignments/task-list/task-list.md)
