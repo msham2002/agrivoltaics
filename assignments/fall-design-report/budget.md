@@ -7,7 +7,7 @@
 
 ### Fall 2022 Remaining Expected Expenses
 * FS200-SH10 sensor x5 - $130.00
-* 
+* Ardunio Edge Control x1 - $238.80
 
 ### Total Fall 2022 Expenses
-* $293.43
+* $532.23
