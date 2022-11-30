@@ -1,6 +1,6 @@
 # UC Agrivoltaics Senior Design
 ## Team Information
-### Team - Yueithony Roillex
+### Team - Da Boyz (Yueithony Roillex)
 Alex Campbell (EE) - campb4ja@mail.uc.edu  
 William Hopkins (CS) - hopkinwe@mail.uc.edu  
 Yulia Martinez (CS) - martinyg@mail.uc.edu  
