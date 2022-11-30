@@ -25,3 +25,14 @@ link here
 ## Project Tasks and Timeline
 * [Task List](./assignments/task-list/task-list.md)
 * [Timeline/Effort Matrix](./assignments/milestones-timeline-effort-matrix/Senior%20Design%20Gantt%20Chart.xlsx)
+
+## Slideshow
+* [Slideshow](./assignments/slideshow/slideshow.pdf)
+
+## Professional Biographies
+* [Alex Campbell](./professional-bios/james-campbell-ee.pdf)
+* [William Hopkins](./professional-bios/will-hopkins-cs.md)
+* [Yulia Martinez](./professional-bios/yulia-martinez-cs.md)
+* [Anthony Napolitano](./professional-bios/anthony-napolitano-ee.pdf)
+* [Rose Saalman](./professional-bios/Rose%20Saalman_CompE_SeniorDesign.pdf)
+* [Keith Springs](./professional-bios/Rose%20Saalman_CompE_SeniorDesign.pdf)
