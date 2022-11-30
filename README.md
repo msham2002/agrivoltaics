@@ -29,6 +29,9 @@ link here
 ## Slideshow
 * [Slideshow](./assignments/slideshow/slideshow.pdf)
 
+## Self-Assessment Essays
+link here
+
 ## Professional Biographies
 * [Alex Campbell](./professional-bios/james-campbell-ee.pdf)
 * [William Hopkins](./professional-bios/will-hopkins-cs.md)
