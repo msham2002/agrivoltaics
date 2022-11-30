@@ -47,4 +47,4 @@ link here
 * [Budget](./assignments/fall-design-report/budget.md)
 
 ## Appendix
-* [Appendix](./assignments/fall-design-report/appendix)
+* [Appendix](./assignments/fall-design-report/appendix/appendix.md)
