@@ -36,3 +36,6 @@ link here
 * [Anthony Napolitano](./professional-bios/anthony-napolitano-ee.pdf)
 * [Rose Saalman](./professional-bios/Rose%20Saalman_CompE_SeniorDesign.pdf)
 * [Keith Springs](./professional-bios/Rose%20Saalman_CompE_SeniorDesign.pdf)
+
+## Budget
+* [Budget](./assignments/fall-design-report/budget.md)
