@@ -33,7 +33,8 @@ In this project, we will develop a wireless microclimate sensor system that is c
 * [Slideshow](./assignments/slideshow/slideshow.pdf)
 
 ## Self-Assessment Essays
-link here
+* [Will Hopkins](./assignments/individual-capstone-assessment/individual%20capstone%20assessment%20-%20Hopkins.pdf)
+* [Yulia Martinez](./assignments/individual-capstone-assessment/Senior%20Design%20Individual%20Capstone%20Assessment%20-%20Yulia%20Martinez.pdf)
 
 ## Professional Biographies
 * [Alex Campbell](./assignments/professional-bios/james-campbell-ee.pdf)
