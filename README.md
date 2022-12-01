@@ -24,7 +24,7 @@ In this project, we will develop a wireless microclimate sensor system that is c
 
 ## Project Tasks and Timeline
 * [Task List](./assignments/task-list/task-list.md)
-* [Timeline/Effort Matrix](./assignments/milestones-timeline-effort-matrix/Senior%20Design%20Gantt%20Chart.xlsx)
+* [Timeline/Effort Matrix](./assignments/milestones-timeline-effort-matrix/Senior%20Design%20Gantt%20Chart%20Fall%202022.xlsx)
 
 ## Concerns Essay
 * [Project Constraints Essay](./assignments/project-constraints-essay/Project%20Constraint%20Essay.pdf)
