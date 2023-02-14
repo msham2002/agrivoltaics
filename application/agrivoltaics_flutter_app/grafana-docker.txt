@@ -1,0 +1,1 @@
+docker run -dp 3000:3000 --name=grafana -v grafana-storage:/var/lib/grafana -e GF_SECURITY_ALLOW_EMBEDDING=true grafana/grafana-oss:latest-ubuntu
