@@ -1,12 +1,10 @@
 services:
   grafana:
-    image: grafana/grafana:5.4.3
+    image: grafana/grafana:7.5.17
     container_name: grafana
     restart: always
     ports:
       - 3000:3000
-    # networks:
-    #   - agrivoltaics-network
     volumes:
       - grafana-volume:/var/lib/grafana
       - type: bind
@@ -18,20 +16,5 @@ services:
       - type: bind
         source: ./localhost.crt
         target: /etc/grafana/localhost.crt
-  # influxdb:
-  #   image: influxdb:latest
-  #   container_name: influxdb
-  #   restart: always
-  #   ports: 
-  #     - 8086:8086
-  #   networks:
-  #     - agrivoltaics-network
-  #   volumes:
-  #     - influxdb-volume:/var/lib/influxdb
-# networks:
-  # agrivoltaics-network:
 volumes:
   grafana-volume:
-    # external: true
-  # influxdb-volume:
-    # external: true
