@@ -13,22 +13,22 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ElevatedButton(
-              child: Text('View Data'),
+              child: const Text('View Data'),
               onPressed: () => {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DataDashboard()
+                      builder: (context) => const DataDashboard()
                     )
                   )
               },
             ),
             ElevatedButton(
-              child: Text('Manage Sensors'),
+              child: const Text('Manage Sensors'),
               onPressed: () => {print('hello')},
             ),
             ElevatedButton(
-              child: Text('Settings'),
+              child: const Text('Settings'),
               onPressed: () => {print('hello')},
             )
           ],
