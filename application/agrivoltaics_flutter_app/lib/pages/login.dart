@@ -18,14 +18,14 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Spacer(flex: 2),
-              Text(
+              const Spacer(flex: 2),
+              const Text(
                 'App Name',
                 style: TextStyle(
                   fontSize: 50
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
                 child: Text('Login'),
                 onPressed: () => {
@@ -37,8 +37,8 @@ class _LoginPageState extends State<LoginPage> {
                   )
                 },
               ),
-              Spacer(flex: 2),
-              Text('Acknowledgements',
+              const Spacer(flex: 2),
+              const Text('Acknowledgements',
                 style: TextStyle(
                   fontWeight: FontWeight.w100
                 ),
