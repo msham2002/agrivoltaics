@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'data.dart';
+import 'data_self_hosted.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -18,7 +19,9 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DataDashboard()
+                      // builder: (context) => const DataDashboard()
+                      builder: (context) => const DataDashboardSelfHosted()
+                      // builder: (context) => const DataPointSelection()
                     )
                   )
               },

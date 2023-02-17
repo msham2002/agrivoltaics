@@ -42,6 +42,7 @@ dependencies:
   google_sign_in: ^5.4.4
   webview_flutter: ^3.0.4
   flutter_inappwebview: ^5.7.2+3
+  syncfusion_flutter_charts: ^20.4.50
 
 dev_dependencies:
   flutter_test:
