@@ -1,36 +1,73 @@
 import 'package:flutter/material.dart';
-// import 'dart:io' show Platform;
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
-class DataDashboard extends StatefulWidget {
-  const DataDashboard({super.key});
+class DataPage extends StatefulWidget {
+  const DataPage({super.key});
 
   @override
-  State<DataDashboard> createState() => _DataDashboardState();
+  State<DataPage> createState() => _DataPageState();
 }
 
-class _DataDashboardState extends State<DataDashboard> {
-  // localhost = 10.0.2.2 on Android (don't need to check for iOS since we are using localhost for dev purposes)
-  // width=100%, height=100%
-  String embedPath =
-    '<iframe src="https://10.0.2.2:3000/d-solo/iTY2S2JVz/new-dashboard?orgId=1&theme=dark&panelId=2" width=100% height=100% frameborder="0"></iframe>';
+class _DataPageState extends State<DataPage> {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 1,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.dashboard))
+            ]
+          )
+        ),
+        body: const Dashboard()
+      ),
+    );
+  }
+}
+
+class Dashboard extends StatelessWidget {
+  const Dashboard({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: OrientationBuilder(builder: (context, orientation) {
-        return Center(
-          // TODO: Log into Grafana via headless webview, then persist session into headful webview
-
-          child: InAppWebView(
-            initialUrlRequest: URLRequest(url: Uri.dataFromString(embedPath, mimeType: 'text/html')),
-            onReceivedServerTrustAuthRequest: (controller, challenge) async {
-              return ServerTrustAuthResponse(action: ServerTrustAuthResponseAction.PROCEED);
-            },
+    return Center(
+      child: SfCartesianChart(
+        title: ChartTitle(text: 'Lux Measurements'),
+        primaryXAxis: CategoryAxis(),
+        series: <LineSeries<LuxData, DateTime>>[
+          LineSeries<LuxData, DateTime>(
+            dataSource: <LuxData>[
+              LuxData(DateTime.parse("1997-07-16"), 37.11),
+              LuxData(DateTime.parse("1997-07-17"), 34.18),
+              LuxData(DateTime.parse("1997-07-18"), 37.11),
+              LuxData(DateTime.parse("1997-07-19"), 36.13),
+              LuxData(DateTime.parse("1997-07-20"), 36.13),
+              LuxData(DateTime.parse("1997-07-21"), 35.16),
+              LuxData(DateTime.parse("1997-07-22"), 43.95),
+              LuxData(DateTime.parse("1997-07-23"), 46.88),
+              LuxData(DateTime.parse("1997-07-24"), 44.92),
+              LuxData(DateTime.parse("1997-07-25"), 45.9),
+              LuxData(DateTime.parse("1997-07-26"), 45.9),
+              LuxData(DateTime.parse("1997-07-27"), 46.88)
+            ],
+            xValueMapper: (LuxData lux, _) => lux.timeStamp,
+            yValueMapper: (LuxData lux, _) => lux.lux
           )
-        );
-      })
+        ],
+        zoomPanBehavior: ZoomPanBehavior(
+          enablePinching: true
+        ),
+      )
     );
   }
+}
+
+class LuxData {
+  LuxData(this.timeStamp, this.lux);
+  final DateTime timeStamp;
+  final double lux;
 }
