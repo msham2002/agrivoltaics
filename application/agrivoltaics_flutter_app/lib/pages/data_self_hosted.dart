@@ -14,76 +14,34 @@ class _DataDashboardSelfHostedState extends State<DataDashboardSelfHosted> {
     return Scaffold(
       appBar: AppBar(),
       body: OrientationBuilder(builder: (context, orientation) {
-        return Row(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  ListView(
-                    shrinkWrap: true,
-                    children: [
-                      Wrap(
-                        direction: Axis.vertical,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        spacing: -15,
-                        children: [
-                          Checkbox(
-                            value: true,
-                            onChanged: (bool? value) {}
-                          ),
-                          const Text("Lux covered")
-                        ]
-                      ),
-                      Wrap(
-                        direction: Axis.vertical,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        spacing: -15,
-                        children: [
-                          Checkbox(
-                            value: false,
-                            onChanged: (bool? value) {}
-                          ),
-                          const Text("Lux uncovered")
-                        ]
-                      )
-                    ],
-                  )
+        return Center(
+          child: SfCartesianChart(
+            title: ChartTitle(text: 'Lux Measurements'),
+            primaryXAxis: CategoryAxis(),
+            series: <LineSeries<LuxData, DateTime>>[
+              LineSeries<LuxData, DateTime>(
+                dataSource: <LuxData>[
+                  LuxData(DateTime.parse("1997-07-16"), 37.11),
+                  LuxData(DateTime.parse("1997-07-17"), 34.18),
+                  LuxData(DateTime.parse("1997-07-18"), 37.11),
+                  LuxData(DateTime.parse("1997-07-19"), 36.13),
+                  LuxData(DateTime.parse("1997-07-20"), 36.13),
+                  LuxData(DateTime.parse("1997-07-21"), 35.16),
+                  LuxData(DateTime.parse("1997-07-22"), 43.95),
+                  LuxData(DateTime.parse("1997-07-23"), 46.88),
+                  LuxData(DateTime.parse("1997-07-24"), 44.92),
+                  LuxData(DateTime.parse("1997-07-25"), 45.9),
+                  LuxData(DateTime.parse("1997-07-26"), 45.9),
+                  LuxData(DateTime.parse("1997-07-27"), 46.88)
                 ],
-              ),
+                xValueMapper: (LuxData lux, _) => lux.timeStamp,
+                yValueMapper: (LuxData lux, _) => lux.lux
+              )
+            ],
+            zoomPanBehavior: ZoomPanBehavior(
+              enablePinching: true
             ),
-            Expanded(
-              flex: 7,
-              child: Center(
-                child: SfCartesianChart(
-                  title: ChartTitle(text: 'Lux Measurements'),
-                  primaryXAxis: CategoryAxis(),
-                  series: <LineSeries<LuxData, DateTime>>[
-                    LineSeries<LuxData, DateTime>(
-                      dataSource: <LuxData>[
-                        LuxData(DateTime.parse("1997-07-16"), 37.11),
-                        LuxData(DateTime.parse("1997-07-17"), 34.18),
-                        LuxData(DateTime.parse("1997-07-18"), 37.11),
-                        LuxData(DateTime.parse("1997-07-19"), 36.13),
-                        LuxData(DateTime.parse("1997-07-20"), 36.13),
-                        LuxData(DateTime.parse("1997-07-21"), 35.16),
-                        LuxData(DateTime.parse("1997-07-22"), 43.95),
-                        LuxData(DateTime.parse("1997-07-23"), 46.88),
-                        LuxData(DateTime.parse("1997-07-24"), 44.92),
-                        LuxData(DateTime.parse("1997-07-25"), 45.9),
-                        LuxData(DateTime.parse("1997-07-26"), 45.9),
-                        LuxData(DateTime.parse("1997-07-27"), 46.88)
-                      ],
-                      xValueMapper: (LuxData lux, _) => lux.timeStamp,
-                      yValueMapper: (LuxData lux, _) => lux.lux
-                    )
-                  ],
-                  zoomPanBehavior: ZoomPanBehavior(
-                    enablePinching: true
-                  ),
-                )
-              ),
-            ),
-          ]
+          )
         );
       })
     );
