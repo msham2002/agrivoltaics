@@ -9,8 +9,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // State information
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,12 +25,12 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const Spacer(),
               ElevatedButton(
-                child: Text('Login'),
+                child: const Text('Login'),
                 onPressed: () => {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => HomePage()
+                      builder: (context) => const HomePage()
                     )
                   )
                 },
