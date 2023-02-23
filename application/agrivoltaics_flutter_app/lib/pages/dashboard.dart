@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:influxdb_client/api.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../app_constants.dart';
@@ -65,6 +67,15 @@ class _DashboardDrawerState extends State<DashboardDrawer> {
 Dashboard
 
 */
+
+Future<String> healthCheck() async {
+  // TODO: remove on release
+  var getIt = GetIt.instance;
+  var influxDBClient = getIt.get<InfluxDBClient>();
+  var healthCheck = await influxDBClient.getPingApi().getPingWithHttpInfo();
+  return 'Health check: ${healthCheck.statusCode}';
+}
+
 class Dashboard extends StatelessWidget {
   const Dashboard({
     super.key,
@@ -103,6 +114,16 @@ class Dashboard extends StatelessWidget {
               enablePinching: true
             ),
           )
+        ),
+        FutureBuilder<String>(
+          future: healthCheck(),
+          builder: (context, AsyncSnapshot<String> snapshot) {
+            if (snapshot.hasData) {
+              return Text(snapshot.data!); // Why is snapshot.data nullable if snapshot.hasData ensures snapshot.data has a non-null value?
+            } else {
+              return const CircularProgressIndicator();
+            }
+          }
         )
       ],
     );

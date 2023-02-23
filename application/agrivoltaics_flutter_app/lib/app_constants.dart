@@ -1,26 +1,26 @@
 abstract class AppConstants {
   static const String influxdbUrl = String.fromEnvironment(
-    'influxdb-url',
+    'INFLUXDB_URL',
     defaultValue: ''
   );
 
   static const String influxdbToken = String.fromEnvironment(
-    'influxdb-token',
+    'INFLUXDB_TOKEN',
     defaultValue: ''
   );
   
   static const String influxdbOrg = String.fromEnvironment(
-    'influxdb-org',
+    'INFLUXDB_ORG',
     defaultValue: ''
   );
 
   static const String influxdbBucket = String.fromEnvironment(
-    'influxdb-bucket',
+    'INFLUXDB_BUCKET',
     defaultValue: ''
   );
 
   static const bool influxdbDebug = bool.fromEnvironment(
-    'influxdb-debug',
+    'INFLUXDB_DEBUG',
     defaultValue: false
   );
 }

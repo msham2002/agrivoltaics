@@ -4,7 +4,7 @@ import 'package:influxdb_client/api.dart';
 import 'app_constants.dart';
 import 'pages/login.dart';
 
-void main() {
+void main() async {
   // Register singletons
   final getIt = GetIt.instance;
   getIt.registerSingleton<InfluxDBClient>(InfluxDBClient(
