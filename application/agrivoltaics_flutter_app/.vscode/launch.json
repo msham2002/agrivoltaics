@@ -8,13 +8,13 @@
             "name": "agrivoltaics_flutter_app",
             "request": "launch",
             "type": "dart",
-            "env": {
-                "influxdb-url": "CHANGE_ME",
-                "influxdb-token": "CHANGE_ME",
-                "influxdb-org": "CHANGE_ME",
-                "influxdb-bucket": "CHANGE_ME",
-                "influxdb-debug": false
-            }
+            "args": [
+                "--dart-define=INFLUXDB_URL=CHANGE_ME",
+                "--dart-define=INFLUXDB_TOKEN=CHANGE_ME",
+                "--dart-define=INFLUXDB_ORG=CHANGE_ME",
+                "--dart-define=INFLUXDB_BUCKET=CHANGE_ME",
+                "--dart-define=INFLUXDB_DEBUG=false"
+            ]
         },
         {
             "name": "agrivoltaics_flutter_app (profile mode)",
