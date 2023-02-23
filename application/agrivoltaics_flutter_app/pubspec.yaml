@@ -47,6 +47,8 @@ dependencies:
   time_range: ^1.1.0
   sliding_up_panel: ^2.0.0+1
   syncfusion_flutter_sliders: ^20.4.50
+  influxdb_client: ^2.8.0
+  get_it: ^7.2.0
 
 dev_dependencies:
   flutter_test:
