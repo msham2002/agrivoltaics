@@ -76,6 +76,30 @@ Future<String> healthCheck() async {
   return 'Health check: ${healthCheck.statusCode}';
 }
 
+Future<List<FluxRecord>> getData() async {
+  var getIt = GetIt.instance;
+  var influxDBClient = getIt.get<InfluxDBClient>();
+
+  var queryService = influxDBClient.getQueryService();
+  var query = '''
+  from(bucket: "keithsprings51's Bucket")
+  |> range(start: -3d, stop: -1h)
+  |> filter(fn: (r) => r["SSID"] == "TeneComp")
+  |> filter(fn: (r) => r["_field"] == "Humidity" or r["_field"] == "Temperature")
+  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+  |> yield(name: "mean")
+  ''';
+
+  Stream<FluxRecord> recordStream = await queryService.query(query);
+  var records = <FluxRecord>[];
+
+  await recordStream.forEach((record) {
+    records.add(record);
+  });
+  
+  return records;
+}
+
 class Dashboard extends StatelessWidget {
   const Dashboard({
     super.key,
@@ -87,43 +111,49 @@ class Dashboard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
-          child: SfCartesianChart(
-            title: ChartTitle(text: 'TODO: change me'),
-            primaryXAxis: CategoryAxis(),
-            series: <LineSeries<LuxData, DateTime>>[
-              LineSeries<LuxData, DateTime>(
-                dataSource: <LuxData>[
-                  LuxData(DateTime.parse("1997-07-16"), 37.11),
-                  LuxData(DateTime.parse("1997-07-17"), 34.18),
-                  LuxData(DateTime.parse("1997-07-18"), 37.11),
-                  LuxData(DateTime.parse("1997-07-19"), 36.13),
-                  LuxData(DateTime.parse("1997-07-20"), 36.13),
-                  LuxData(DateTime.parse("1997-07-21"), 35.16),
-                  LuxData(DateTime.parse("1997-07-22"), 43.95),
-                  LuxData(DateTime.parse("1997-07-23"), 46.88),
-                  LuxData(DateTime.parse("1997-07-24"), 44.92),
-                  LuxData(DateTime.parse("1997-07-25"), 45.9),
-                  LuxData(DateTime.parse("1997-07-26"), 45.9),
-                  LuxData(DateTime.parse("1997-07-27"), 46.88)
-                ],
-                xValueMapper: (LuxData lux, _) => lux.timeStamp,
-                yValueMapper: (LuxData lux, _) => lux.lux
-              )
-            ],
-            zoomPanBehavior: ZoomPanBehavior(
-              enablePinching: true
-            ),
+          child: FutureBuilder<List<FluxRecord>>(
+            future: getData(),
+            builder: (BuildContext context, AsyncSnapshot<List<FluxRecord>> snapshot) {
+              if (snapshot.hasData) {
+                return SfCartesianChart(
+                  title: ChartTitle(text: 'TODO: change me'),
+                  primaryXAxis: CategoryAxis(),
+                  // series: <LineSeries<LuxData, DateTime>>[
+                  //   LineSeries<LuxData, DateTime>(
+                  //     dataSource: <LuxData>[
+                  //       LuxData(DateTime.parse("1997-07-16"), 37.11),
+                  //       LuxData(DateTime.parse("1997-07-17"), 34.18),
+                  //       LuxData(DateTime.parse("1997-07-18"), 37.11),
+                  //       LuxData(DateTime.parse("1997-07-19"), 36.13),
+                  //       LuxData(DateTime.parse("1997-07-20"), 36.13),
+                  //       LuxData(DateTime.parse("1997-07-21"), 35.16),
+                  //       LuxData(DateTime.parse("1997-07-22"), 43.95),
+                  //       LuxData(DateTime.parse("1997-07-23"), 46.88),
+                  //       LuxData(DateTime.parse("1997-07-24"), 44.92),
+                  //       LuxData(DateTime.parse("1997-07-25"), 45.9),
+                  //       LuxData(DateTime.parse("1997-07-26"), 45.9),
+                  //       LuxData(DateTime.parse("1997-07-27"), 46.88)
+                  //     ],
+                  //     xValueMapper: (LuxData lux, _) => lux.timeStamp,
+                  //     yValueMapper: (LuxData lux, _) => lux.lux
+                  //   )
+                  // ],
+                  series: <LineSeries<InfluxDatapoint, DateTime>>[
+                    LineSeries<InfluxDatapoint, DateTime>(
+                      dataSource: InfluxData(snapshot.data!).data,
+                      xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
+                      yValueMapper: (InfluxDatapoint d, _) => d.value
+                    )
+                  ],
+                  zoomPanBehavior: ZoomPanBehavior(
+                    enablePinching: true
+                  ),
+                );
+              } else {
+                return const CircularProgressIndicator();
+              }
+            },
           )
-        ),
-        FutureBuilder<String>(
-          future: healthCheck(),
-          builder: (context, AsyncSnapshot<String> snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data!); // Why is snapshot.data nullable if snapshot.hasData ensures snapshot.data has a non-null value?
-            } else {
-              return const CircularProgressIndicator();
-            }
-          }
         )
       ],
     );
@@ -201,4 +231,21 @@ class LuxData {
   LuxData(this.timeStamp, this.lux);
   final DateTime timeStamp;
   final double lux;
+}
+
+class InfluxDatapoint {
+  InfluxDatapoint(this.timeStamp, this.value);
+  final DateTime timeStamp;
+  final double value;
+}
+
+class InfluxData {
+  InfluxData(this.records) {
+    this.data = <InfluxDatapoint>[];
+    for (var record in this.records) {
+      this.data.add(InfluxDatapoint(DateTime.parse(record['_time']), record['_value']));
+    }
+  }
+  final List<FluxRecord> records;
+  late List<InfluxDatapoint> data;
 }

@@ -10,7 +10,7 @@ void main() async {
   getIt.registerSingleton<InfluxDBClient>(InfluxDBClient(
     url: AppConstants.influxdbUrl,
     token: AppConstants.influxdbToken,
-    org: AppConstants.influxdbToken,
+    org: AppConstants.influxdbOrg,
     bucket: AppConstants.influxdbBucket,
     debug: AppConstants.influxdbDebug // TODO: disable on release
   ));
