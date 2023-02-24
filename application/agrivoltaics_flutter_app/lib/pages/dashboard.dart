@@ -128,46 +128,51 @@ class Dashboard extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Center(
-          child: FutureBuilder<List<List<FluxRecord>>>(
-            future: getData(),
-            builder: (BuildContext context, AsyncSnapshot<List<List<FluxRecord>>> snapshot) {
-              if (snapshot.hasData) {
-                return SfCartesianChart(
-                  title: ChartTitle(text: 'TODO: change me'),
-                  legend: Legend(isVisible: true),
-                  trackballBehavior: TrackballBehavior(
-                    enable: true,
-                    activationMode: ActivationMode.singleTap,
-                    tooltipSettings: const InteractiveTooltip(
+        Expanded(
+          child: Center(
+            child: FutureBuilder<List<List<FluxRecord>>>(
+              future: getData(),
+              builder: (BuildContext context, AsyncSnapshot<List<List<FluxRecord>>> snapshot) {
+                if (snapshot.hasData) {
+                  return SfCartesianChart(
+                    // title: ChartTitle(text: 'TODO: change me'),
+                    legend: Legend(isVisible: true),
+                    trackballBehavior: TrackballBehavior(
                       enable: true,
-                      format: 'point.y\npoint.x'
-                    )
-                  ),
-                  primaryXAxis: CategoryAxis(),
-                  series: <LineSeries<InfluxDatapoint, DateTime>>[
-                    LineSeries<InfluxDatapoint, DateTime>(
-                      dataSource: InfluxData(snapshot.data![0]).data,
-                      xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
-                      yValueMapper: (InfluxDatapoint d, _) => d.value,
-                      legendItemText: "Humidity"
+                      activationMode: ActivationMode.singleTap,
+                      tooltipSettings: const InteractiveTooltip(
+                        enable: true,
+                        format: 'series.name\npoint.y | point.x',
+                        borderWidth: 20
+                      )
                     ),
-                    LineSeries<InfluxDatapoint, DateTime>(
-                      dataSource: InfluxData(snapshot.data![1]).data,
-                      xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
-                      yValueMapper: (InfluxDatapoint d, _) => d.value,
-                      legendItemText: "Temperature"
-                    )
-                  ],
-                  zoomPanBehavior: ZoomPanBehavior(
-                    enablePinching: true
-                  ),
-                );
-              } else {
-                return const CircularProgressIndicator();
-              }
-            },
-          )
+                    primaryXAxis: CategoryAxis(),
+                    series: <LineSeries<InfluxDatapoint, DateTime>>[
+                      LineSeries<InfluxDatapoint, DateTime>(
+                        dataSource: InfluxData(snapshot.data![0]).data,
+                        xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
+                        yValueMapper: (InfluxDatapoint d, _) => d.value,
+                        legendItemText: 'Humidity',
+                        name: 'Humidity'
+                      ),
+                      LineSeries<InfluxDatapoint, DateTime>(
+                        dataSource: InfluxData(snapshot.data![1]).data,
+                        xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
+                        yValueMapper: (InfluxDatapoint d, _) => d.value,
+                        legendItemText: 'Temperature',
+                        name: 'Temperature'
+                      )
+                    ],
+                    zoomPanBehavior: ZoomPanBehavior(
+                      enablePinching: true
+                    ),
+                  );
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
+            )
+          ),
         )
       ],
     );
