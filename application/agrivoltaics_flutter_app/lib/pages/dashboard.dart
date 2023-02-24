@@ -76,28 +76,46 @@ Future<String> healthCheck() async {
   return 'Health check: ${healthCheck.statusCode}';
 }
 
-Future<List<FluxRecord>> getData() async {
+Future<List<List<FluxRecord>>> getData() async {
   var getIt = GetIt.instance;
   var influxDBClient = getIt.get<InfluxDBClient>();
 
   var queryService = influxDBClient.getQueryService();
-  var query = '''
+  var humidityQuery = '''
   from(bucket: "keithsprings51's Bucket")
   |> range(start: -3d, stop: -1h)
   |> filter(fn: (r) => r["SSID"] == "TeneComp")
-  |> filter(fn: (r) => r["_field"] == "Humidity" or r["_field"] == "Temperature")
+  |> filter(fn: (r) => r["_field"] == "Humidity")
+  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+  |> yield(name: "mean")
+  ''';
+  var temperatureQuery = '''
+  from(bucket: "keithsprings51's Bucket")
+  |> range(start: -3d, stop: -1h)
+  |> filter(fn: (r) => r["SSID"] == "TeneComp")
+  |> filter(fn: (r) => r["_field"] == "Temperature")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
   |> yield(name: "mean")
   ''';
 
-  Stream<FluxRecord> recordStream = await queryService.query(query);
-  var records = <FluxRecord>[];
+  Stream<FluxRecord> humidityRecordStream = await queryService.query(humidityQuery);
+  Stream<FluxRecord> temperatureRecordStream = await queryService.query(temperatureQuery);
 
-  await recordStream.forEach((record) {
-    records.add(record);
+  var dataSets = <List<FluxRecord>>[];
+
+  var humidityRecords = <FluxRecord>[];
+  await humidityRecordStream.forEach((record) {
+    humidityRecords.add(record);
   });
+  var temperatureRecords = <FluxRecord>[];
+  await temperatureRecordStream.forEach((record) {
+    temperatureRecords.add(record);
+  });
+
+  dataSets.add(humidityRecords);
+  dataSets.add(temperatureRecords);
   
-  return records;
+  return dataSets;
 }
 
 class Dashboard extends StatelessWidget {
@@ -111,38 +129,34 @@ class Dashboard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
-          child: FutureBuilder<List<FluxRecord>>(
+          child: FutureBuilder<List<List<FluxRecord>>>(
             future: getData(),
-            builder: (BuildContext context, AsyncSnapshot<List<FluxRecord>> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<List<List<FluxRecord>>> snapshot) {
               if (snapshot.hasData) {
                 return SfCartesianChart(
                   title: ChartTitle(text: 'TODO: change me'),
+                  legend: Legend(isVisible: true),
+                  trackballBehavior: TrackballBehavior(
+                    enable: true,
+                    activationMode: ActivationMode.singleTap,
+                    tooltipSettings: const InteractiveTooltip(
+                      enable: true,
+                      format: 'point.y\npoint.x'
+                    )
+                  ),
                   primaryXAxis: CategoryAxis(),
-                  // series: <LineSeries<LuxData, DateTime>>[
-                  //   LineSeries<LuxData, DateTime>(
-                  //     dataSource: <LuxData>[
-                  //       LuxData(DateTime.parse("1997-07-16"), 37.11),
-                  //       LuxData(DateTime.parse("1997-07-17"), 34.18),
-                  //       LuxData(DateTime.parse("1997-07-18"), 37.11),
-                  //       LuxData(DateTime.parse("1997-07-19"), 36.13),
-                  //       LuxData(DateTime.parse("1997-07-20"), 36.13),
-                  //       LuxData(DateTime.parse("1997-07-21"), 35.16),
-                  //       LuxData(DateTime.parse("1997-07-22"), 43.95),
-                  //       LuxData(DateTime.parse("1997-07-23"), 46.88),
-                  //       LuxData(DateTime.parse("1997-07-24"), 44.92),
-                  //       LuxData(DateTime.parse("1997-07-25"), 45.9),
-                  //       LuxData(DateTime.parse("1997-07-26"), 45.9),
-                  //       LuxData(DateTime.parse("1997-07-27"), 46.88)
-                  //     ],
-                  //     xValueMapper: (LuxData lux, _) => lux.timeStamp,
-                  //     yValueMapper: (LuxData lux, _) => lux.lux
-                  //   )
-                  // ],
                   series: <LineSeries<InfluxDatapoint, DateTime>>[
                     LineSeries<InfluxDatapoint, DateTime>(
-                      dataSource: InfluxData(snapshot.data!).data,
+                      dataSource: InfluxData(snapshot.data![0]).data,
                       xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
-                      yValueMapper: (InfluxDatapoint d, _) => d.value
+                      yValueMapper: (InfluxDatapoint d, _) => d.value,
+                      legendItemText: "Humidity"
+                    ),
+                    LineSeries<InfluxDatapoint, DateTime>(
+                      dataSource: InfluxData(snapshot.data![1]).data,
+                      xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
+                      yValueMapper: (InfluxDatapoint d, _) => d.value,
+                      legendItemText: "Temperature"
                     )
                   ],
                   zoomPanBehavior: ZoomPanBehavior(
