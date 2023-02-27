@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:influxdb_client/api.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../app_constants.dart';
+
+var getIt = GetIt.instance;
+var influxDBClient = getIt.get<InfluxDBClient>();
 
 
 /*
@@ -11,134 +16,133 @@ import '../app_constants.dart';
 Dashboard Page
 
 */
-class DashboardPage extends StatefulWidget {
+class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
-}
-
-class _DashboardPageState extends State<DashboardPage> {
-  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        endDrawer: const DashboardDrawer(),
-        appBar: AppBar(),
-        body: const Dashboard()
+    return ChangeNotifierProvider(
+      create: (context) => DashboardState(),
+      child: SafeArea(
+        child: Scaffold(
+          endDrawer: const DashboardDrawer(),
+          appBar: AppBar(),
+          body: const Dashboard()
+        ),
       ),
     );
   }
 }
 
+/*
+
+Dashboard State
+
+*/
+class DashboardState extends ChangeNotifier {
+  DashboardState() {
+    // Initialize date range selection as today through next week
+    var today = DateTime.now();
+    var initialDateRange = PickerDateRange(today, DateTime(today.year, today.month, today.day + 7));
+    this.dateRangeSelection = initialDateRange;
+  }
+  
+  late PickerDateRange dateRangeSelection;
+
+  Future<List<List<FluxRecord>>> getData(PickerDateRange timeRange) async {
+    var queryService = influxDBClient.getQueryService();
+    var startDate = DateFormat('yyyy-MM-dd').format(timeRange.startDate!);
+    var endDate = DateFormat('yyyy-MM-dd').format(timeRange.endDate!);
+    var humidityQuery = '''
+    from(bucket: "keithsprings51's Bucket")
+    |> range(start: ${startDate}T00:00:00Z, stop: ${endDate}T00:00:00Z)
+    |> filter(fn: (r) => r["SSID"] == "TeneComp")
+    |> filter(fn: (r) => r["_field"] == "Humidity")
+    |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+    |> yield(name: "mean")
+    ''';
+    var temperatureQuery = '''
+    from(bucket: "keithsprings51's Bucket")
+    |> range(start: ${startDate}T00:00:00Z, stop: ${endDate}T00:00:00Z)
+    |> filter(fn: (r) => r["SSID"] == "TeneComp")
+    |> filter(fn: (r) => r["_field"] == "Temperature")
+    |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+    |> yield(name: "mean")
+    ''';
+
+    Stream<FluxRecord> humidityRecordStream = await queryService.query(humidityQuery);
+    Stream<FluxRecord> temperatureRecordStream = await queryService.query(temperatureQuery);
+
+    var dataSets = <List<FluxRecord>>[];
+
+    var humidityRecords = <FluxRecord>[];
+    await humidityRecordStream.forEach((record) {
+      humidityRecords.add(record);
+    });
+    var temperatureRecords = <FluxRecord>[];
+    await temperatureRecordStream.forEach((record) {
+      temperatureRecords.add(record);
+    });
+
+    dataSets.add(humidityRecords);
+    dataSets.add(temperatureRecords);
+    
+    return dataSets;
+  }
+}
 
 /*
 
 Dashboard Drawer
 
 */
-class DashboardDrawer extends StatefulWidget {
+class DashboardDrawer extends StatelessWidget {
   const DashboardDrawer({
     super.key,
   });
 
   @override
-  State<DashboardDrawer> createState() => _DashboardDrawerState();
-}
-
-class _DashboardDrawerState extends State<DashboardDrawer> {
-  @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
-        children: const [
-          DateRangePicker(),
-          TimeRangePicker()
+        children: [
+          const DateRangePicker(),
+          const TimeRangePicker(),
+          ElevatedButton(
+            onPressed:() {
+              // Call state method to populate dashboard
+              
+            },
+            child: const Text('Apply')
+          )
         ],
       ),
     );
   }
 }
 
-
 /*
 
 Dashboard
 
 */
-
-Future<String> healthCheck() async {
-  // TODO: remove on release
-  var getIt = GetIt.instance;
-  var influxDBClient = getIt.get<InfluxDBClient>();
-  var healthCheck = await influxDBClient.getPingApi().getPingWithHttpInfo();
-  return 'Health check: ${healthCheck.statusCode}';
-}
-
-Future<List<List<FluxRecord>>> getData() async {
-  var getIt = GetIt.instance;
-  var influxDBClient = getIt.get<InfluxDBClient>();
-
-  var queryService = influxDBClient.getQueryService();
-  var humidityQuery = '''
-  from(bucket: "keithsprings51's Bucket")
-  |> range(start: -3d, stop: -1h)
-  |> filter(fn: (r) => r["SSID"] == "TeneComp")
-  |> filter(fn: (r) => r["_field"] == "Humidity")
-  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
-  |> yield(name: "mean")
-  ''';
-  var temperatureQuery = '''
-  from(bucket: "keithsprings51's Bucket")
-  |> range(start: -3d, stop: -1h)
-  |> filter(fn: (r) => r["SSID"] == "TeneComp")
-  |> filter(fn: (r) => r["_field"] == "Temperature")
-  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
-  |> yield(name: "mean")
-  ''';
-
-  Stream<FluxRecord> humidityRecordStream = await queryService.query(humidityQuery);
-  Stream<FluxRecord> temperatureRecordStream = await queryService.query(temperatureQuery);
-
-  var dataSets = <List<FluxRecord>>[];
-
-  var humidityRecords = <FluxRecord>[];
-  await humidityRecordStream.forEach((record) {
-    humidityRecords.add(record);
-  });
-  var temperatureRecords = <FluxRecord>[];
-  await temperatureRecordStream.forEach((record) {
-    temperatureRecords.add(record);
-  });
-
-  dataSets.add(humidityRecords);
-  dataSets.add(temperatureRecords);
-  
-  return dataSets;
-}
-
-class Dashboard extends StatefulWidget {
+class Dashboard extends StatelessWidget {
   const Dashboard({
     super.key,
   });
 
   @override
-  State<Dashboard> createState() => _DashboardState();
-}
-
-class _DashboardState extends State<Dashboard> {
-
-
-  @override
   Widget build(BuildContext context) {
+    var dashboardState = context.watch<DashboardState>();
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
           child: Center(
             child: FutureBuilder<List<List<FluxRecord>>>(
-              future: getData(),
+              future: dashboardState.getData(dashboardState.dateRangeSelection),
               builder: (BuildContext context, AsyncSnapshot<List<List<FluxRecord>>> snapshot) {
                 if (snapshot.hasData) {
                   return SfCartesianChart(
@@ -186,7 +190,6 @@ class _DashboardState extends State<Dashboard> {
   }
 }
 
-
 /*
 
 Date Range Picker
@@ -199,15 +202,17 @@ class DateRangePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var dashboardState = context.watch<DashboardState>();
+    
     return Center(child: SfDateRangePicker(
-      onSelectionChanged:(dateRangePickerSelectionChangedArgs) {},
-      // initialSelectedRange: PickerDateRange(
-      //   DateTime.now(), ),
-      selectionMode: DateRangePickerSelectionMode.range
+      onSelectionChanged: (args) {
+        dashboardState.dateRangeSelection = args.value;
+      },
+      initialSelectedRange: dashboardState.dateRangeSelection,
+      selectionMode: DateRangePickerSelectionMode.extendableRange
     ));
   }
 }
-
 
 /*
 
