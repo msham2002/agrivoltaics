@@ -118,10 +118,17 @@ Future<List<List<FluxRecord>>> getData() async {
   return dataSets;
 }
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({
     super.key,
   });
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +199,12 @@ class DateRangePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: SfDateRangePicker());
+    return Center(child: SfDateRangePicker(
+      onSelectionChanged:(dateRangePickerSelectionChangedArgs) {},
+      // initialSelectedRange: PickerDateRange(
+      //   DateTime.now(), ),
+      selectionMode: DateRangePickerSelectionMode.range
+    ));
   }
 }
 
