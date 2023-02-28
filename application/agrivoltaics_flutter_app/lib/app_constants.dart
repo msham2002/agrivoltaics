@@ -32,3 +32,22 @@ enum TimeRange {
   week,
   month
 }
+
+extension TimeRangeExtension on TimeRange {
+  String? get fluxQuery {
+    switch (this) {
+      case TimeRange.minute:
+        return 'm';
+      case TimeRange.hour:
+        return 'h';
+      case TimeRange.day:
+        return 'd';
+      case TimeRange.week:
+        return 'w';
+      case TimeRange.month:
+        return 'mo';
+      default:
+        return null;
+    }
+  }
+}

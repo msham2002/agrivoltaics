@@ -43,30 +43,37 @@ class DashboardState extends ChangeNotifier {
   DashboardState() {
     // Initialize date range selection as today through next week
     var today = DateTime.now();
-    var initialDateRange = PickerDateRange(today, DateTime(today.year, today.month, today.day + 7));
+    var initialDateRange = PickerDateRange(today, DateTime(today.year, today.month, today.day, today.hour + 23, today.minute + 59));
     this.dateRangeSelection = initialDateRange;
   }
   
   late PickerDateRange dateRangeSelection;
+  TimeRange timeInterval = TimeRange.hour;
+
+  void finalizeState() {
+    notifyListeners();
+  }
 
   Future<List<List<FluxRecord>>> getData(PickerDateRange timeRange) async {
     var queryService = influxDBClient.getQueryService();
+
     var startDate = DateFormat('yyyy-MM-dd').format(timeRange.startDate!);
     var endDate = DateFormat('yyyy-MM-dd').format(timeRange.endDate!);
+
     var humidityQuery = '''
     from(bucket: "keithsprings51's Bucket")
-    |> range(start: ${startDate}T00:00:00Z, stop: ${endDate}T00:00:00Z)
+    |> range(start: ${startDate}T00:00:00Z, stop: ${endDate}T23:59:00Z)
     |> filter(fn: (r) => r["SSID"] == "TeneComp")
     |> filter(fn: (r) => r["_field"] == "Humidity")
-    |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+    |> aggregateWindow(every: 1${this.timeInterval.fluxQuery}, fn: mean, createEmpty: false)
     |> yield(name: "mean")
     ''';
     var temperatureQuery = '''
     from(bucket: "keithsprings51's Bucket")
-    |> range(start: ${startDate}T00:00:00Z, stop: ${endDate}T00:00:00Z)
+    |> range(start: ${startDate}T00:00:00Z, stop: ${endDate}T23:59:00Z)
     |> filter(fn: (r) => r["SSID"] == "TeneComp")
     |> filter(fn: (r) => r["_field"] == "Temperature")
-    |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+    |> aggregateWindow(every: 1${this.timeInterval.fluxQuery}, fn: mean, createEmpty: false)
     |> yield(name: "mean")
     ''';
 
@@ -103,6 +110,8 @@ class DashboardDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var dashboardState = context.watch<DashboardState>();
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -111,8 +120,7 @@ class DashboardDrawer extends StatelessWidget {
           const TimeRangePicker(),
           ElevatedButton(
             onPressed:() {
-              // Call state method to populate dashboard
-              
+              dashboardState.finalizeState();
             },
             child: const Text('Apply')
           )
@@ -134,54 +142,56 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var dashboardState = context.watch<DashboardState>();
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
           child: Center(
-            child: FutureBuilder<List<List<FluxRecord>>>(
-              future: dashboardState.getData(dashboardState.dateRangeSelection),
-              builder: (BuildContext context, AsyncSnapshot<List<List<FluxRecord>>> snapshot) {
-                if (snapshot.hasData) {
-                  return SfCartesianChart(
-                    // title: ChartTitle(text: 'TODO: change me'),
-                    legend: Legend(isVisible: true),
-                    trackballBehavior: TrackballBehavior(
-                      enable: true,
-                      activationMode: ActivationMode.singleTap,
-                      tooltipSettings: const InteractiveTooltip(
-                        enable: true,
-                        format: 'series.name\npoint.y | point.x',
-                        borderWidth: 20
-                      )
-                    ),
-                    primaryXAxis: CategoryAxis(),
-                    series: <LineSeries<InfluxDatapoint, DateTime>>[
-                      LineSeries<InfluxDatapoint, DateTime>(
-                        dataSource: InfluxData(snapshot.data![0]).data,
-                        xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
-                        yValueMapper: (InfluxDatapoint d, _) => d.value,
-                        legendItemText: 'Humidity',
-                        name: 'Humidity'
-                      ),
-                      LineSeries<InfluxDatapoint, DateTime>(
-                        dataSource: InfluxData(snapshot.data![1]).data,
-                        xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
-                        yValueMapper: (InfluxDatapoint d, _) => d.value,
-                        legendItemText: 'Temperature',
-                        name: 'Temperature'
-                      )
-                    ],
-                    zoomPanBehavior: ZoomPanBehavior(
-                      enablePinching: true
-                    ),
-                  );
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              },
+            child: Consumer<DashboardState>(
+              builder: (context, dashboardState, child) {
+                return FutureBuilder<List<List<FluxRecord>>>(
+                  future: dashboardState.getData(dashboardState.dateRangeSelection),
+                  builder: (BuildContext context, AsyncSnapshot<List<List<FluxRecord>>> snapshot) {
+                    if (snapshot.hasData) {
+                      return SfCartesianChart(
+                        // title: ChartTitle(text: 'TODO: change me'),
+                        legend: Legend(isVisible: true),
+                        trackballBehavior: TrackballBehavior(
+                          enable: true,
+                          activationMode: ActivationMode.singleTap,
+                          tooltipSettings: const InteractiveTooltip(
+                            enable: true,
+                            format: 'series.name\npoint.y | point.x',
+                            borderWidth: 20
+                          )
+                        ),
+                        primaryXAxis: CategoryAxis(),
+                        series: <LineSeries<InfluxDatapoint, DateTime>>[
+                          LineSeries<InfluxDatapoint, DateTime>(
+                            dataSource: InfluxData(snapshot.data![0]).data,
+                            xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
+                            yValueMapper: (InfluxDatapoint d, _) => d.value,
+                            legendItemText: 'Humidity',
+                            name: 'Humidity'
+                          ),
+                          LineSeries<InfluxDatapoint, DateTime>(
+                            dataSource: InfluxData(snapshot.data![1]).data,
+                            xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
+                            yValueMapper: (InfluxDatapoint d, _) => d.value,
+                            legendItemText: 'Temperature',
+                            name: 'Temperature'
+                          )
+                        ],
+                        zoomPanBehavior: ZoomPanBehavior(
+                          enablePinching: true
+                        ),
+                      );
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
+                );
+              }
             )
           ),
         )
@@ -219,13 +229,21 @@ class DateRangePicker extends StatelessWidget {
 Time Range Picker
 
 */
-class TimeRangePicker extends StatelessWidget {
+class TimeRangePicker extends StatefulWidget {
   const TimeRangePicker({
     super.key,
   });
 
   @override
+  State<TimeRangePicker> createState() => _TimeRangePickerState();
+}
+
+class _TimeRangePickerState extends State<TimeRangePicker> {
+  @override
   Widget build(BuildContext context) {
+    var dashboardState = context.watch<DashboardState>();
+    TimeRange dropdownValue = dashboardState.timeInterval;
+
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -250,11 +268,26 @@ class TimeRangePicker extends StatelessWidget {
                 value: TimeRange.hour,
                 child: Text('hours')
               ),
+              DropdownMenuItem(
+                value: TimeRange.day,
+                child: Text('days')
+              ),
+              DropdownMenuItem(
+                value: TimeRange.week,
+                child: Text('weeks')
+              ),
+              DropdownMenuItem(
+                value: TimeRange.month,
+                child: Text('months')
+              )
             ],
             onChanged: (value) {
-              print(value);
+              dashboardState.timeInterval = value!;
+              setState(() {
+                dropdownValue = value;
+              });
             },
-            value: TimeRange.hour
+            value: dropdownValue
           ),
         ],
       )
