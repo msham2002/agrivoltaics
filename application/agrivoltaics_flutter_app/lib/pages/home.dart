@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dashboard.dart';
+import 'dashboard/dashboard.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
