@@ -4,7 +4,6 @@ import 'package:influxdb_client/api.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'dashboard_drawer.dart';
 import 'dashboard_state.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 /*
 
@@ -20,9 +19,7 @@ class DashboardPage extends StatelessWidget {
       create: (context) => DashboardState(),
       child: SafeArea(
         child: Scaffold(
-          // TODO: Drawer when vertical, sliding up panel when horizontal
-          // Sliding up panel should be formatted with datepicker on left, time interval and apply button on right
-          endDrawer: (MediaQuery.of(context).orientation == Orientation.portrait) || (MediaQuery.of(context).size.shortestSide < 600.0) ? const DashboardDrawer() : null,
+          endDrawer: const DashboardDrawer(),
           appBar: AppBar(),
           body: const Dashboard()
         ),
@@ -96,34 +93,6 @@ class Dashboard extends StatelessWidget {
             )
           ),
         ),
-        // if (MediaQuery.of(context).orientation == Orientation.landscape) SlidingUpPanel(
-        //   panel: Center(
-        //     child: Wrap(
-        //       children: [
-        //         Row(
-        //           children: [
-        //             Expanded(child: DateRangePicker()),
-        //             Expanded(child: TimeRangePicker())
-        //           ],
-        //         ),
-        //       ],
-        //     )
-        //   ),
-        //   collapsed: Container(
-        //     decoration: const BoxDecoration(
-        //       // color: Colors.blueGrey,
-        //       borderRadius: BorderRadius.only(
-        //         topLeft: Radius.circular(24.0),
-        //         topRight: Radius.circular(24.0)
-        //       )
-        //     ),
-        //     child: Column(
-        //       children: const [
-        //         const BarIndicator()
-        //       ]
-        //     )
-        //   )
-        // )
       ],
     );
   }

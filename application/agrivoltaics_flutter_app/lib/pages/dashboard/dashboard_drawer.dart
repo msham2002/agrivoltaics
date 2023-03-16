@@ -17,49 +17,32 @@ class DashboardDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var dashboardState = context.watch<DashboardState>();
-    final ScrollController _scrollController = ScrollController();
+    var horizontalPhone = (MediaQuery.of(context).orientation == Orientation.landscape) || (MediaQuery.of(context).size.shortestSide > 600.0);
 
     return Drawer(
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           return Column(
             children: [
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  controller: _scrollController,
-                  shrinkWrap: true,
-                  physics: const ScrollPhysics(),
-                  children: [
-                    DateRangePicker(
-                      height: constraints.maxHeight * 0.65,
-                    ),
-                    TimeRangePicker(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed:() {
-                          dashboardState.finalizeState();
-                        },
-                        child: const Text('Apply')
-                      ),
-                    ),
-                  ],
+              DateRangePicker(
+                height: horizontalPhone ? constraints.maxHeight * 0.65 : null,
+              ),
+              TimeRangePicker(
+                height: horizontalPhone ? constraints.maxHeight * (0.35 / 2) : null,
+                width: constraints.maxWidth * 0.6
+              ),
+              SizedBox(
+                height: horizontalPhone ? constraints.maxHeight * (0.35 / 2) : null,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed:() {
+                      dashboardState.finalizeState();
+                    },
+                    child: const Text('Apply')
+                  ),
                 ),
               ),
-              // Row(
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: ElevatedButton(
-              //         onPressed:() {
-              //           dashboardState.finalizeState();
-              //         },
-              //         child: const Text('Apply')
-              //       ),
-              //     ),
-              //   ],
-              // )
             ],
           );
         }
@@ -123,65 +106,66 @@ class TimeRangePicker extends StatefulWidget {
 }
 
 class _TimeRangePickerState extends State<TimeRangePicker> {
-  // double? width;
-  // double? height;
-
   @override
   Widget build(BuildContext context) {
     var dashboardState = context.watch<DashboardState>();
     TimeRange dropdownValue = dashboardState.timeInterval;
 
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Center(
-              child: TextField(
-                keyboardType: TextInputType.number,
-                maxLength: 2,
-                onChanged: (value) {
-                  dashboardState.timeIntervalValue = int.parse(value);
-                },
-              )
-            )
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DropdownButton(
-              items: const [
-                DropdownMenuItem(
-                  value: TimeRange.minute,
-                  child: Text('minutes')
-                ),
-                DropdownMenuItem(
-                  value: TimeRange.hour,
-                  child: Text('hours')
-                ),
-                DropdownMenuItem(
-                  value: TimeRange.day,
-                  child: Text('days')
-                ),
-                DropdownMenuItem(
-                  value: TimeRange.week,
-                  child: Text('weeks')
-                ),
-                DropdownMenuItem(
-                  value: TimeRange.month,
-                  child: Text('months')
+    return SizedBox(
+      height: widget.height,
+      width: widget.width,
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Center(
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  maxLength: 2,
+                  onChanged: (value) {
+                    dashboardState.timeIntervalValue = int.parse(value);
+                  },
                 )
-              ],
-              onChanged: (value) {
-                dashboardState.timeInterval = value!;
-                setState(() {
-                  dropdownValue = value;
-                });
-              },
-              value: dropdownValue
+              )
             ),
-          ),
-        ],
-      )
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton(
+                items: const [
+                  DropdownMenuItem(
+                    value: TimeRange.minute,
+                    child: Text('minutes')
+                  ),
+                  DropdownMenuItem(
+                    value: TimeRange.hour,
+                    child: Text('hours')
+                  ),
+                  DropdownMenuItem(
+                    value: TimeRange.day,
+                    child: Text('days')
+                  ),
+                  DropdownMenuItem(
+                    value: TimeRange.week,
+                    child: Text('weeks')
+                  ),
+                  DropdownMenuItem(
+                    value: TimeRange.month,
+                    child: Text('months')
+                  )
+                ],
+                onChanged: (value) {
+                  dashboardState.timeInterval = value!;
+                  setState(() {
+                    dropdownValue = value;
+                  });
+                },
+                value: dropdownValue
+              ),
+            ),
+          ],
+        )
+      ),
     );
   }
 }
