@@ -48,10 +48,14 @@ class Dashboard extends StatelessWidget {
             child: Consumer<DashboardState>(
               builder: (context, dashboardState, child) {
                 return FutureBuilder<List<List<FluxRecord>>>(
+                  // Async method called by FutureBuilder widget, whose results will eventually populate widget
                   future: dashboardState.getData(dashboardState.dateRangeSelection),
+
                   builder: (BuildContext context, AsyncSnapshot<List<List<FluxRecord>>> snapshot) {
+                    // Once the data snapshot is populated with above method results, render chart
                     if (snapshot.hasData) {
                       return SfCartesianChart(
+                        // TODO: title chart
                         // title: ChartTitle(text: 'TODO: change me'),
                         legend: Legend(isVisible: true),
                         trackballBehavior: TrackballBehavior(
@@ -84,6 +88,8 @@ class Dashboard extends StatelessWidget {
                           enablePinching: true
                         ),
                       );
+
+                    // The results have not yet been returned. Indicate loading
                     } else {
                       return const CircularProgressIndicator();
                     }
