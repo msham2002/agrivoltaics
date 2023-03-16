@@ -15,9 +15,9 @@ Dashboard State
 */
 class DashboardState extends ChangeNotifier {
   DashboardState() {
-    // Initialize date range selection as today through next week
+    // Initialize date range selection as past week
     var today = DateTime.now();
-    var initialDateRange = PickerDateRange(today, DateTime(today.year, today.month, today.day, today.hour + 23, today.minute + 59));
+    var initialDateRange = PickerDateRange(DateTime(today.year, today.month, today.day - 7, today.hour, today.minute), today);
     this.dateRangeSelection = initialDateRange;
   }
   
