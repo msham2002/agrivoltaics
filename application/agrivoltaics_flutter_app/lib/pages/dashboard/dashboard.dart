@@ -4,6 +4,7 @@ import 'package:influxdb_client/api.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'dashboard_drawer.dart';
 import 'dashboard_state.dart';
+import 'dashboard_appbar.dart';
 
 /*
 
@@ -17,11 +18,11 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => DashboardState(),
-      child: SafeArea(
+      child: const SafeArea(
         child: Scaffold(
-          endDrawer: const DashboardDrawer(),
-          appBar: AppBar(),
-          body: const Dashboard()
+          endDrawer: DashboardDrawer(),
+          appBar: DashboardAppBar(),
+          body: Dashboard()
         ),
       ),
     );
