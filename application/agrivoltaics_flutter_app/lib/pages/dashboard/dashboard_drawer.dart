@@ -126,6 +126,9 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
                   onChanged: (value) {
                     dashboardState.timeIntervalValue = int.parse(value);
                   },
+                  decoration: const InputDecoration(
+                    hintText: 'Interval'
+                  ),
                 )
               )
             ),
