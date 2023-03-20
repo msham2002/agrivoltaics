@@ -26,6 +26,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // TODO: Choose app name
       title: 'App Name',
       theme: ThemeData(
         useMaterial3: true,
