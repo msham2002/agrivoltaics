@@ -14,11 +14,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
               showModalBottomSheet(
               context: context,
               builder: (BuildContext context) {
-                return const Center(
-                  child: Expanded(
-                    child: Text('Modal')
-                  )
-                );
+                return ZoneModal();
               }
             );
           },
@@ -36,4 +32,46 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class ZoneModal extends StatefulWidget {
+  const ZoneModal({
+    super.key,
+  });
+
+  @override
+  State<ZoneModal> createState() => _ZoneModalState();
+}
+
+class _ZoneModalState extends State<ZoneModal> {
+  List zones = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Expanded(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Wrap(
+            children: [
+              for (int i = 0; i < 20; i++)...[
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Container(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Zone ${i+1}'),
+                        Checkbox(value: false, onChanged: (null))
+                      ],
+                    )
+                  ),
+                )
+              ]
+            ],
+          ),
+        )
+      )
+    );
+  }
 }
