@@ -18,7 +18,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
               }
             );
           },
-          icon: const Icon(Icons.map_outlined),
+          icon: const Icon(Icons.filter_alt_outlined),
         ),
         IconButton(
           onPressed: () {
@@ -53,14 +53,14 @@ class _ZoneModalState extends State<ZoneModal> {
         scrollDirection: Axis.vertical,
         child: Wrap(
           children: [
-            for (int i = 0; i < 20; i++)...[
+            for (int i = 1; i <= 3; i++)...[
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Container(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Zone ${i+1}'),
+                      Text('Zone ${i}'),
                       Checkbox(value: false, onChanged: (null))
                     ],
                   )
