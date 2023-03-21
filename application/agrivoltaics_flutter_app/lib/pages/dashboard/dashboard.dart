@@ -48,11 +48,11 @@ class Dashboard extends StatelessWidget {
           child: Center(
             child: Consumer<DashboardState>(
               builder: (context, dashboardState, child) {
-                return FutureBuilder<List<List<FluxRecord>>>(
+                return FutureBuilder<Map<String, List<FluxRecord>>>(
                   // Async method called by FutureBuilder widget, whose results will eventually populate widget
                   future: dashboardState.getData(dashboardState.dateRangeSelection),
 
-                  builder: (BuildContext context, AsyncSnapshot<List<List<FluxRecord>>> snapshot) {
+                  builder: (BuildContext context, AsyncSnapshot<Map<String, List<FluxRecord>>> snapshot) {
                     // Once the data snapshot is populated with above method results, render chart
                     if (snapshot.hasData) {
                       return SfCartesianChart(
@@ -70,20 +70,15 @@ class Dashboard extends StatelessWidget {
                         ),
                         primaryXAxis: CategoryAxis(),
                         series: <LineSeries<InfluxDatapoint, DateTime>>[
-                          LineSeries<InfluxDatapoint, DateTime>(
-                            dataSource: InfluxData(snapshot.data![0]).data,
-                            xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
-                            yValueMapper: (InfluxDatapoint d, _) => d.value,
-                            legendItemText: 'Humidity',
-                            name: 'Humidity'
-                          ),
-                          LineSeries<InfluxDatapoint, DateTime>(
-                            dataSource: InfluxData(snapshot.data![1]).data,
-                            xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
-                            yValueMapper: (InfluxDatapoint d, _) => d.value,
-                            legendItemText: 'Temperature',
-                            name: 'Temperature'
-                          )
+                          for (var data in snapshot.data!.entries)...[
+                            LineSeries<InfluxDatapoint, DateTime>(
+                              dataSource: InfluxData(data.value).data,
+                              xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
+                              yValueMapper: (InfluxDatapoint d, _) => d.value,
+                              legendItemText: data.key,
+                              name: data.key
+                            )
+                          ]
                         ],
                         zoomPanBehavior: ZoomPanBehavior(
                           enablePinching: true
