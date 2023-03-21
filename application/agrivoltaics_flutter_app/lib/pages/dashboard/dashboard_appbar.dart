@@ -115,7 +115,14 @@ class _FilterModalState extends State<FilterModal> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(SensorType.humidity.displayName!),
-                                  Checkbox(value: false, onChanged: (null))
+                                  Checkbox(
+                                    value: dashboardState.fieldSelection[SensorType.humidity],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        dashboardState.fieldSelection[SensorType.humidity] = value!;
+                                      });
+                                    }
+                                  )
                                 ],
                               )
                             ),
@@ -127,7 +134,14 @@ class _FilterModalState extends State<FilterModal> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(SensorType.temperature.displayName!),
-                                  Checkbox(value: false, onChanged: (null))
+                                  Checkbox(
+                                    value: dashboardState.fieldSelection[SensorType.temperature],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        dashboardState.fieldSelection[SensorType.temperature] = value!;
+                                      });
+                                    }
+                                  )
                                 ],
                               )
                             ),

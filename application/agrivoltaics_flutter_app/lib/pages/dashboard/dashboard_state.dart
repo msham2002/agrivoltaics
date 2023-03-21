@@ -29,6 +29,10 @@ class DashboardState extends ChangeNotifier {
     2: true,
     3: true
   };
+  Map<SensorType, bool> fieldSelection = {
+    SensorType.humidity: true,
+    SensorType.temperature: true
+  };
 
   void finalizeState() {
     notifyListeners();
@@ -54,31 +58,25 @@ class DashboardState extends ChangeNotifier {
     var startDate = DateFormat('yyyy-MM-dd').format(timeRange.startDate!);
     var endDate = DateFormat('yyyy-MM-dd').format(timeRange.endDate!);
 
-    var dataSets = new Map<String, List<FluxRecord>>();
+    var dataSets = new Map<String, List<FluxRecord>>();    
+    var selectedZones = Map.from(zoneSelection)..removeWhere((_, value) => !value);
+    var selectedFields = Map.from(fieldSelection)..removeWhere((_, value) => !value);
+    for (var field in selectedFields.entries) {
+      for (var zone in selectedZones.entries) {
+        SensorType selectedField = field.key;
+        var humidityQuery = _generateQuery(zone.key, timeRange, selectedField.displayName!);
 
-    
-    var selectedZones = Map.from(zoneSelection)..removeWhere((key, value) => !value);
-    for (var zone in selectedZones.entries) {
-      // TODO: Create constants for query fields like humidity and temperature
-      var humidityQuery = _generateQuery(zone.key, timeRange, 'Humidity');
-      var temperatureQuery = _generateQuery(zone.key, timeRange, 'Temperature');
+        Stream<FluxRecord> recordStream = await queryService.query(humidityQuery);
 
-      Stream<FluxRecord> humidityRecordStream = await queryService.query(humidityQuery);
-      Stream<FluxRecord> temperatureRecordStream = await queryService.query(temperatureQuery);
+        var records = <FluxRecord>[];
+        await recordStream.forEach((record) {
+          records.add(record);
+        });
 
-      var humidityRecords = <FluxRecord>[];
-      await humidityRecordStream.forEach((record) {
-        humidityRecords.add(record);
-      });
-      var temperatureRecords = <FluxRecord>[];
-      await temperatureRecordStream.forEach((record) {
-        temperatureRecords.add(record);
-      });
-
-      // TODO: constants here too
-      dataSets['Humidity Zone ${zone}'] = humidityRecords;
-      dataSets['Temperature Zone ${zone}'] = temperatureRecords;
+        dataSets['${selectedField.displayName} Zone ${zone.key}'] = records;
+      }
     }
+    
     
     
     return dataSets;
