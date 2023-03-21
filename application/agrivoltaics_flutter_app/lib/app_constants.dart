@@ -51,3 +51,22 @@ extension TimeRangeExtension on TimeRange {
     }
   }
 }
+
+enum SensorType {
+  humidity,
+  temperature
+}
+
+extension SensorTypeExtension on SensorType {
+  // TODO: bad practice of String? when we just have to force the result! for use in flutter Text widgets anyways
+  String? get displayName {
+    switch (this) {
+      case SensorType.humidity:
+        return 'Humidity';
+      case SensorType.temperature:
+        return 'Temperature';
+      default:
+        return null;
+    }
+  }
+}

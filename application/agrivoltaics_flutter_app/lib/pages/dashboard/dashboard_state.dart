@@ -24,7 +24,11 @@ class DashboardState extends ChangeNotifier {
   late PickerDateRange dateRangeSelection;
   TimeRange timeInterval = TimeRange.hour;
   int timeIntervalValue = 1;
-  List<int> selectedZones = [1, 2, 3];
+  Map<int, bool> zoneSelection = {
+    1: true,
+    2: true,
+    3: true
+  };
 
   void finalizeState() {
     notifyListeners();
@@ -52,10 +56,12 @@ class DashboardState extends ChangeNotifier {
 
     var dataSets = new Map<String, List<FluxRecord>>();
 
-    for (int zone in selectedZones) {
+    
+    var selectedZones = Map.from(zoneSelection)..removeWhere((key, value) => !value);
+    for (var zone in selectedZones.entries) {
       // TODO: Create constants for query fields like humidity and temperature
-      var humidityQuery = _generateQuery(zone, timeRange, 'Humidity');
-      var temperatureQuery = _generateQuery(zone, timeRange, 'Temperature');
+      var humidityQuery = _generateQuery(zone.key, timeRange, 'Humidity');
+      var temperatureQuery = _generateQuery(zone.key, timeRange, 'Temperature');
 
       Stream<FluxRecord> humidityRecordStream = await queryService.query(humidityQuery);
       Stream<FluxRecord> temperatureRecordStream = await queryService.query(temperatureQuery);
