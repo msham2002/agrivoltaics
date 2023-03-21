@@ -49,28 +49,26 @@ class _ZoneModalState extends State<ZoneModal> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Expanded(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Wrap(
-            children: [
-              for (int i = 0; i < 20; i++)...[
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Container(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Zone ${i+1}'),
-                        Checkbox(value: false, onChanged: (null))
-                      ],
-                    )
-                  ),
-                )
-              ]
-            ],
-          ),
-        )
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Wrap(
+          children: [
+            for (int i = 0; i < 20; i++)...[
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Container(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Zone ${i+1}'),
+                      Checkbox(value: false, onChanged: (null))
+                    ],
+                  )
+                ),
+              )
+            ]
+          ],
+        ),
       )
     );
   }
