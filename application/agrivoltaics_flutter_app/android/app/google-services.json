@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "593883469296",
+    "project_id": "agrivoltaics-flutter-firebase",
+    "storage_bucket": "agrivoltaics-flutter-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593883469296:android:97e68bf71f2bce0c74b935",
+        "android_client_info": {
+          "package_name": "com.example.agrivoltaics_flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593883469296-dbirukk1aa4etg6errlotgb4f9js0ruq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgKu71k_qgSI9uswbkC2MjE1aiZHojqm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "593883469296-dbirukk1aa4etg6errlotgb4f9js0ruq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "593883469296-2ehkjtj2bgj1asn4e8kqj05mphq85398.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.agrivoltaicsFlutterApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
