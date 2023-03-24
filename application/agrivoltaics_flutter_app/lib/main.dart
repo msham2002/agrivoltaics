@@ -1,11 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:influxdb_client/api.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'app_constants.dart';
 import 'pages/login.dart';
 
 void main() async {
-  // Register singletons
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
+
+  // Register getIt
   final getIt = GetIt.instance;
   getIt.registerSingleton<InfluxDBClient>(InfluxDBClient(
     url: AppConstants.influxdbUrl,
@@ -14,6 +24,13 @@ void main() async {
     bucket: AppConstants.influxdbBucket,
     debug: AppConstants.influxdbDebug // TODO: disable on release
   ));
+
+  // Register Google Firebase Auth Provider
+  GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
+  googleAuthProvider.setCustomParameters({
+    'prompt': 'select_account'
+  });
+  getIt.registerSingleton<GoogleAuthProvider>(googleAuthProvider);
 
   // Launch application
   runApp(const App());
@@ -27,7 +44,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // TODO: Choose app name
-      title: 'App Name',
+      title: 'Vinovoltaics',
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey)

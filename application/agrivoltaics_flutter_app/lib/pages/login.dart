@@ -1,5 +1,9 @@
+import 'package:agrivoltaics_flutter_app/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,21 +22,37 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               const Spacer(flex: 2),
               const Text(
-                'App Name',
+                'Vinovoltaics',
                 style: TextStyle(
                   fontSize: 50
                 ),
               ),
               const Spacer(),
-              ElevatedButton(
-                child: const Text('Login'),
-                onPressed: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage()
-                    )
-                  )
+              SignInButton(
+                Buttons.Google,
+                // child: const Text('Login'),
+                onPressed: () {
+                  if (kIsWeb) {
+                    Future<UserCredential> userPromise = signInWithGoogleWeb();
+                    userPromise.then((userCredential) => {
+                      if (authorizeUser(userCredential)) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage()
+                          )
+                        )
+                      }
+                    });
+                  } else {
+                    // Future<UserCredential> userPromise = signInWithGoogleMobile();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage()
+                      )
+                    );
+                  }
                 },
               ),
               const Spacer(flex: 2),

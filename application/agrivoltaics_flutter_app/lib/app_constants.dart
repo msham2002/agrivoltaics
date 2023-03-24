@@ -23,6 +23,17 @@ abstract class AppConstants {
     'INFLUXDB_DEBUG',
     defaultValue: false
   );
+
+  // TODO: remove
+  static const String adminEmail = String.fromEnvironment(
+    'ADMIN_EMAIL',
+    defaultValue: ''
+  );
+
+  static const String ownerEmail = String.fromEnvironment(
+    'OWNER_EMAIL',
+    defaultValue: ''
+  );
 }
 
 enum TimeRange {
