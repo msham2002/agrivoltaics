@@ -9,6 +9,7 @@ import 'dashboard_appbar.dart';
 /*
 
 Dashboard Page
+- Page containing Dashboard related widgets
 
 */
 class DashboardPage extends StatelessWidget {
@@ -32,6 +33,7 @@ class DashboardPage extends StatelessWidget {
 /*
 
 Dashboard
+- Main Dashboard widget which displays relevant information in graph form
 
 */
 class Dashboard extends StatelessWidget {
@@ -117,22 +119,22 @@ class InfluxData {
   late List<InfluxDatapoint> data;
 }
 
-class BarIndicator extends StatelessWidget {
-  const BarIndicator({
-    Key? key,
-  }) : super(key: key);
+// class BarIndicator extends StatelessWidget {
+//   const BarIndicator({
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Container(
-        width: 40, height: 3,
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.all(20),
+//       child: Container(
+//         width: 40, height: 3,
+//         decoration: const BoxDecoration(
+//           color: Colors.black,
+//           borderRadius: BorderRadius.all(Radius.circular(10)),
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -7,6 +7,7 @@ import 'dashboard_state.dart';
 /*
 
 Dashboard Drawer
+- Drawer on Dashboard page that extends from right side
 
 */
 class DashboardDrawer extends StatelessWidget {
@@ -54,6 +55,7 @@ class DashboardDrawer extends StatelessWidget {
 /*
 
 Date Range Picker
+- Allows user to select date range
 
 */
 class DateRangePicker extends StatelessWidget {
@@ -89,6 +91,7 @@ class DateRangePicker extends StatelessWidget {
 /*
 
 Time Range Picker
+- Allows user to select time interval (every 1 minute, 2 hours, 3 days, etc.)
 
 */
 class TimeRangePicker extends StatefulWidget {

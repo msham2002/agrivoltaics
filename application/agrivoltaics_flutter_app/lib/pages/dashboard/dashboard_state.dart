@@ -11,6 +11,7 @@ var influxDBClient = getIt.get<InfluxDBClient>();
 /*
 
 Dashboard State
+- Contains any data persisted while Dashboard is open
 
 */
 class DashboardState extends ChangeNotifier {
