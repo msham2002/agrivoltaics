@@ -28,7 +28,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: /application/agrivoltaics_flutter_app
+          context: ${{ GITHUB_WORKSPACE }}/application/agrivoltaics_flutter_app
           push: true
           tags: vinovoltaics-webapp
           # labels: ${{ steps.meta.outputs.labels }}
