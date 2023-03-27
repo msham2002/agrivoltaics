@@ -11,17 +11,17 @@ Future<UserCredential> signInWithGoogleWeb() async {
   return await FirebaseAuth.instance.signInWithPopup(googleAuthProvider);
 }
 
-Future<UserCredential> signInWithGoogleMobile() async {
-  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-  final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+// Future<UserCredential> signInWithGoogleMobile() async {
+//   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+//   final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth?.accessToken,
-    idToken: googleAuth?.idToken
-  );
+//   final credential = GoogleAuthProvider.credential(
+//     accessToken: googleAuth?.accessToken,
+//     idToken: googleAuth?.idToken
+//   );
 
-  return await FirebaseAuth.instance.signInWithCredential(credential);
-}
+//   return await FirebaseAuth.instance.signInWithCredential(credential);
+// }
 
 bool authorizeUser(UserCredential userCredential) {
   var userEmail = userCredential.user?.email;
