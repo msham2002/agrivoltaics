@@ -33,10 +33,10 @@ class HomePage extends StatelessWidget {
             //   child: const Text('Manage Sensors'),
             //   onPressed: () => {print('hello')},
             // ),
-            // ElevatedButton(
-            //   child: const Text('Settings'),
-            //   onPressed: () => {debugPrint('Settings selected')},
-            // )
+            ElevatedButton(
+              child: const Text('Settings'),
+              onPressed: () => {debugPrint('Settings selected')},
+            )
           ],
         ),
       ),
