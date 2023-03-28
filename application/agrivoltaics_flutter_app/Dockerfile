@@ -24,7 +24,13 @@ RUN flutter config --enable-web
 RUN mkdir /app/
 COPY . /app/
 WORKDIR /app/
-RUN flutter build web
+RUN flutter build web --dart-define=INFLUXDB_URL=${INFLUXDB_URL} \
+--dart-define=INFLUXDB_TOKEN=${INFLUXDB_TOKEN} \
+--dart-define=INFLUXDB_ORG=${INFLUXDB_ORG} \
+--dart-define=INFLUXDB_BUCKET=${INFLUXDB_BUCKET} \
+--dart-define=INFLUXDB_DEBUG=${INFLUXDB_DEBUG} \
+--dart-define=ADMIN_EMAIL=${ADMIN_EMAIL} \
+--dart-define=OWNER_EMAIL=${OWNER_EMAIL}
 
 # Record the exposed port
 EXPOSE 5000
