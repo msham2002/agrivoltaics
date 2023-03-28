@@ -41,13 +41,13 @@ jobs:
           dockerfile: ./application/agrivoltaics_flutter_app/Dockerfile
           context: ./application/agrivoltaics_flutter_app
           build_args: |
-            "INFLUXDB_URL=${{ vars.INFLUXDB_URL }}"
-            "INFLUXDB_TOKEN=${{ secrets.INFLUXDB_TOKEN }}"
-            "INFLUXDB_ORG=${{ vars.INFLUXDB_ORG }}"
-            "INFLUXDB_BUCKET=${{ vars.INFLUXDB_BUCKET }}"
-            "INFLUXDB_DEBUG=${{ vars.INFLUXDB_DEBUG }}"
-            "ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }}"
-            "OWNER_EMAIL=${{ vars.OWNER_EMAIL }}"
+            INFLUXDB_URL=${{ vars.INFLUXDB_URL }}
+            INFLUXDB_TOKEN=${{ secrets.INFLUXDB_TOKEN }}
+            INFLUXDB_ORG=${{ vars.INFLUXDB_ORG }}
+            INFLUXDB_BUCKET=${{ vars.INFLUXDB_BUCKET }}
+            INFLUXDB_DEBUG=${{ vars.INFLUXDB_DEBUG }}
+            ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }}
+            OWNER_EMAIL=${{ vars.OWNER_EMAIL }}
 
   deploy-gcp-cloud-run:
     needs: build-and-push-to-gcr
