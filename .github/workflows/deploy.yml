@@ -30,7 +30,7 @@ jobs:
           image_name: vinovoltaics-webapp-image
           image_tag: latest
           dockerfile: ./application/agrivoltaics_flutter_app/Dockerfile
-          context: .
+          context: ./application/agrivoltaics_flutter_app
 
 #   deploy-gcp-cloud-run:
 #     runs-on: ubuntu-latest
