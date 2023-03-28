@@ -20,9 +20,8 @@ RUN flutter channel master
 RUN flutter upgrade
 RUN flutter config --enable-web
 
-# Define build arguments to be populated by build command (--build-arg BUILD_ARG=value)
+# Define build arguments to be populated by build command (docker build --build-arg BUILD_ARG=value)
 ARG INFLUXDB_URL
-RUN echo $INFLUXDB_URL
 ARG INFLUXDB_TOKEN
 ARG INFLUXDB_ORG
 ARG INFLUXDB_BUCKET
