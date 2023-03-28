@@ -48,8 +48,6 @@ jobs:
             "INFLUXDB_DEBUG=${{ vars.INFLUXDB_DEBUG }}"
             "ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }}"
             "OWNER_EMAIL=${{ vars.OWNER_EMAIL }}"
-          secrets: |
-            "influxdb_token=${{ secrets.INFLUXDB_TOKEN }}"
 
   deploy-gcp-cloud-run:
     needs: build-and-push-to-gcr

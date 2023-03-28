@@ -34,7 +34,7 @@ RUN mkdir /app/
 COPY . /app/
 WORKDIR /app/
 RUN flutter build web --dart-define=INFLUXDB_URL=${INFLUXDB_URL} \
---dart-define=INFLUXDB_TOKEN=secret,id=influxdb_token \
+--dart-define=INFLUXDB_TOKEN=${INFLUXDB_TOKEN} \
 --dart-define=INFLUXDB_ORG=${INFLUXDB_ORG} \
 --dart-define=INFLUXDB_BUCKET=${INFLUXDB_BUCKET} \
 --dart-define=INFLUXDB_DEBUG=${INFLUXDB_DEBUG} \
