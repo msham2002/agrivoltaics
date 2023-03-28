@@ -24,14 +24,6 @@ jobs:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
           service_account: service-324259319471@gcp-sa-cloudbuild.iam.gserviceaccount.com
       - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
-        # env:
-        #   INFLUXDB_URL: ${{ vars.INFLUXDB_URL }}
-        #   INFLUXDB_TOKEN: ${{ secrets.INFLUXDB_TOKEN }}
-        #   INFLUXDB_ORG: ${{ vars.INFLUXDB_ORG }}
-        #   INFLUXDB_BUCKET: ${{ vars.INFLUXDB_BUCKET }}
-        #   INFLUXDB_DEBUG: ${{ vars.INFLUXDB_DEBUG }}
-        #   ADMIN_EMAIL: ${{ vars.ADMIN_EMAIL }}
-        #   OWNER_EMAIL: ${{ vars.OWNER_EMAIL }}
         with:
           # gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
           registry: gcr.io
