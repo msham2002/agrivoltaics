@@ -21,13 +21,13 @@ RUN flutter upgrade
 RUN flutter config --enable-web
 
 # Define build arguments to be populated by build command (--build-arg BUILD_ARG=value)
-ARG INFLUXDB_URL
-ARG INFLUXDB_TOKEN
-ARG INFLUXDB_ORG
-ARG INFLUXDB_BUCKET
-ARG INFLUXDB_DEBUG
-ARG ADMIN_EMAIL
-ARG OWNER_EMAIL
+ARG INFLUXDB_URL=""
+ARG INFLUXDB_TOKEN=""
+ARG INFLUXDB_ORG=""
+ARG INFLUXDB_BUCKET=""
+ARG INFLUXDB_DEBUG=""
+ARG ADMIN_EMAIL=""
+ARG OWNER_EMAIL=""
 
 # Copy files to container and build
 RUN mkdir /app/
