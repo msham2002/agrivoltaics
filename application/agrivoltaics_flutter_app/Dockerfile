@@ -22,6 +22,7 @@ RUN flutter config --enable-web
 
 # Define build arguments to be populated by build command (--build-arg BUILD_ARG=value)
 ARG INFLUXDB_URL
+RUN echo $INFLUXDB_URL
 ENV INFLUXDB_URL = ${INFLUXDB_URL}
 ARG INFLUXDB_TOKEN
 ENV INFLUXDB_TOKEN = ${INFLUXDB_TOKEN}
