@@ -1,4 +1,3 @@
-import 'package:agrivoltaics_flutter_app/app_constants.dart';
 import 'package:agrivoltaics_flutter_app/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +22,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               const Spacer(flex: 2),
               const Text(
-                // 'Vinovoltaics',
-                '${AppConstants.ownerEmail}',
+                'Vinovoltaics',
                 style: TextStyle(
                   fontSize: 50
                 ),
