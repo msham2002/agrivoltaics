@@ -40,7 +40,7 @@ jobs:
           image_tag: latest
           dockerfile: ./application/agrivoltaics_flutter_app/Dockerfile
           context: ./application/agrivoltaics_flutter_app
-          build-args: |
+          build_args: |
             "INFLUXDB_URL=${{ vars.INFLUXDB_URL }}"
             "INFLUXDB_TOKEN=${{ secrets.INFLUXDB_TOKEN }}"
             "INFLUXDB_ORG=${{ vars.INFLUXDB_ORG }}"
