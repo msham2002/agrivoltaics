@@ -33,30 +33,30 @@ jobs:
           dockerfile: ./application/agrivoltaics_flutter_app/Dockerfile
           context: ./application/agrivoltaics_flutter_app
 
-#   deploy-gcp-cloud-run:
-#     runs-on: ubuntu-latest
+  deploy-gcp-cloud-run:
+    runs-on: ubuntu-latest
 
-#     permissions:
-#       contents: 'read'
-#       id-token: 'write'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
-#     steps:
-#     - uses: 'actions/checkout@v3'
-
-# #     - uses: 'google-github-actions/auth@v1'
-# #       with:
-# #         workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-# #         service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
+    steps:
+    - uses: 'actions/checkout@v3'
 
 #     - uses: 'google-github-actions/auth@v1'
 #       with:
-#         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+#         workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+#         service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
 
-#     - id: 'deploy'
-#       uses: 'google-github-actions/deploy-cloudrun@v1'
-#       with:
-#         service: 'vinovoltaics-webapp'
-#         image: 'gcr.io/cloudrun/hello'
+    - uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
-#     - name: 'Use output'
-#       run: 'curl "${{ steps.deploy.outputs.url }}"'
+    - id: 'deploy'
+      uses: 'google-github-actions/deploy-cloudrun@v1'
+      with:
+        service: 'vinovoltaics-webapp'
+        image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-webapp-image'
+
+    - name: 'Use output'
+      run: 'curl "${{ steps.deploy.outputs.url }}"'
