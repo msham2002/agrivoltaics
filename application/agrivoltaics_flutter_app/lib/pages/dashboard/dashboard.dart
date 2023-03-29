@@ -1,3 +1,4 @@
+import 'package:agrivoltaics_flutter_app/influx.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:influxdb_client/api.dart';
@@ -52,7 +53,14 @@ class Dashboard extends StatelessWidget {
               builder: (context, dashboardState, child) {
                 return FutureBuilder<Map<String, List<FluxRecord>>>(
                   // Async method called by FutureBuilder widget, whose results will eventually populate widget
-                  future: dashboardState.getData(dashboardState.dateRangeSelection),
+                  future: getInfluxData
+                  (
+                    dashboardState.dateRangeSelection,
+                    dashboardState.zoneSelection,
+                    dashboardState.fieldSelection,
+                    dashboardState.timeIntervalUnit,
+                    dashboardState.timeIntervalValue
+                  ),
 
                   builder: (BuildContext context, AsyncSnapshot<Map<String, List<FluxRecord>>> snapshot) {
                     // Once the data snapshot is populated with above method results, render chart
@@ -86,9 +94,8 @@ class Dashboard extends StatelessWidget {
                           enablePinching: true
                         ),
                       );
-
-                    // The results have not yet been returned. Indicate loading
                     } else {
+                      // The results have not yet been returned. Indicate loading
                       return const CircularProgressIndicator();
                     }
                   },
@@ -100,23 +107,6 @@ class Dashboard extends StatelessWidget {
       ],
     );
   }
-}
-
-class InfluxDatapoint {
-  InfluxDatapoint(this.timeStamp, this.value);
-  final DateTime timeStamp;
-  final double value;
-}
-
-class InfluxData {
-  InfluxData(this.records) {
-    this.data = <InfluxDatapoint>[];
-    for (var record in this.records) {
-      this.data.add(InfluxDatapoint(DateTime.parse(record['_time']), record['_value']));
-    }
-  }
-  final List<FluxRecord> records;
-  late List<InfluxDatapoint> data;
 }
 
 // class BarIndicator extends StatelessWidget {

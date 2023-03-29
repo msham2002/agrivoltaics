@@ -65,7 +65,8 @@ extension TimeRangeExtension on TimeRange {
 
 enum SensorType {
   humidity,
-  temperature
+  temperature,
+  light
 }
 
 extension SensorTypeExtension on SensorType {
@@ -76,6 +77,21 @@ extension SensorTypeExtension on SensorType {
         return 'Humidity';
       case SensorType.temperature:
         return 'Temperature';
+      case SensorType.light:
+        return 'Light';
+      default:
+        return null;
+    }
+  }
+
+  String? get unit {
+    switch (this) {
+      case SensorType.humidity:
+        return '';
+      case SensorType.temperature:
+        return 'Celsius';
+      case SensorType.light:
+        return 'Lux';
       default:
         return null;
     }
