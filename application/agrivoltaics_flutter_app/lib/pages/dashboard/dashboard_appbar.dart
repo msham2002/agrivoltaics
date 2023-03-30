@@ -135,7 +135,7 @@ class _FilterModalState extends State<FilterModal> {
                                       });
                                     }
                                   ),
-                                  Text(SensorMeasurement.humidity.displayName!),
+                                  Text(SensorMeasurement.humidity.displayName),
                                 ],
                               )
                             ),
@@ -154,7 +154,7 @@ class _FilterModalState extends State<FilterModal> {
                                       });
                                     }
                                   ),
-                                  Text(SensorMeasurement.temperature.displayName!)
+                                  Text(SensorMeasurement.temperature.displayName)
                                 ],
                               )
                             ),

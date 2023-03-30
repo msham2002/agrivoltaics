@@ -24,7 +24,6 @@ abstract class AppConstants {
     defaultValue: false
   );
 
-  // TODO: remove
   static const String adminEmail = String.fromEnvironment(
     'ADMIN_EMAIL',
     defaultValue: ''
@@ -34,6 +33,9 @@ abstract class AppConstants {
     'OWNER_EMAIL',
     defaultValue: ''
   );
+  
+  static const int numSites = 1;
+  static const int numZones = 3;
 }
 
 enum TimeUnit {
@@ -92,7 +94,7 @@ extension TimeUnitExtension on TimeUnit {
       case TimeUnit.month:
         return 'mo';
       default:
-        return null;
+        return '';
     }
   }
 }
@@ -104,8 +106,7 @@ enum SensorMeasurement {
 }
 
 extension SensorMeasurementExtension on SensorMeasurement {
-  // TODO: bad practice of String? when we just have to force the result! for use in flutter Text widgets anyways
-  String? get displayName {
+  String get displayName {
     switch (this) {
       case SensorMeasurement.humidity:
         return 'Humidity';
@@ -114,7 +115,7 @@ extension SensorMeasurementExtension on SensorMeasurement {
       case SensorMeasurement.light:
         return 'Light';
       default:
-        return null;
+        return '';
     }
   }
 
@@ -127,7 +128,7 @@ extension SensorMeasurementExtension on SensorMeasurement {
       case SensorMeasurement.light:
         return 'Lux';
       default:
-        return null;
+        return '';
     }
   }
 }
