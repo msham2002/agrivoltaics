@@ -1,3 +1,4 @@
+import 'package:agrivoltaics_flutter_app/pages/sites.dart';
 import 'package:flutter/material.dart';
 import 'dashboard/dashboard.dart';
 
@@ -23,7 +24,7 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DashboardPage()
+                      builder: (context) => const SitesPage()
                     )
                   )
               },
