@@ -24,7 +24,6 @@ abstract class AppConstants {
     defaultValue: false
   );
 
-  // TODO: remove
   static const String adminEmail = String.fromEnvironment(
     'ADMIN_EMAIL',
     defaultValue: ''
@@ -34,9 +33,13 @@ abstract class AppConstants {
     'OWNER_EMAIL',
     defaultValue: ''
   );
+  
+  static const int numSites = 1;
+  static const int numZones = 3;
 }
 
-enum TimeRange {
+enum TimeUnit {
+  second, // TODO: remove this, debugging purposes only
   minute,
   hour,
   day,
@@ -44,40 +47,88 @@ enum TimeRange {
   month
 }
 
-extension TimeRangeExtension on TimeRange {
-  String? get fluxQuery {
-    switch (this) {
-      case TimeRange.minute:
-        return 'm';
-      case TimeRange.hour:
-        return 'h';
-      case TimeRange.day:
-        return 'd';
-      case TimeRange.week:
-        return 'w';
-      case TimeRange.month:
-        return 'mo';
+class TimeInterval {
+  TimeInterval(TimeUnit unit, int value) {
+    this.unit = unit;
+    this.value = value;
+  }
+
+  TimeUnit unit = TimeUnit.hour;
+  int value = 1;
+}
+
+extension TimeIntervalExtension on TimeInterval {
+  Duration? get duration {
+    switch (this.unit) {
+      case TimeUnit.second:
+        return Duration(seconds: this.value);
+      case TimeUnit.minute:
+        return Duration(minutes: this.value);
+      case TimeUnit.hour:
+        return Duration(hours: this.value);
+      case TimeUnit.day:
+        return Duration(days: this.value);
+      case TimeUnit.week:
+        return Duration(days: this.value * 7);
+      case TimeUnit.month:
+        return Duration(days: this.value * 30);
       default:
         return null;
     }
   }
 }
 
-enum SensorType {
-  humidity,
-  temperature
+extension TimeUnitExtension on TimeUnit {
+  String? get fluxQuery {
+    switch (this) {
+      case TimeUnit.second:
+        return 's';
+      case TimeUnit.minute:
+        return 'm';
+      case TimeUnit.hour:
+        return 'h';
+      case TimeUnit.day:
+        return 'd';
+      case TimeUnit.week:
+        return 'w';
+      case TimeUnit.month:
+        return 'mo';
+      default:
+        return '';
+    }
+  }
 }
 
-extension SensorTypeExtension on SensorType {
-  // TODO: bad practice of String? when we just have to force the result! for use in flutter Text widgets anyways
-  String? get displayName {
+enum SensorMeasurement {
+  humidity,
+  temperature,
+  light
+}
+
+extension SensorMeasurementExtension on SensorMeasurement {
+  String get displayName {
     switch (this) {
-      case SensorType.humidity:
+      case SensorMeasurement.humidity:
         return 'Humidity';
-      case SensorType.temperature:
+      case SensorMeasurement.temperature:
         return 'Temperature';
+      case SensorMeasurement.light:
+        return 'Light';
       default:
-        return null;
+        return '';
+    }
+  }
+
+  String? get unit {
+    switch (this) {
+      case SensorMeasurement.humidity:
+        return '';
+      case SensorMeasurement.temperature:
+        return 'Celsius';
+      case SensorMeasurement.light:
+        return 'Lux';
+      default:
+        return '';
     }
   }
 }

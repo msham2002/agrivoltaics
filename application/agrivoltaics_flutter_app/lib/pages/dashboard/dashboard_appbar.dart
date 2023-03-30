@@ -3,6 +3,13 @@ import 'package:provider/provider.dart';
 import '../../app_constants.dart';
 import 'dashboard_state.dart';
 
+/*
+
+Dashboard App Bar
+- App Bar on Dashboard page which extends over the top of the screen.
+Controls navigation. Contains buttons ("actions")
+
+*/
 class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   const DashboardAppBar({
     super.key,
@@ -41,6 +48,12 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
+/*
+
+Filter Modal
+- Modal which displays various filters for data
+
+*/
 class FilterModal extends StatefulWidget {
   const FilterModal({
     super.key,
@@ -115,14 +128,14 @@ class _FilterModalState extends State<FilterModal> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Checkbox(
-                                    value: dashboardState.fieldSelection[SensorType.humidity],
+                                    value: dashboardState.fieldSelection[SensorMeasurement.humidity],
                                     onChanged: (value) {
                                       setState(() {
-                                        dashboardState.fieldSelection[SensorType.humidity] = value!;
+                                        dashboardState.fieldSelection[SensorMeasurement.humidity] = value!;
                                       });
                                     }
                                   ),
-                                  Text(SensorType.humidity.displayName!),
+                                  Text(SensorMeasurement.humidity.displayName),
                                 ],
                               )
                             ),
@@ -134,14 +147,14 @@ class _FilterModalState extends State<FilterModal> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Checkbox(
-                                    value: dashboardState.fieldSelection[SensorType.temperature],
+                                    value: dashboardState.fieldSelection[SensorMeasurement.temperature],
                                     onChanged: (value) {
                                       setState(() {
-                                        dashboardState.fieldSelection[SensorType.temperature] = value!;
+                                        dashboardState.fieldSelection[SensorMeasurement.temperature] = value!;
                                       });
                                     }
                                   ),
-                                  Text(SensorType.temperature.displayName!)
+                                  Text(SensorMeasurement.temperature.displayName)
                                 ],
                               )
                             ),
