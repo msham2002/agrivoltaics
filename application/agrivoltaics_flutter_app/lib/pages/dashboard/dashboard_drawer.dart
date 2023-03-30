@@ -112,7 +112,7 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
   @override
   Widget build(BuildContext context) {
     var dashboardState = context.watch<DashboardState>();
-    TimeRange dropdownValue = dashboardState.timeInterval;
+    TimeUnit dropdownValue = dashboardState.timeInterval.unit;
 
     return SizedBox(
       height: widget.height,
@@ -127,7 +127,7 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
                   keyboardType: TextInputType.number,
                   maxLength: 2,
                   onChanged: (value) {
-                    dashboardState.timeIntervalValue = int.parse(value);
+                    dashboardState.timeInterval.value = int.parse(value);
                   },
                   decoration: const InputDecoration(
                     hintText: 'Interval'
@@ -139,29 +139,33 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
               padding: const EdgeInsets.all(8.0),
               child: DropdownButton(
                 items: const [
+                  DropdownMenuItem( // TODO: remove this, debugging purposes only
+                    value: TimeUnit.second,
+                    child: Text('seconds')
+                  ),
                   DropdownMenuItem(
-                    value: TimeRange.minute,
+                    value: TimeUnit.minute,
                     child: Text('minutes')
                   ),
                   DropdownMenuItem(
-                    value: TimeRange.hour,
+                    value: TimeUnit.hour,
                     child: Text('hours')
                   ),
                   DropdownMenuItem(
-                    value: TimeRange.day,
+                    value: TimeUnit.day,
                     child: Text('days')
                   ),
                   DropdownMenuItem(
-                    value: TimeRange.week,
+                    value: TimeUnit.week,
                     child: Text('weeks')
                   ),
                   DropdownMenuItem(
-                    value: TimeRange.month,
+                    value: TimeUnit.month,
                     child: Text('months')
                   )
                 ],
                 onChanged: (value) {
-                  dashboardState.timeInterval = value!;
+                  dashboardState.timeInterval.unit = value!;
                   setState(() {
                     dropdownValue = value;
                   });

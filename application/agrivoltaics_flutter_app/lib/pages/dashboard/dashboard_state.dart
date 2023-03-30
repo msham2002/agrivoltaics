@@ -17,8 +17,7 @@ class DashboardState extends ChangeNotifier {
   }
   
   late PickerDateRange dateRangeSelection;
-  TimeRange timeIntervalUnit = TimeRange.hour;
-  int timeIntervalValue = 1;
+  TimeInterval timeInterval = TimeInterval(TimeUnit.hour, 1);
 
   Map<int, bool> zoneSelection = {
     1: true,

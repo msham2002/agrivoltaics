@@ -36,7 +36,8 @@ abstract class AppConstants {
   );
 }
 
-enum TimeRange {
+enum TimeUnit {
+  second, // TODO: remove this, debugging purposes only
   minute,
   hour,
   day,
@@ -44,18 +45,51 @@ enum TimeRange {
   month
 }
 
-extension TimeRangeExtension on TimeRange {
+class TimeInterval {
+  TimeInterval(TimeUnit unit, int value) {
+    this.unit = unit;
+    this.value = value;
+  }
+
+  TimeUnit unit = TimeUnit.hour;
+  int value = 1;
+}
+
+extension TimeIntervalExtension on TimeInterval {
+  Duration? get duration {
+    switch (this.unit) {
+      case TimeUnit.second:
+        return Duration(seconds: this.value);
+      case TimeUnit.minute:
+        return Duration(minutes: this.value);
+      case TimeUnit.hour:
+        return Duration(hours: this.value);
+      case TimeUnit.day:
+        return Duration(days: this.value);
+      case TimeUnit.week:
+        return Duration(days: this.value * 7);
+      case TimeUnit.month:
+        return Duration(days: this.value * 30);
+      default:
+        return null;
+    }
+  }
+}
+
+extension TimeUnitExtension on TimeUnit {
   String? get fluxQuery {
     switch (this) {
-      case TimeRange.minute:
+      case TimeUnit.second:
+        return 's';
+      case TimeUnit.minute:
         return 'm';
-      case TimeRange.hour:
+      case TimeUnit.hour:
         return 'h';
-      case TimeRange.day:
+      case TimeUnit.day:
         return 'd';
-      case TimeRange.week:
+      case TimeUnit.week:
         return 'w';
-      case TimeRange.month:
+      case TimeUnit.month:
         return 'mo';
       default:
         return null;

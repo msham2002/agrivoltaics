@@ -11,37 +11,39 @@ var influxDBClient = getIt.get<InfluxDBClient>();
 String _generateQuery
 (
   int zone,
-  PickerDateRange timeRange,
+  PickerDateRange TimeUnit,
   String field,
-  TimeRange timeIntervalUnit,
-  int timeIntervalValue
+  TimeInterval timeInterval
 ) {
-  var startDate = DateFormat('yyyy-MM-dd').format(timeRange.startDate!);
-  var endDate = DateFormat('yyyy-MM-dd').format(timeRange.endDate!);
+  var startDate = DateFormat('yyyy-MM-dd').format(TimeUnit.startDate!);
+  var endDate = DateFormat('yyyy-MM-dd').format(TimeUnit.endDate!);
 
   return '''
   from(bucket: "keithsprings51's Bucket")
   |> range(start: ${startDate}T00:00:00Z, stop: ${endDate}T23:59:00Z)
   |> filter(fn: (r) => r["SSID"] == "TeneComp")
   |> filter(fn: (r) => r["_field"] == "${field} Site ${zone}")
-  |> aggregateWindow(every: ${timeIntervalValue}${timeIntervalUnit.fluxQuery}, fn: mean, createEmpty: false)
+  |> aggregateWindow(every: ${timeInterval.value}${timeInterval.unit.fluxQuery}, fn: mean, createEmpty: false)
   |> yield(name: "mean")
   ''';
 }
 
 // Get data from InfluxDB according to specified parameters
+// holy shit optimize this
+// currently making one query for each zone/field combo
+// combine into one large query containing all desired zones and fields
+// (wait for site and zone tags from Keith)
 Future<Map<String, List<FluxRecord>>> getInfluxData
 (
-  PickerDateRange timeRange,
+  PickerDateRange TimeUnit,
   Map<int, bool> zoneSelection,
   Map<SensorType, bool> fieldSelection,
-  TimeRange timeIntervalUnit,
-  int timeIntervalValue
+  TimeInterval timeInterval
 ) async {
   var queryService = influxDBClient.getQueryService();
 
-  var startDate = DateFormat('yyyy-MM-dd').format(timeRange.startDate!);
-  var endDate = DateFormat('yyyy-MM-dd').format(timeRange.endDate!);
+  var startDate = DateFormat('yyyy-MM-dd').format(TimeUnit.startDate!);
+  var endDate = DateFormat('yyyy-MM-dd').format(TimeUnit.endDate!);
 
   var dataSets = <String, List<FluxRecord>>{};    
   var selectedZones = Map.from(zoneSelection)..removeWhere((_, value) => !value);
@@ -49,7 +51,7 @@ Future<Map<String, List<FluxRecord>>> getInfluxData
   for (var field in selectedFields.entries) {
     for (var zone in selectedZones.entries) {
       SensorType selectedField = field.key;
-      var humidityQuery = _generateQuery(zone.key, timeRange, selectedField.displayName!, timeIntervalUnit, timeIntervalValue);
+      var humidityQuery = _generateQuery(zone.key, TimeUnit, selectedField.displayName!, timeInterval);
 
       Stream<FluxRecord> recordStream = await queryService.query(humidityQuery);
 
