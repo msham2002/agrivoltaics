@@ -11,12 +11,12 @@ var influxDBClient = getIt.get<InfluxDBClient>();
 String _generateQuery
 (
   int zone,
-  PickerDateRange TimeUnit,
+  PickerDateRange timeUnit,
   String field,
   TimeInterval timeInterval
 ) {
-  var startDate = DateFormat('yyyy-MM-dd').format(TimeUnit.startDate!);
-  var endDate = DateFormat('yyyy-MM-dd').format(TimeUnit.endDate!);
+  var startDate = DateFormat('yyyy-MM-dd').format(timeUnit.startDate!);
+  var endDate = DateFormat('yyyy-MM-dd').format(timeUnit.endDate!);
 
   return '''
   from(bucket: "keithsprings51's Bucket")
@@ -35,23 +35,23 @@ String _generateQuery
 // (wait for site and zone tags from Keith)
 Future<Map<String, List<FluxRecord>>> getInfluxData
 (
-  PickerDateRange TimeUnit,
+  PickerDateRange timeUnit,
   Map<int, bool> zoneSelection,
-  Map<SensorType, bool> fieldSelection,
+  Map<SensorMeasurement, bool> fieldSelection,
   TimeInterval timeInterval
 ) async {
   var queryService = influxDBClient.getQueryService();
 
-  var startDate = DateFormat('yyyy-MM-dd').format(TimeUnit.startDate!);
-  var endDate = DateFormat('yyyy-MM-dd').format(TimeUnit.endDate!);
+  var startDate = DateFormat('yyyy-MM-dd').format(timeUnit.startDate!);
+  var endDate = DateFormat('yyyy-MM-dd').format(timeUnit.endDate!);
 
   var dataSets = <String, List<FluxRecord>>{};    
   var selectedZones = Map.from(zoneSelection)..removeWhere((_, value) => !value);
   var selectedFields = Map.from(fieldSelection)..removeWhere((_, value) => !value);
   for (var field in selectedFields.entries) {
     for (var zone in selectedZones.entries) {
-      SensorType selectedField = field.key;
-      var humidityQuery = _generateQuery(zone.key, TimeUnit, selectedField.displayName!, timeInterval);
+      SensorMeasurement selectedField = field.key;
+      var humidityQuery = _generateQuery(zone.key, timeUnit, selectedField.displayName!, timeInterval);
 
       Stream<FluxRecord> recordStream = await queryService.query(humidityQuery);
 

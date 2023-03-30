@@ -24,9 +24,9 @@ class DashboardState extends ChangeNotifier {
     2: true,
     3: true
   };
-  Map<SensorType, bool> fieldSelection = {
-    SensorType.humidity: true,
-    SensorType.temperature: true
+  Map<SensorMeasurement, bool> fieldSelection = {
+    SensorMeasurement.humidity: true,
+    SensorMeasurement.temperature: true
   };
 
   void finalizeState() {

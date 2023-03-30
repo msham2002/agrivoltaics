@@ -97,21 +97,21 @@ extension TimeUnitExtension on TimeUnit {
   }
 }
 
-enum SensorType {
+enum SensorMeasurement {
   humidity,
   temperature,
   light
 }
 
-extension SensorTypeExtension on SensorType {
+extension SensorMeasurementExtension on SensorMeasurement {
   // TODO: bad practice of String? when we just have to force the result! for use in flutter Text widgets anyways
   String? get displayName {
     switch (this) {
-      case SensorType.humidity:
+      case SensorMeasurement.humidity:
         return 'Humidity';
-      case SensorType.temperature:
+      case SensorMeasurement.temperature:
         return 'Temperature';
-      case SensorType.light:
+      case SensorMeasurement.light:
         return 'Light';
       default:
         return null;
@@ -120,11 +120,11 @@ extension SensorTypeExtension on SensorType {
 
   String? get unit {
     switch (this) {
-      case SensorType.humidity:
+      case SensorMeasurement.humidity:
         return '';
-      case SensorType.temperature:
+      case SensorMeasurement.temperature:
         return 'Celsius';
-      case SensorType.light:
+      case SensorMeasurement.light:
         return 'Lux';
       default:
         return null;

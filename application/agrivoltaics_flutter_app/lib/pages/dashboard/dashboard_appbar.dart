@@ -128,14 +128,14 @@ class _FilterModalState extends State<FilterModal> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Checkbox(
-                                    value: dashboardState.fieldSelection[SensorType.humidity],
+                                    value: dashboardState.fieldSelection[SensorMeasurement.humidity],
                                     onChanged: (value) {
                                       setState(() {
-                                        dashboardState.fieldSelection[SensorType.humidity] = value!;
+                                        dashboardState.fieldSelection[SensorMeasurement.humidity] = value!;
                                       });
                                     }
                                   ),
-                                  Text(SensorType.humidity.displayName!),
+                                  Text(SensorMeasurement.humidity.displayName!),
                                 ],
                               )
                             ),
@@ -147,14 +147,14 @@ class _FilterModalState extends State<FilterModal> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Checkbox(
-                                    value: dashboardState.fieldSelection[SensorType.temperature],
+                                    value: dashboardState.fieldSelection[SensorMeasurement.temperature],
                                     onChanged: (value) {
                                       setState(() {
-                                        dashboardState.fieldSelection[SensorType.temperature] = value!;
+                                        dashboardState.fieldSelection[SensorMeasurement.temperature] = value!;
                                       });
                                     }
                                   ),
-                                  Text(SensorType.temperature.displayName!)
+                                  Text(SensorMeasurement.temperature.displayName!)
                                 ],
                               )
                             ),
