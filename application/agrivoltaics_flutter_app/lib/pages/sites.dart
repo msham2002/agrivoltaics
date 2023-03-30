@@ -9,25 +9,30 @@ class SitesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      endDrawer: const Drawer(),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            for (int site = 1; site <= AppConstants.numSites; site++)...[
-              ElevatedButton(
-                child: Text('Site ${site}'),
-                onPressed: () => {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DashboardPage(site: site)
-                      )
-                    )
-                },
-              )
-            ]
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (int site = 1; site <= AppConstants.numSites; site++)...[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    child: Text('Site ${site}'),
+                    onPressed: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DashboardPage(site: site)
+                          )
+                        )
+                    },
+                  ),
+                )
+              ]
+            ],
+          ),
         ),
       ),
     );
