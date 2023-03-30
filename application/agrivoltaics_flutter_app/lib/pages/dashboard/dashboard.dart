@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:agrivoltaics_flutter_app/app_constants.dart';
 import 'package:agrivoltaics_flutter_app/influx.dart';
+import 'package:agrivoltaics_flutter_app/pages/dashboard/dashboard_appbar.dart';
+import 'package:agrivoltaics_flutter_app/pages/dashboard/dashboard_drawer.dart';
+import 'package:agrivoltaics_flutter_app/pages/dashboard/dashboard_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:influxdb_client/api.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'dashboard_drawer.dart';
-import 'dashboard_state.dart';
-import 'dashboard_appbar.dart';
 
 /*
 
