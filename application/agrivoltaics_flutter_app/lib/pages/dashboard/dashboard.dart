@@ -38,7 +38,8 @@ class DashboardPage extends StatelessWidget {
 /*
 
 Dashboard
-- Main Dashboard widget which displays relevant information in graph form
+- Skeleton for nested graph-related widgets
+- Extracted nested graph widget due to its size and complexity
 
 */
 class Dashboard extends StatefulWidget {
@@ -66,6 +67,12 @@ class _DashboardState extends State<Dashboard> {
   }
 }
 
+/*
+
+Dashboard Graph
+- Main Dashboard widget which displays relevant information in graph form
+
+*/
 class DashboardGraph extends StatefulWidget {
   const DashboardGraph({
     super.key,
