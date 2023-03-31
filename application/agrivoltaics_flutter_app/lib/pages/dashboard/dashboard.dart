@@ -23,8 +23,8 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => DashboardState(),
-      child: const SafeArea(
+      create: (context) => DashboardState(site),
+      child: SafeArea(
         child: Scaffold(
           endDrawer: DashboardDrawer(),
           appBar: DashboardAppBar(),
@@ -43,9 +43,7 @@ Dashboard
 
 */
 class Dashboard extends StatefulWidget {
-  const Dashboard({
-    super.key,
-  });
+  Dashboard({super.key});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -93,9 +91,10 @@ class _DashboardGraphState extends State<DashboardGraph> {
           // Async method called by FutureBuilder widget, whose results will eventually populate widget
           future: getInfluxData
           (
-            dashboardState.dateRangeSelection,
+            dashboardState.siteSelection,
             dashboardState.zoneSelection,
             dashboardState.fieldSelection,
+            dashboardState.dateRangeSelection,
             dashboardState.timeInterval
           ),
 

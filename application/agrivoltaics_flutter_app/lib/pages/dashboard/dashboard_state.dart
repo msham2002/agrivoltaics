@@ -9,7 +9,10 @@ Dashboard State
 
 */
 class DashboardState extends ChangeNotifier {
-  DashboardState() {
+  DashboardState(int site) {
+    // Initialize site selection
+    this.siteSelection = site;
+
     // Initialize date range selection as past week
     var today = DateTime.now();
     var initialDateRange = PickerDateRange(DateTime(today.year, today.month, today.day - 7, today.hour, today.minute), today);
@@ -28,6 +31,7 @@ class DashboardState extends ChangeNotifier {
   
   late PickerDateRange dateRangeSelection;
   TimeInterval timeInterval = TimeInterval(TimeUnit.hour, 1);
+  late int siteSelection;
   Map<int, bool> zoneSelection = <int, bool>{};
   Map<SensorMeasurement, bool> fieldSelection = <SensorMeasurement, bool>{};
 

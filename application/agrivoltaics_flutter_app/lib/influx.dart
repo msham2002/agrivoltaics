@@ -10,34 +10,43 @@ var influxDBClient = getIt.get<InfluxDBClient>();
 // Generate InfluxDB Flux query
 String _generateQuery
 (
-  int zone,
+  int site,
+  List<int> zones,
+  List<SensorMeasurement> fields,
   PickerDateRange timeUnit,
-  String field,
   TimeInterval timeInterval
 ) {
   var startDate = DateFormat('yyyy-MM-dd').format(timeUnit.startDate!);
   var endDate = DateFormat('yyyy-MM-dd').format(timeUnit.endDate!);
 
+  String zoneQuery = 'r["Zone"] == "${zones[0]}"';
+  for (int zone in zones.sublist(1, zones.length)) {
+    zoneQuery += ' or r["Zone"] == "${zone}"';
+  }
+
+  String fieldQuery = 'r["_field"] == "${fields[0].displayName}"';
+  for (SensorMeasurement field in fields.sublist(1, fields.length)) {
+    fieldQuery += ' or r["_field"] == "${field.displayName}"';
+  }
+
   return '''
-  from(bucket: "keithsprings51's Bucket")
+  from(bucket: "${AppConstants.influxdbBucket}")
   |> range(start: ${startDate}T00:00:00Z, stop: ${endDate}T23:59:00Z)
-  |> filter(fn: (r) => r["SSID"] == "TeneComp")
-  |> filter(fn: (r) => r["_field"] == "${field} Site ${zone}")
+  |> filter(fn: (r) => r["_measurement"] == "Site ${site}")
+  |> filter(fn: (r) => ${zoneQuery})
+  |> filter(fn: (r) => ${fieldQuery})
   |> aggregateWindow(every: ${timeInterval.value}${timeInterval.unit.fluxQuery}, fn: mean, createEmpty: false)
   |> yield(name: "mean")
   ''';
 }
 
 // Get data from InfluxDB according to specified parameters
-// holy shit optimize this
-// currently making one query for each zone/field combo
-// combine into one large query containing all desired zones and fields
-// (wait for site and zone tags from Keith)
 Future<Map<String, List<FluxRecord>>> getInfluxData
 (
-  PickerDateRange timeUnit,
+  int site,
   Map<int, bool> zoneSelection,
   Map<SensorMeasurement, bool> fieldSelection,
+  PickerDateRange timeUnit,
   TimeInterval timeInterval
 ) async {
   var queryService = influxDBClient.getQueryService();
@@ -46,21 +55,21 @@ Future<Map<String, List<FluxRecord>>> getInfluxData
   var endDate = DateFormat('yyyy-MM-dd').format(timeUnit.endDate!);
 
   var dataSets = <String, List<FluxRecord>>{};    
-  var selectedZones = Map.from(zoneSelection)..removeWhere((_, value) => !value);
-  var selectedFields = Map.from(fieldSelection)..removeWhere((_, value) => !value);
-  for (var field in selectedFields.entries) {
-    for (var zone in selectedZones.entries) {
-      SensorMeasurement selectedField = field.key;
-      var humidityQuery = _generateQuery(zone.key, timeUnit, selectedField.displayName!, timeInterval);
+  zoneSelection = Map.from(zoneSelection)..removeWhere((_, value) => !value);
+  fieldSelection = Map.from(fieldSelection)..removeWhere((_, value) => !value);
 
-      Stream<FluxRecord> recordStream = await queryService.query(humidityQuery);
+  List<int> selectedZones = List.from(zoneSelection.keys);
+  List<SensorMeasurement> selectedFields = List.from(fieldSelection.keys);
+  String query = _generateQuery(site, selectedZones, selectedFields, timeUnit, timeInterval);
+  Stream<FluxRecord> recordStream = await queryService.query(query);
 
-      var records = <FluxRecord>[];
-      await recordStream.forEach((record) {
-        records.add(record);
-      });
-
-      dataSets['${selectedField.displayName} Zone ${zone.key}'] = records;
+  List<FluxRecord> records = await recordStream.toList();
+  for (var record in records) {
+    String key = '${record["_field"]} Zone ${record["Zone"]}';
+    if (!dataSets.keys.contains(key)) {
+      dataSets[key] = [record];
+    } else {
+      dataSets[key]!.add(record);
     }
   }
   
