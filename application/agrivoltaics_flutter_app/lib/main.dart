@@ -11,7 +11,6 @@ import 'app_constants.dart';
 import 'pages/login.dart';
 
 void main() async {
-
   // Initialize Firebase
   // (https://stackoverflow.com/a/63873689)
   WidgetsFlutterBinding.ensureInitialized();
