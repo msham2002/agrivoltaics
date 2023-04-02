@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:influxdb_client/api.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:timezone/standalone.dart' as tz;
 
 var getIt = GetIt.instance;
 var influxDBClient = getIt.get<InfluxDBClient>();
@@ -76,17 +77,20 @@ Future<Map<String, List<FluxRecord>>> getInfluxData
   return dataSets;
 }
 
+// TODO: document these properly, maybe clean up/rename to make more understandable
 class InfluxDatapoint {
-  InfluxDatapoint(this.timeStamp, this.value);
-  final DateTime timeStamp;
+  InfluxDatapoint(DateTime timeStamp, this.value, tz.Location timezone) {
+    this.timeStamp = tz.TZDateTime.from(timeStamp, timezone);
+  }
+  late DateTime timeStamp;
   final double value;
 }
 
 class InfluxData {
-  InfluxData(this.records) {
+  InfluxData(this.records, tz.Location timezone) {
     this.data = <InfluxDatapoint>[];
     for (var record in this.records) {
-      this.data.add(InfluxDatapoint(DateTime.parse(record['_time']), record['_value']));
+      this.data.add(InfluxDatapoint(DateTime.parse(record['_time']), record['_value'], timezone));
     }
   }
   final List<FluxRecord> records;

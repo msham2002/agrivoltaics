@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agrivoltaics_flutter_app/app_constants.dart';
+import 'package:agrivoltaics_flutter_app/app_state.dart';
 import 'package:agrivoltaics_flutter_app/influx.dart';
 import 'package:agrivoltaics_flutter_app/pages/dashboard/dashboard_appbar.dart';
 import 'package:agrivoltaics_flutter_app/pages/dashboard/dashboard_drawer.dart';
@@ -83,6 +84,7 @@ class DashboardGraph extends StatefulWidget {
 class _DashboardGraphState extends State<DashboardGraph> {
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<AppState>();
     return Consumer<DashboardState>(
       builder: (context, dashboardState, child) {
         // Refresh widget according to dashboard state's time interval (real-time data)
@@ -118,7 +120,7 @@ class _DashboardGraphState extends State<DashboardGraph> {
                 series: <LineSeries<InfluxDatapoint, DateTime>>[
                   for (var data in snapshot.data!.entries)...[
                     LineSeries<InfluxDatapoint, DateTime>(
-                      dataSource: InfluxData(data.value).data,
+                      dataSource: InfluxData(data.value, appState.timezone).data,
                       xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
                       yValueMapper: (InfluxDatapoint d, _) => d.value,
                       legendItemText: data.key,
