@@ -1,7 +1,12 @@
 import 'package:agrivoltaics_flutter_app/pages/sites.dart';
 import 'package:flutter/material.dart';
-import 'dashboard/dashboard.dart';
 
+/*
+
+Home Page
+- All navigations redirect back here
+
+*/
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -10,7 +15,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: const [
-          NotificationButton()
+          NotificationsButton()
         ],
       ),
       endDrawer: const Drawer(),
@@ -29,11 +34,12 @@ class HomePage extends StatelessWidget {
                   )
               },
             ),
-            // TODO: determine whether we will have this functionality
-            // ElevatedButton(
-            //   child: const Text('Manage Sensors'),
-            //   onPressed: () => {print('hello')},
-            // ),
+            // TODO: implement
+            ElevatedButton(
+              child: const Text('Manage Sensors'),
+              onPressed: () => {debugPrint('Manage Sensors selected')},
+            ),
+            // TODO: implement
             ElevatedButton(
               child: const Text('Settings'),
               onPressed: () => {debugPrint('Settings selected')},
@@ -45,8 +51,15 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class NotificationButton extends StatelessWidget {
-  const NotificationButton({
+/*
+
+Notifications Button
+- Opens drawer containing notifications
+- Alerts user if there are unread notifications
+
+*/
+class NotificationsButton extends StatelessWidget {
+  const NotificationsButton({
     super.key,
   });
 

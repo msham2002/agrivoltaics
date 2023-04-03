@@ -13,7 +13,7 @@ class SitesPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               for (int site = 1; site <= AppConstants.numSites; site++)...[
                 Padding(

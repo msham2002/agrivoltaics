@@ -33,6 +33,11 @@ abstract class AppConstants {
     'OWNER_EMAIL',
     defaultValue: ''
   );
+
+  static const String timezone = String.fromEnvironment(
+    'TIMEZONE',
+    defaultValue: 'America/New_York'
+  );
   
   static const int numSites = 1;
   static const int numZones = 3;

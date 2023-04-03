@@ -1,16 +1,19 @@
+import 'package:agrivoltaics_flutter_app/app_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:influxdb_client/api.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'package:timezone/data/latest.dart' as tz;
 import 'firebase_options.dart';
 import 'app_constants.dart';
 import 'pages/login.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
   // Initialize Firebase
+  // (https://stackoverflow.com/a/63873689)
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
@@ -32,6 +35,9 @@ void main() async {
   });
   getIt.registerSingleton<GoogleAuthProvider>(googleAuthProvider);
 
+  // Initialize timezone database
+  tz.initializeTimeZones();
+
   // Launch application
   runApp(const App());
 }
@@ -42,15 +48,18 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // TODO: Choose app name
-      title: 'Vinovoltaics',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey)
+    return ChangeNotifierProvider(
+      create: (context) => AppState(),
+      child: MaterialApp(
+        // TODO: Choose app name
+        title: 'Vinovoltaics',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey)
+        ),
+        home: const LoginPage(),
+        debugShowCheckedModeBanner: false,
       ),
-      home: const LoginPage(),
-      debugShowCheckedModeBanner: false,
     );
   }
 }

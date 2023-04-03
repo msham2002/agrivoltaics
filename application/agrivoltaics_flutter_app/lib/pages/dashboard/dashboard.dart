@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:agrivoltaics_flutter_app/app_constants.dart';
+import 'package:agrivoltaics_flutter_app/app_state.dart';
 import 'package:agrivoltaics_flutter_app/influx.dart';
+import 'package:agrivoltaics_flutter_app/pages/dashboard/dashboard_appbar.dart';
+import 'package:agrivoltaics_flutter_app/pages/dashboard/dashboard_drawer.dart';
+import 'package:agrivoltaics_flutter_app/pages/dashboard/dashboard_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:influxdb_client/api.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'dashboard_drawer.dart';
-import 'dashboard_state.dart';
-import 'dashboard_appbar.dart';
 
 /*
 
@@ -23,8 +24,8 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => DashboardState(),
-      child: const SafeArea(
+      create: (context) => DashboardState(site),
+      child: SafeArea(
         child: Scaffold(
           endDrawer: DashboardDrawer(),
           appBar: DashboardAppBar(),
@@ -38,13 +39,12 @@ class DashboardPage extends StatelessWidget {
 /*
 
 Dashboard
-- Main Dashboard widget which displays relevant information in graph form
+- Skeleton for nested graph-related widgets
+- Extracted nested graph widget due to its size and complexity
 
 */
 class Dashboard extends StatefulWidget {
-  const Dashboard({
-    super.key,
-  });
+  Dashboard({super.key});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -66,6 +66,12 @@ class _DashboardState extends State<Dashboard> {
   }
 }
 
+/*
+
+Dashboard Graph
+- Main Dashboard widget which displays relevant information in graph form
+
+*/
 class DashboardGraph extends StatefulWidget {
   const DashboardGraph({
     super.key,
@@ -78,6 +84,7 @@ class DashboardGraph extends StatefulWidget {
 class _DashboardGraphState extends State<DashboardGraph> {
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<AppState>();
     return Consumer<DashboardState>(
       builder: (context, dashboardState, child) {
         // Refresh widget according to dashboard state's time interval (real-time data)
@@ -86,9 +93,10 @@ class _DashboardGraphState extends State<DashboardGraph> {
           // Async method called by FutureBuilder widget, whose results will eventually populate widget
           future: getInfluxData
           (
-            dashboardState.dateRangeSelection,
+            dashboardState.siteSelection,
             dashboardState.zoneSelection,
             dashboardState.fieldSelection,
+            dashboardState.dateRangeSelection,
             dashboardState.timeInterval
           ),
 
@@ -112,7 +120,7 @@ class _DashboardGraphState extends State<DashboardGraph> {
                 series: <LineSeries<InfluxDatapoint, DateTime>>[
                   for (var data in snapshot.data!.entries)...[
                     LineSeries<InfluxDatapoint, DateTime>(
-                      dataSource: InfluxData(data.value).data,
+                      dataSource: InfluxData(data.value, appState.timezone).data,
                       xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
                       yValueMapper: (InfluxDatapoint d, _) => d.value,
                       legendItemText: data.key,
