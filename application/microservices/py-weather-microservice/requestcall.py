@@ -93,6 +93,7 @@ phenomenon = {
     "UP" : "Ice Accretion",
     "LO" : "Low Water",
     "SU" : "High Surf"
+    
 }
 
 significance  = {
@@ -110,6 +111,8 @@ hazard_vals = hazard_key["values"]
 
 #populate with weather stuff with each loop
 
+#print(hazard_vals)
+
 for instantTime in hazard_vals:
     
     #dictionary with weather stuff
@@ -120,11 +123,12 @@ for instantTime in hazard_vals:
     
     for val in instantTime["value"]:
             
-            #print(val["phenomenon"])
-            weather_dict["phenomenon"] = val["phenomenon"]
+        #print(val["phenomenon"])
+        weather_dict["phenomenon"] = phenomenon[val["phenomenon"]]
             
-            #print(val["significance"])
-            weather_dict["significance"] = val["significance"]
-            
-print(weather_dict)
-
+        #print(val["significance"])
+        weather_dict["significance"] = significance[val["significance"]]
+          
+        weather_response.append(weather_dict)
+          
+print(weather_response)
