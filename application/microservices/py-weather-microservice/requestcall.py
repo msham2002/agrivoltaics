@@ -37,35 +37,94 @@ hazard_key = hazard_data["properties"]["hazards"]
 
 print("printing hazards")
 
-print(hazard_key)
+#print(hazard_key)
 
-#need to call for the past 12 hours 
+phenomenon = {
+    "BZ":"Blizzard",
+    "WS" : "Winter Storm",
+    "WW" : "Winter Weather",
+    "SN" : "Snow",
+    "HS" : "Heavy Snow",
+    "LE" : "Lake Effect Snow",
+    "LB" : "Lake Effect and Blowing Snow",
+    "BS" : "Blowing/Drifting Snow",
+    "SB" : "Snow and Blowing Snow",
+    "IP" : "Sleet",
+    "HP" : "Heavy Sleet",
+    "ZR" : "Freezing Rain",
+    "IS" : "Ice Storm",
+    "FZ" : "Freeze",
+    "ZF" : "Freezing Fog",
+    "FR" : "Frost",
+    "WC" : "Wind Chill",
+    "EC" : "Exctreme Cold",
+    "WI" : "Wind",
+    "HW" : "High Wind",
+    "LW" : "Lake Wind",
+    "FG" : "Dense Fog",
+    "SM" : "Dense Smoke",
+    "HT" : "Heat",
+    "EH" : "Excessive Heat",
+    "DU" : "Blowing Dust",
+    "DS" : "Dust Storm",
+    "FL" : "Flood",
+    "FF" : "Flash Flood",
+    "SV" : "Severe Thunderstorm",
+    "TO" : "Tornado",
+    "FW" : "Fire Weather",
+    "RH" : "Radiological Hazard",
+    "VO" : "Volcano",
+    "AF" : "Volcanic Ashfall",
+    "AS" : "Air Stagnation",
+    "AV" :  "Avalanche",
+    "TS" :  "Tsunami",
+    "MA" : "Marine",
+    "SC" : "Small Craft",
+    "GL" : "Gale",
+    "SR" : "Storm",
+    "HF" : "Hurricane Force Wind",
+    "TR" : "Tropical Storm",
+    "HU" : "Hurricane",
+    "TY" : "Typhoon",
+    "TI" : "Inland Tropical Storm Wind",
+    "HI" : "Inland Hurricane Wind",
+    "LS" : "Lakeshore Flood",
+    "CF" : "Coastal Flood",
+    "UP" : "Ice Accretion",
+    "LO" : "Low Water",
+    "SU" : "High Surf"
+}
+
+significance  = {
+    "W" : "Warning",
+    "A" : "Watch",
+    "S" : "Statement",
+    "Y" : "Advisoty"   
+}
+
 #array of dictionaries
-#we want to give them phenomen array that has the time and the siginificance
-#ideal structure to send
-#lifetime : 12 hours
-#only care about past 12 hours
-[
-    {
-            "id": "340983409",
-            "time": "2023-03-30T17:00:00+00:00/PT9H",
-            "phenomenom": "Fire weather",
-            "significance": "Watch"
-    },
-    {
-            
-            "id": "8594080980",
-            "time": "2023-03-40T17:00:00+00:00/PT9H",
-            "phenomenom": "Dense Smoke",
-            "significance": "Advisory"
-    }
-]
+weather_response = []
+
 
 hazard_vals = hazard_key["values"]
 
+#populate with weather stuff with each loop
+
 for instantTime in hazard_vals:
-    print(instantTime["validTime"])
+    
+    #dictionary with weather stuff
+    weather_dict = {}
+    
+    #print(instantTime["validTime"])
+    weather_dict["time"] = instantTime["validTime"]
+    
     for val in instantTime["value"]:
-            print(val["phenomenon"])
-            print(val["significance"])
             
+            #print(val["phenomenon"])
+            weather_dict["phenomenon"] = val["phenomenon"]
+            
+            #print(val["significance"])
+            weather_dict["significance"] = val["significance"]
+            
+print(weather_dict)
+
