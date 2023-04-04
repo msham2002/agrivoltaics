@@ -18,8 +18,8 @@ Dashboard Page
 
 */
 class DashboardPage extends StatelessWidget {
-  DashboardPage({super.key, required int site});
-  int site = 1;
+  DashboardPage({super.key, required this.site});
+  int site;
 
   @override
   Widget build(BuildContext context) {
