@@ -18,8 +18,8 @@ Dashboard Page
 
 */
 class DashboardPage extends StatelessWidget {
-  DashboardPage({super.key, required int site});
-  int site = 1;
+  DashboardPage({super.key, required this.site});
+  int site;
 
   @override
   Widget build(BuildContext context) {
@@ -117,9 +117,9 @@ class _DashboardGraphState extends State<DashboardGraph> {
                   )
                 ),
                 primaryXAxis: CategoryAxis(),
-                series: <LineSeries<InfluxDatapoint, DateTime>>[
+                series: <LineSeries<InfluxDatapoint, String>>[
                   for (var data in snapshot.data!.entries)...[
-                    LineSeries<InfluxDatapoint, DateTime>(
+                    LineSeries<InfluxDatapoint, String>(
                       dataSource: InfluxData(data.value, appState.timezone).data,
                       xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
                       yValueMapper: (InfluxDatapoint d, _) => d.value,

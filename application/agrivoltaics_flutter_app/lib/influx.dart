@@ -80,9 +80,9 @@ Future<Map<String, List<FluxRecord>>> getInfluxData
 // TODO: document these properly, maybe clean up/rename to make more understandable
 class InfluxDatapoint {
   InfluxDatapoint(DateTime timeStamp, this.value, tz.Location timezone) {
-    this.timeStamp = tz.TZDateTime.from(timeStamp, timezone);
+    this.timeStamp = DateFormat('yyyy-MM-dd kk:mm:ss').format(tz.TZDateTime.from(timeStamp, timezone));
   }
-  late DateTime timeStamp;
+  late String timeStamp;
   final double value;
 }
 

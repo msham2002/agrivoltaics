@@ -152,76 +152,89 @@ void loop(){
             // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
             // and a content-type so the client knows what's coming, then a blank line:
             client.println("HTTP/1.1 200 OK");
-            client.println("Content-type:text/html");
-            client.println("Connection: close");
-            client.println();
             
-            // turns the GPIOs on and off
-            if (header.indexOf("GET /26/on") >= 0) {
-              Serial.println("GPIO 26 on");
-              output26State = "on";
-            } else if (header.indexOf("GET /26/off") >= 0) {
-              Serial.println("GPIO 26 off");
-              output26State = "off";    
+            
+            // Return list of sensors to client
+            if (header.indexOf("GET /sensors")) {
+              client.println("Content-type:application/json");
+              client.println("Connection: close");
+              client.println();
 
-            } else if (header.indexOf("GET /32/on") >= 0) {
-              Serial.println("GPIO 32 on");
-              output32State = "on";            
-            } else if (header.indexOf("GET /32/off") >= 0) {
-              Serial.println("GPIO 32 off");
-              output32State = "off";
+              client.println("{")
+              client.println("  \"sensors\": [26, 32, 33]") // LIST ALL SENSORS HERE. Dirty but simple
+              client.println("}")
+            } else {
+              client.println("Content-type:text/html");
+              client.println("Connection: close");
+              client.println();
 
-    
-            } else if (header.indexOf("GET /33/off") >= 0) {
-              Serial.println("GPIO 33 off");
-              output33State = "off";
-            } else if (header.indexOf("GET /33/on") >= 0) {
-              Serial.println("GPIO 33 on");
-              output33State = "on";
+              // turns the GPIOs on and off
+              // and returns HTML for user to interact with
+              if (header.indexOf("GET /26/on") >= 0) {
+                Serial.println("GPIO 26 on");
+                output26State = "on";
+              } else if (header.indexOf("GET /26/off") >= 0) {
+                Serial.println("GPIO 26 off");
+                output26State = "off";    
+
+              } else if (header.indexOf("GET /32/on") >= 0) {
+                Serial.println("GPIO 32 on");
+                output32State = "on";            
+              } else if (header.indexOf("GET /32/off") >= 0) {
+                Serial.println("GPIO 32 off");
+                output32State = "off";
+
+      
+              } else if (header.indexOf("GET /33/off") >= 0) {
+                Serial.println("GPIO 33 off");
+                output33State = "off";
+              } else if (header.indexOf("GET /33/on") >= 0) {
+                Serial.println("GPIO 33 on");
+                output33State = "on";
+              }
+              
+              // Display the HTML web page
+              client.println("<!DOCTYPE html><html>");
+              client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+              client.println("<link rel=\"icon\" href=\"data:,\">");
+              // CSS to style the on/off buttons 
+              // Feel free to change the background-color and font-size attributes to fit your preferences
+              client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
+              client.println(".button { background-color: #4CAF50; border: none; color: white; padding: 16px 40px;");
+              client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
+              client.println(".button2 {background-color: #555555;}</style></head>");
+              
+              // Web Page Heading
+              client.println("<body><h1>ESP32 Web Server Zone 1 Site 1</h1>");
+              
+              // Display current state, and ON/OFF buttons for GPIO 26  
+              client.println("<p>GPIO 26 - State " + output26State + "</p>");
+              // If the output26State is off, it displays the ON button       
+              if (output26State=="off") {
+                client.println("<p><a href=\"/26/on\"><button class=\"button\">ON</button></a></p>");
+              } else {
+                client.println("<p><a href=\"/26/off\"><button class=\"button button2\">OFF</button></a></p>");
+              } 
+                
+              // Display current state, and ON/OFF buttons for GPIO 27  
+              client.println("<p>GPIO 32 - State " + output32State + "</p>");
+              // If the output27State is off, it displays the ON button       
+              if (output32State=="off") {
+                client.println("<p><a href=\"/32/on\"><button class=\"button\">ON</button></a></p>");
+              } else {
+                client.println("<p><a href=\"/32/off\"><button class=\"button button2\">OFF</button></a></p>");
+              }
+
+              client.println("<p>GPIO 33 - State " + output33State + "</p>");
+              // If the output26State is off, it displays the ON button       
+              if (output33State=="off") {
+                client.println("<p><a href=\"/33/on\"><button class=\"button\">ON</button></a></p>");
+              } else {
+                client.println("<p><a href=\"/33/off\"><button class=\"button button2\">OFF</button></a></p>");
+              } 
+              client.println("</body></html>");
             }
             
-            // Display the HTML web page
-            client.println("<!DOCTYPE html><html>");
-            client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
-            client.println("<link rel=\"icon\" href=\"data:,\">");
-            // CSS to style the on/off buttons 
-            // Feel free to change the background-color and font-size attributes to fit your preferences
-            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
-            client.println(".button { background-color: #4CAF50; border: none; color: white; padding: 16px 40px;");
-            client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
-            client.println(".button2 {background-color: #555555;}</style></head>");
-            
-            // Web Page Heading
-            client.println("<body><h1>ESP32 Web Server Zone 1 Site 1</h1>");
-            
-            // Display current state, and ON/OFF buttons for GPIO 26  
-            client.println("<p>GPIO 26 - State " + output26State + "</p>");
-            // If the output26State is off, it displays the ON button       
-            if (output26State=="off") {
-              client.println("<p><a href=\"/26/on\"><button class=\"button\">ON</button></a></p>");
-            } else {
-              client.println("<p><a href=\"/26/off\"><button class=\"button button2\">OFF</button></a></p>");
-            } 
-               
-            // Display current state, and ON/OFF buttons for GPIO 27  
-            client.println("<p>GPIO 32 - State " + output32State + "</p>");
-            // If the output27State is off, it displays the ON button       
-            if (output32State=="off") {
-              client.println("<p><a href=\"/32/on\"><button class=\"button\">ON</button></a></p>");
-            } else {
-              client.println("<p><a href=\"/32/off\"><button class=\"button button2\">OFF</button></a></p>");
-            }
-
-            client.println("<p>GPIO 33 - State " + output33State + "</p>");
-            // If the output26State is off, it displays the ON button       
-            if (output33State=="off") {
-              client.println("<p><a href=\"/33/on\"><button class=\"button\">ON</button></a></p>");
-            } else {
-              client.println("<p><a href=\"/33/off\"><button class=\"button button2\">OFF</button></a></p>");
-            } 
-            client.println("</body></html>");
-            
-
             // The HTTP response ends with another blank line
             client.println();
             // Break out of the while loop

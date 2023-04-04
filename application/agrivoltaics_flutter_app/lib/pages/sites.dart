@@ -1,9 +1,11 @@
 import 'package:agrivoltaics_flutter_app/app_constants.dart';
 import 'package:agrivoltaics_flutter_app/pages/dashboard/dashboard.dart';
+import 'package:agrivoltaics_flutter_app/pages/sensors.dart';
 import 'package:flutter/material.dart';
 
 class SitesPage extends StatelessWidget {
-  const SitesPage({super.key});
+  SitesPage({super.key, required this.destination});
+  SiteRoute destination;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,9 @@ class SitesPage extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DashboardPage(site: site)
+                            builder: (context) =>
+                              this.destination == SiteRoute.dashboard ? DashboardPage(site: site)
+                              : SensorsPage(site: site)
                           )
                         )
                     },
