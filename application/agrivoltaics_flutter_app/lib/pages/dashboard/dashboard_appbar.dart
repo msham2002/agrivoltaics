@@ -79,7 +79,7 @@ class _FilterModalState extends State<FilterModal> {
                     scrollDirection: Axis.vertical,
                     child: Wrap(
                       children: [
-                        for (int i = 1; i <= 3; i++)...[
+                        for (int zone in dashboardState.zoneSelection.keys)...[
                           Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Container(
@@ -87,14 +87,14 @@ class _FilterModalState extends State<FilterModal> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Checkbox(
-                                    value: dashboardState.zoneSelection[i],
+                                    value: dashboardState.zoneSelection[zone],
                                     onChanged: (value) {
                                       setState(() {
-                                        dashboardState.zoneSelection[i] = value!;
+                                        dashboardState.zoneSelection[zone] = value!;
                                       });
                                     }
                                   ),
-                                  Text('Zone ${i}'),
+                                  Text('Zone ${zone}'),
                                 ],
                               )
                             ),
