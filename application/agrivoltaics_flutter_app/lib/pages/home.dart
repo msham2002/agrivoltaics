@@ -1,6 +1,7 @@
 import 'package:agrivoltaics_flutter_app/app_constants.dart';
 import 'package:agrivoltaics_flutter_app/auth.dart';
 import 'package:agrivoltaics_flutter_app/pages/login.dart';
+import 'package:agrivoltaics_flutter_app/pages/settings.dart';
 import 'package:agrivoltaics_flutter_app/pages/sites.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,6 @@ class HomePage extends StatelessWidget {
                   )
               },
             ),
-            // TODO: implement
             ElevatedButton(
               child: const Text('Manage Sensors'),
               onPressed: () => {
@@ -50,10 +50,16 @@ class HomePage extends StatelessWidget {
                   )
               },
             ),
-            // TODO: implement
             ElevatedButton(
               child: const Text('Settings'),
-              onPressed: () => {debugPrint('Settings selected')},
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsPage()
+                  )
+                )
+              },
             )
           ],
         ),
