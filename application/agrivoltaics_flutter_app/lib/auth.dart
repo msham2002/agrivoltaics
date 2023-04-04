@@ -10,6 +10,10 @@ Future<UserCredential> signInWithGoogleWeb() async {
   return await FirebaseAuth.instance.signInWithPopup(googleAuthProvider);
 }
 
+Future<void> signOut() async {
+  await FirebaseAuth.instance.signOut();
+}
+
 // Future<UserCredential> signInWithGoogleMobile() async {
 //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 //   final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
