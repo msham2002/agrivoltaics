@@ -1,24 +1,18 @@
 from flask import Flask, jsonify, render_template
 import requests
+from pymongo import MongoClient
 from datetime import datetime
-import sqlite3
+
+client = MongoClient('localhost', 27017)
+db = client.db
+users = db.users
+notifications = db.notifications
+
 
 app = Flask(__name__)
 
 @app.route('/')
-
-def get_db_connection():
-    
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-    
 def index():
-    
-    conn = get_db_connection()
-    
-    
-    
     lat = "36.269035"
     long = "-103.649067"
     response = requests.get(f"https://api.weather.gov/points/{lat},{long}")
@@ -110,6 +104,12 @@ def index():
                         val.get("significance", "Unknown")
                     )
 
+                    notification = {
+                        "body": weather_dict,
+                        "timestamp" : datetime.now()
+                    }
+
+                    notifications.insert_one(notification)
                     weather_response.append(weather_dict)
                     
             return jsonify(weather_response)
