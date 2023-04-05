@@ -104,4 +104,4 @@ jobs:
         name: 'notifications'
         runtime: 'python310'
         source_dir: '/application/microservices/py-weather-microservice/'
-        env_vars: 'LATITUDE=${{vars.LATITUDE}}, LONGITUDE=${{vars.LONGITUDE}}'
+        env_vars: 'LATITUDE=${{vars.SITE_LATITUDE}}, LONGITUDE=${{vars.SITE_LONGITUDE}}'
