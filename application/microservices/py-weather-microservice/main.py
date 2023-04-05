@@ -5,7 +5,8 @@ from datetime import datetime
 from twisted.internet import task, reactor
 
 def notifications():
-    client = pymongo.MongoClient('localhost', 27017)
+    mongo_password = os.environ["MONGO_PASSWORD"]
+    client = pymongo.MongoClient(f"mongodb+srv://agrivoltaicsgrafana:{mongo_password}@vinovoltaics-cluster.qhgrw48.mongodb.net/?retryWrites=true&w=majority", 27017)
     db = client.db
     notifications = db.notifications
 
