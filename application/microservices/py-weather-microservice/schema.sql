@@ -1,9 +1,0 @@
-DROP TABLE IF EXISTS weather_updates;
-
-CREATE TABLE weather_updates (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    date_time TEXT NOT NULL,
-    phen TEXT NOT NULL,
-    sig TEXT NOT NULL
-);
