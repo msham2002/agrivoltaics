@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, request, jsonify, render_template
 import requests
-from pymongo import MongoClient
+import pymongo
 from datetime import datetime
 
-client = MongoClient('localhost', 27017)
+client = pymongo.MongoClient('localhost', 27017)
 db = client.db
 users = db.users
 notifications = db.notifications
@@ -11,8 +11,11 @@ notifications = db.notifications
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
+    userEmail = request.args.get("email")
+    users.find_one({"email":userEmail})
+
     lat = "36.269035"
     long = "-103.649067"
     response = requests.get(f"https://api.weather.gov/points/{lat},{long}")
@@ -109,7 +112,12 @@ def index():
                         "timestamp" : datetime.now()
                     }
 
-                    notifications.insert_one(notification)
+                    try:
+                        notifications.insert_one(notification)
+                    except pymongo.errors.DuplicateKeyError as error:
+                        print(error)
+
+                        
                     weather_response.append(weather_dict)
                     
             return jsonify(weather_response)
