@@ -23,7 +23,7 @@
  
 
   #define INFLUXDB_URL "https://us-east-1-1.aws.cloud2.influxdata.com"
-  #define INFLUXDB_TOKEN "jO3-s9kOJEPzRv80hkOs0d4rAGbB_XMfTXCaqJmHAEEaFJ0ilyJ4qNLifjNwfJnBgMpWep3S_xC1QfjTIyhFkw=="
+  #define INFLUXDB_TOKEN ""
   #define INFLUXDB_ORG "11188411442f6b61"
   #define INFLUXDB_BUCKET "Vitisvoltaics"
   
@@ -33,6 +33,7 @@
 
 #include <WiFi.h>
 #include <DHT.h>;
+#define NUM_SENSORS 3
 #define LIGHTSENSORPIN 32
 #define RAINSENSORPIN 33
 #define DHTPIN 26     // what pin we're connected to
@@ -55,15 +56,27 @@ WiFiServer server(80);
 // Variable to store the HTTP request
 String header;
 
-// Auxiliar variables to store the current output state
-String output26State = "off";
-String output32State = "off";
-String output33State = "off";
+// // Auxiliar variables to store the current output state
+// String output26State = "off";
+// String output32State = "off";
+// String output33State = "off";
 
-// Assign output variables to GPIO pins
-const int output26 = 26;
-const int output32 = 32;
-const int output33 = 33;
+// // Assign output variables to GPIO pins
+// const int output26 = 26;
+// const int output32 = 32;
+// const int output33 = 33;
+
+struct sensor {
+  int pin;
+  String name;
+  String state;
+}
+
+sensor sensors[NUM_SENSORS] = {
+  {26, "Temperature/Humidity", "off"},
+  {32, "Light", "off"},
+  {33, "Rainfall", "off"}
+}
 
 // Current time
 unsigned long currentTime = millis();
@@ -75,13 +88,19 @@ const long timeoutTime = 2000;
 void setup() {
   Serial.begin(9600);
   // Initialize the output variables as outputs
-  pinMode(output26, INPUT);
-  pinMode(output32, OUTPUT);
-  pinMode(output33, OUTPUT);
+  // pinMode(output26, INPUT);
+  // pinMode(output32, OUTPUT);
+  // pinMode(output33, OUTPUT);
+  pinMode(sensors[0].pin, INPUT);
+  pinMode(sensors[1].pin, OUTPUT);
+  pinMode(sensors[2].pin, OUTPUT);
   // Set outputs to LOW
-  digitalWrite(output26, LOW);
-  digitalWrite(output32, LOW);
-  digitalWrite(output33, LOW);
+  // digitalWrite(output26, LOW);
+  // digitalWrite(output32, LOW);
+  // digitalWrite(output33, LOW);
+  digitalWrite(sensors[0].pin, LOW);
+  digitalWrite(sensors[1].pin, LOW);
+  digitalWrite(sensors[2].pin, LOW);
 
   dht.begin();
   Serial.println(F("DHTxx test!"));
@@ -160,8 +179,36 @@ void loop(){
               client.println("Connection: close");
               client.println();
 
+              // {
+              //   "sensors": [
+              //     {
+              //       "26": {
+              //         "name": "Temperature/Humidity",
+              //         "state": "off"
+              //       }
+              //     },
+              //     {
+              //       "33": {
+              //         "name": "Rainfall",
+              //         "state": "on"
+              //       }
+              //     }
+              //   ]
+              // }
               client.println("{")
-              client.println("  \"sensors\": [26, 32, 33]") // LIST ALL SENSORS HERE. Dirty but simple
+              client.println("  \"sensors\": [")
+              for (int i = 0; i < NUM_SENSORS; i++) {
+                client.println("    {")
+                client.println("      \"" + (String)sensors[i].pin + "\": {")
+                client.println("        \"name\": \"" + sensors[i].name + "\",")
+                client.println("        \"state\": \"" + sensors[i].name + "\"")
+                client.println("      }")
+                client.print("    }")
+                if (i < NUM_SENSORS - 1) {
+                  client.print(",\n") // do not write comma after last entry
+                }
+              }
+              client.println("  ]")
               client.println("}")
             } else {
               client.println("Content-type:text/html");
@@ -172,25 +219,31 @@ void loop(){
               // and returns HTML for user to interact with
               if (header.indexOf("GET /26/on") >= 0) {
                 Serial.println("GPIO 26 on");
-                output26State = "on";
+                // output26State = "on";
+                sensors[0].state = "on";
               } else if (header.indexOf("GET /26/off") >= 0) {
                 Serial.println("GPIO 26 off");
-                output26State = "off";    
+                // output26State = "off";   
+                sensors[0].state = "off"; 
 
               } else if (header.indexOf("GET /32/on") >= 0) {
                 Serial.println("GPIO 32 on");
-                output32State = "on";            
+                // output32State = "on";   
+                sensors[1].state = "on";         
               } else if (header.indexOf("GET /32/off") >= 0) {
                 Serial.println("GPIO 32 off");
-                output32State = "off";
+                // output32State = "off";
+                sensors[1].state = "off";
 
       
               } else if (header.indexOf("GET /33/off") >= 0) {
                 Serial.println("GPIO 33 off");
-                output33State = "off";
+                // output33State = "off";
+                sensors[2].state = "off";
               } else if (header.indexOf("GET /33/on") >= 0) {
                 Serial.println("GPIO 33 on");
-                output33State = "on";
+                // output33State = "on";
+                sensors[2].state = "on";
               }
               
               // Display the HTML web page
@@ -210,7 +263,8 @@ void loop(){
               // Display current state, and ON/OFF buttons for GPIO 26  
               client.println("<p>GPIO 26 - State " + output26State + "</p>");
               // If the output26State is off, it displays the ON button       
-              if (output26State=="off") {
+              // if (output26State=="off") {
+              if (sensors[0].state=="off") {
                 client.println("<p><a href=\"/26/on\"><button class=\"button\">ON</button></a></p>");
               } else {
                 client.println("<p><a href=\"/26/off\"><button class=\"button button2\">OFF</button></a></p>");
@@ -219,7 +273,8 @@ void loop(){
               // Display current state, and ON/OFF buttons for GPIO 27  
               client.println("<p>GPIO 32 - State " + output32State + "</p>");
               // If the output27State is off, it displays the ON button       
-              if (output32State=="off") {
+              // if (output32State=="off") {
+              if (sensors[1].state=="off")
                 client.println("<p><a href=\"/32/on\"><button class=\"button\">ON</button></a></p>");
               } else {
                 client.println("<p><a href=\"/32/off\"><button class=\"button button2\">OFF</button></a></p>");
@@ -227,7 +282,8 @@ void loop(){
 
               client.println("<p>GPIO 33 - State " + output33State + "</p>");
               // If the output26State is off, it displays the ON button       
-              if (output33State=="off") {
+              // if (output33State=="off") {
+              if (sensors[2].state=="off") {
                 client.println("<p><a href=\"/33/on\"><button class=\"button\">ON</button></a></p>");
               } else {
                 client.println("<p><a href=\"/33/off\"><button class=\"button button2\">OFF</button></a></p>");
@@ -257,7 +313,8 @@ void loop(){
 
 float square_ratio;
 
-if(output32State == "off"){
+// if(output32State == "off"){
+if (sensors[1].state == "off"){
   float reading = analogRead(LIGHTSENSORPIN);
   square_ratio = reading / 1023.0; //Get percent of maximum value (1023)
   square_ratio = pow(square_ratio, 2.0);
@@ -274,7 +331,8 @@ else{
 
 int Precipitation;
 
-if(output33State == "off"){
+// if(output33State == "off"){
+if(sensors[2].state == "off"){
   Precipitation = analogRead(RAINSENSORPIN);
   Serial.print("Rain Fall Sensor:");
   Serial.print(Precipitation);
@@ -291,7 +349,8 @@ else{
   // Read temperature as Fahrenheit (isFahrenheit = true)
   float f = dht.readTemperature(true);
 
-if(output26State == "off"){
+// if(output26State == "off"){
+if(sensors[0].state == "off"){
 
   // Check if any reads failed and exit early (to try again).
   if (isnan(h) || isnan(t) || isnan(f)) {
