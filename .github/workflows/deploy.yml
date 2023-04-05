@@ -84,8 +84,8 @@ jobs:
         image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-webapp-image'
         region: us-east4
 
-    - name: 'Use output'
-      run: 'curl "${{ steps.deploy.outputs.url }}"'
+    # - name: 'Use output'
+    #   run: 'curl "${{ steps.deploy.outputs.url }}"'
 
   deploy-gcp-cloud-function:
     runs-on: 'ubuntu-latest'
