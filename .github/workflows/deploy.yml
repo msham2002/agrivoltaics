@@ -40,6 +40,22 @@ jobs:
             INFLUXDB_DEBUG=${{ vars.INFLUXDB_DEBUG }},
             ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }},
             OWNER_EMAIL=${{ vars.OWNER_EMAIL }}
+      # - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+      #   with:
+      #     registry: gcr.io
+      #     project_id: vinovoltaics-webapp
+      #     image_name: vinovoltaics-webapp-image
+      #     image_tag: latest
+      #     dockerfile: ./application/agrivoltaics_flutter_app/Dockerfile
+      #     context: ./application/agrivoltaics_flutter_app
+      #     build_args: >
+      #       INFLUXDB_URL=${{ vars.INFLUXDB_URL }},
+      #       INFLUXDB_TOKEN=${{ secrets.INFLUXDB_TOKEN }},
+      #       INFLUXDB_ORG=${{ vars.INFLUXDB_ORG }},
+      #       INFLUXDB_BUCKET=${{ vars.INFLUXDB_BUCKET }},
+      #       INFLUXDB_DEBUG=${{ vars.INFLUXDB_DEBUG }},
+      #       ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }},
+      #       OWNER_EMAIL=${{ vars.OWNER_EMAIL }}
 
   deploy-gcp-cloud-run:
     needs: build-and-push-to-gcr
@@ -66,7 +82,7 @@ jobs:
       with:
         service: 'vinovoltaics-webapp'
         image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-webapp-image'
-        region: us-east5
+        region: us-east4
 
     - name: 'Use output'
       run: 'curl "${{ steps.deploy.outputs.url }}"'
