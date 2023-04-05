@@ -1,32 +1,20 @@
 from flask import Flask, request, jsonify, render_template
 import requests
 import pymongo
+from bson.json_util import dumps
 from datetime import datetime
+from twisted.internet import task, reactor
 
 client = pymongo.MongoClient('localhost', 27017)
 db = client.db
 users = db.users
 notifications = db.notifications
 
-
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
-def index():
-    # Fetch user
-    userEmail = request.args.get("email")
-    user = users.find_one({"email":userEmail})
-
-    # If user doesn't exist, create it
-    if (user == None):
-        user = {
-            "email": userEmail,
-            "last_read": datetime.now()
-        }
-        users.insert_one(user)
-
-    lat = "36.269035"
-    long = "-103.649067"
+def notif_loop():
+    lat = "39.083495"
+    long = "-85.064561"
     response = requests.get(f"https://api.weather.gov/points/{lat},{long}")
     if response.status_code == 200:
         print("Pull successful")
@@ -135,5 +123,48 @@ def index():
     else:
         return "Error: Unable to fetch weather data"
 
+looping_task = task.LoopingCall(notif_loop)
+looping_task.start(60.0)
+
+def fetch_user(email):
+    # Fetch user
+    user = users.find_one({"email":email})
+
+    # If user doesn't exist, create it
+    if (user == None):
+        user = {
+            "email": email,
+            "last_read": datetime.now()
+        }
+        users.insert_one(user)
+
+    return user
+
+@app.route('/getNotifications', methods=['GET'])
+def get_notifications():
+    # Fetch user
+    userEmail = request.args.get("email")
+    user = fetch_user(userEmail)
+
+    # Fetch notifications posted after user's last_read attribute
+    recent_notifications = notifications.find({"timestamp": {"$gt": user["last_read"]}})
+    
+    # Return response
+    response = {
+        "notifications": eval(dumps(list(recent_notifications)))
+    }
+    return response
+
+@app.route('/readNotifications', methods=['POST'])
+def read_notifications():
+    # Fetch user
+    userEmail = request.args.get("email")
+    user = fetch_user(userEmail)
+
+    # Update user's last_read attribute
+    users.update_one({"email": user["email"]}, {"$set": {"last_read": datetime.now()}})
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+    reactor.run()
