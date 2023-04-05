@@ -77,8 +77,8 @@ jobs:
       with:
         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
-    - id: 'deploy'
-      uses: 'google-github-actions/deploy-cloudrun@v1'
+    # - id: 'deploy'
+    - uses: 'google-github-actions/deploy-cloudrun@v1'
       with:
         service: 'vinovoltaics-webapp'
         image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-webapp-image'
@@ -86,3 +86,21 @@ jobs:
 
     - name: 'Use output'
       run: 'curl "${{ steps.deploy.outputs.url }}"'
+
+  deploy-gcp-cloud-function:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - id: 'checkout'
+      uses: 'actions/checkout@v3'
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+    
+    - id: 'deploy'
+      uses: 'google-github-actions/deploy-cloud-functions@v1'
+      with:
+        name: 'notifications'
+        runtime: 'python310'
+        source_dir: '/application/microservices/py-weather-microservice/'
