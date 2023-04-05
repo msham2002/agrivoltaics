@@ -13,8 +13,17 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def index():
+    # Fetch user
     userEmail = request.args.get("email")
-    users.find_one({"email":userEmail})
+    user = users.find_one({"email":userEmail})
+
+    # If user doesn't exist, create it
+    if (user == None):
+        user = {
+            "email": userEmail,
+            "last_read": datetime.now()
+        }
+        users.insert_one(user)
 
     lat = "36.269035"
     long = "-103.649067"
