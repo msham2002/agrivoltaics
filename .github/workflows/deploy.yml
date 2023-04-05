@@ -77,7 +77,7 @@ jobs:
       with:
         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
-    # - id: 'deploy'
+    - id: 'deploy'
     - uses: 'google-github-actions/deploy-cloudrun@v1'
       with:
         service: 'vinovoltaics-webapp'
