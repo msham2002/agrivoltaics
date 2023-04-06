@@ -39,17 +39,17 @@ class HomePage extends StatelessWidget {
                   )
               },
             ),
-            ElevatedButton(
-              child: const Text('Manage Sensors'),
-              onPressed: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SitesPage(destination: SiteRoute.sensorManagement)
-                    )
-                  )
-              },
-            ),
+            // ElevatedButton(
+            //   child: const Text('Manage Sensors'),
+            //   onPressed: () => {
+            //     Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => SitesPage(destination: SiteRoute.sensorManagement)
+            //         )
+            //       )
+            //   },
+            // ),
             ElevatedButton(
               child: const Text('Settings'),
               onPressed: () => {
