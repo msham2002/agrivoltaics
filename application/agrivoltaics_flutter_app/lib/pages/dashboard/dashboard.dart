@@ -116,10 +116,17 @@ class _DashboardGraphState extends State<DashboardGraph> {
                   )
                 ),
                 primaryXAxis: CategoryAxis(),
+                palette: const [
+                  Colors.blue,
+                  Colors.green,
+                  Colors.grey,
+                  Colors.blueGrey
+                ],
                 series: <LineSeries<InfluxDatapoint, String>>[
                   for (var data in snapshot.data!.entries)...[
                     LineSeries<InfluxDatapoint, String>(
-                      dataSource: InfluxData(data.value, appState.timezone).data,
+                      // dataSource: InfluxData(data.value, appState.timezone).data,
+                      dataSource: InfluxData(data, appState.timezone).datapoints,
                       xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
                       yValueMapper: (InfluxDatapoint d, _) => d.value,
                       legendItemText: data.key,

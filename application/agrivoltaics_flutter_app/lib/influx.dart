@@ -25,9 +25,11 @@ String _generateQuery
     zoneQuery += ' or r["Zone"] == "${zone}"';
   }
 
-  String fieldQuery = 'r["_field"] == "${fields[0].displayName}"';
+  String fieldQuery = 'r["_field"] == "${fields[0].fluxQuery}"';
+  // String fieldQuery = 'r["_field"] == "${fields[0].displayName}"';
   for (SensorMeasurement field in fields.sublist(1, fields.length)) {
-    fieldQuery += ' or r["_field"] == "${field.displayName}"';
+    fieldQuery += ' or r["_field"] == "${field.fluxQuery}"';
+    // fieldQuery += ' or r["_field"] == "${field.displayName}"';
   }
 
   return '''
@@ -52,9 +54,6 @@ Future<Map<String, List<FluxRecord>>> getInfluxData
 ) async {
   var queryService = influxDBClient.getQueryService();
 
-  var startDate = DateFormat('yyyy-MM-dd').format(timeUnit.startDate!);
-  var endDate = DateFormat('yyyy-MM-dd').format(timeUnit.endDate!);
-
   var dataSets = <String, List<FluxRecord>>{};    
   zoneSelection = Map.from(zoneSelection)..removeWhere((_, value) => !value);
   fieldSelection = Map.from(fieldSelection)..removeWhere((_, value) => !value);
@@ -66,7 +65,15 @@ Future<Map<String, List<FluxRecord>>> getInfluxData
 
   List<FluxRecord> records = await recordStream.toList();
   for (var record in records) {
-    String key = '${record["_field"]} Zone ${record["Zone"]}';
+    // DO NOT EXECUTE THE BELOW OR THE RECORDSTREAM WILL NEVER BE READ
+    // WHO KNOWS WHY, I SURE DON'T
+    // TOOK ME 3 HOURS OF DEBUGGING TO FIGURE THAT ONE OUT
+    // String field = record['_field'];
+    // String zone = record['Zone'];
+
+    SensorMeasurement measurement = SensorMeasurement.values.firstWhere((e) => e.fluxQuery == record['_field']);
+
+    String key = '${measurement.displayName} (${measurement.unit}) Zone ${record["Zone"]}';
     if (!dataSets.keys.contains(key)) {
       dataSets[key] = [record];
     } else {
@@ -74,25 +81,33 @@ Future<Map<String, List<FluxRecord>>> getInfluxData
     }
   }
   
-  return dataSets;
+  Map<String, List<FluxRecord>> sortedDataSets = Map.fromEntries(
+    dataSets.entries.toList()..sort((e1, e2) => e1.key.compareTo(e2.key))
+  );
+  return sortedDataSets;
 }
 
 // TODO: document these properly, maybe clean up/rename to make more understandable
 class InfluxDatapoint {
-  InfluxDatapoint(DateTime timeStamp, this.value, tz.Location timezone) {
+  InfluxDatapoint(DateTime timeStamp, this.value, this.unit, tz.Location timezone) {
     this.timeStamp = DateFormat('yyyy-MM-dd kk:mm:ss').format(tz.TZDateTime.from(timeStamp, timezone));
   }
   late String timeStamp;
   final double value;
+  final String unit;
 }
 
 class InfluxData {
-  InfluxData(this.records, tz.Location timezone) {
-    this.data = <InfluxDatapoint>[];
-    for (var record in this.records) {
-      this.data.add(InfluxDatapoint(DateTime.parse(record['_time']), record['_value'], timezone));
+  InfluxData(this.data, tz.Location timezone) {
+    for (var record in this.data.value) {
+      DateTime timestamp = DateTime.parse(record['_time']);
+      String field = record['_field'];
+      double value = record['_value'];
+      String unit = SensorMeasurement.values.firstWhere((e) => e.fluxQuery == field).unit;
+      this.datapoints.add(InfluxDatapoint(timestamp, value, unit, timezone));
     }
   }
-  final List<FluxRecord> records;
-  late List<InfluxDatapoint> data;
+  // final List<FluxRecord> records;
+  MapEntry<String, List<FluxRecord>> data;
+  List<InfluxDatapoint> datapoints = [];
 }

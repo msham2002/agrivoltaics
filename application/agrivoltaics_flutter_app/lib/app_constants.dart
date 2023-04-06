@@ -118,7 +118,7 @@ enum SensorMeasurement {
 }
 
 extension SensorMeasurementExtension on SensorMeasurement {
-  String get displayName {
+  String get fluxQuery {
     switch (this) {
       case SensorMeasurement.humidity:
         return 'Humidity';
@@ -137,7 +137,26 @@ extension SensorMeasurementExtension on SensorMeasurement {
     }
   }
 
-  String? get unit {
+  String get displayName {
+    switch (this) {
+      case SensorMeasurement.humidity:
+        return 'Humidity';
+      case SensorMeasurement.temperature:
+        return 'Temperature';
+      case SensorMeasurement.light:
+        return 'Light';
+      case SensorMeasurement.rain:
+        return 'Rain';
+      case SensorMeasurement.frost:
+        return 'Frost';
+      case SensorMeasurement.soil:
+        return 'Soil';
+      default:
+        return '';
+    }
+  }
+
+  String get unit {
     switch (this) {
       case SensorMeasurement.humidity:
         return '%';
