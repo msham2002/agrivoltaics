@@ -28,6 +28,12 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            const Text(
+              'Vinovoltaics',
+              style: TextStyle(
+                fontSize: 50
+              ),
+            ),
             ElevatedButton(
               child: const Text('View Data'),
               onPressed: () => {
