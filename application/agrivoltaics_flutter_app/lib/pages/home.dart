@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
           // SignOutButton()
         ],
       ),
-      endDrawer: const Drawer(),
+      // endDrawer: const Drawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
