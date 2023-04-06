@@ -30,7 +30,7 @@ class DashboardState extends ChangeNotifier {
   }
   
   late PickerDateRange dateRangeSelection;
-  TimeInterval timeInterval = TimeInterval(TimeUnit.hour, 1);
+  TimeInterval timeInterval = TimeInterval(TimeUnit.minute, 1);
   late int siteSelection;
   Map<int, bool> zoneSelection = <int, bool>{};
   Map<SensorMeasurement, bool> fieldSelection = <SensorMeasurement, bool>{};

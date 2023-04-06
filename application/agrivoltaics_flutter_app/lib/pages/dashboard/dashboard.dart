@@ -88,7 +88,7 @@ class _DashboardGraphState extends State<DashboardGraph> {
     return Consumer<DashboardState>(
       builder: (context, dashboardState, child) {
         // Refresh widget according to dashboard state's time interval (real-time data)
-        Timer.periodic(dashboardState.timeInterval.duration!, (Timer t) => setState((){}));
+        Timer.periodic(dashboardState.timeInterval.duration!, (Timer t) => {if (this.mounted) setState((){})});
         return FutureBuilder<Map<String, List<FluxRecord>>>(
           // Async method called by FutureBuilder widget, whose results will eventually populate widget
           future: getInfluxData
@@ -104,8 +104,7 @@ class _DashboardGraphState extends State<DashboardGraph> {
             // Once the data snapshot is populated with above method results, render chart
             if (snapshot.hasData) {
               return SfCartesianChart(
-                // TODO: title chart
-                // title: ChartTitle(text: 'TODO: change me'),
+                title: ChartTitle(text: 'Site ${dashboardState.siteSelection}'),
                 legend: Legend(isVisible: true),
                 trackballBehavior: TrackballBehavior(
                   enable: true,
