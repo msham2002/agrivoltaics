@@ -140,11 +140,17 @@ extension SensorMeasurementExtension on SensorMeasurement {
   String? get unit {
     switch (this) {
       case SensorMeasurement.humidity:
-        return '';
+        return '%';
       case SensorMeasurement.temperature:
-        return 'Celsius';
+        return 'Fahrenheit';
       case SensorMeasurement.light:
         return 'Lux';
+      case SensorMeasurement.rain:
+        return '%';
+      case SensorMeasurement.frost:
+        return 'Radiation Fahrenheit';
+      case SensorMeasurement.soil:
+        return '%';
       default:
         return '';
     }

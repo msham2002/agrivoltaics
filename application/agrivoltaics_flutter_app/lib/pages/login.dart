@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
               ),
               const Spacer(flex: 2),
-              const Text('Acknowledgements',
+              const Text('Developed by Da Boyz - Alex Campbell, William Hopkins, Yulia Martinez, Anthony Napolitano, Rose Saalman, Keith Springs',
                 style: TextStyle(
                   fontWeight: FontWeight.w100
                 ),
