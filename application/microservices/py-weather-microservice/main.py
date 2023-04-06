@@ -1,8 +1,8 @@
 import os
-import pymongo
 import requests
 from datetime import datetime
 from twisted.internet import task, reactor
+import pymongo
 
 def notifications():
     mongo_password = os.environ["MONGO_PASSWORD"]
