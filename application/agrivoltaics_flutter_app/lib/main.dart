@@ -1,4 +1,5 @@
 import 'package:agrivoltaics_flutter_app/app_state.dart';
+import 'package:agrivoltaics_flutter_app/pages/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -57,7 +58,8 @@ class App extends StatelessWidget {
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey)
         ),
-        home: const LoginPage(),
+        // home: const LoginPage(),
+        home: const HomePage(),
         debugShowCheckedModeBanner: false,
       ),
     );
