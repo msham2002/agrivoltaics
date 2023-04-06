@@ -82,7 +82,7 @@ jobs:
       with:
         service: 'vinovoltaics-webapp'
         image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-webapp-image'
-        region: us-east4
+        region: us-east5
 
     # - name: 'Use output'
     #   run: 'curl "${{ steps.deploy.outputs.url }}"'
