@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: const [
-          NotificationsButton(),
+          // NotificationsButton(),
           SignOutButton()
         ],
       ),
