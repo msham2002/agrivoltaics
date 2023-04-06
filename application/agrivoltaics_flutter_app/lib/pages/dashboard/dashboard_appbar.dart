@@ -121,44 +121,27 @@ class _FilterModalState extends State<FilterModal> {
                       scrollDirection: Axis.vertical,
                       child: Wrap(
                         children: [
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Container(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Checkbox(
-                                    value: dashboardState.fieldSelection[SensorMeasurement.humidity],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        dashboardState.fieldSelection[SensorMeasurement.humidity] = value!;
-                                      });
-                                    }
-                                  ),
-                                  Text(SensorMeasurement.humidity.displayName),
-                                ],
-                              )
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Container(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Checkbox(
-                                    value: dashboardState.fieldSelection[SensorMeasurement.temperature],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        dashboardState.fieldSelection[SensorMeasurement.temperature] = value!;
-                                      });
-                                    }
-                                  ),
-                                  Text(SensorMeasurement.temperature.displayName)
-                                ],
-                              )
-                            ),
-                          )
+                          for (SensorMeasurement measurement in SensorMeasurement.values)...[
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Container(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Checkbox(
+                                      value: dashboardState.fieldSelection[measurement],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          dashboardState.fieldSelection[measurement] = value!;
+                                        });
+                                      }
+                                    ),
+                                    Text(measurement.displayName),
+                                  ],
+                                )
+                              ),
+                            )
+                          ]
                         ]
                       )
                     ),
