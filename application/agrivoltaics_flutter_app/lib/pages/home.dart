@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         actions: const [
           // NotificationsButton(),
-          SignOutButton()
+          // SignOutButton()
         ],
       ),
       endDrawer: const Drawer(),
