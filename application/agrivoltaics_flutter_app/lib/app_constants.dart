@@ -111,7 +111,10 @@ extension TimeUnitExtension on TimeUnit {
 enum SensorMeasurement {
   humidity,
   temperature,
-  light
+  light,
+  rain,
+  frost,
+  soil
 }
 
 extension SensorMeasurementExtension on SensorMeasurement {
@@ -120,9 +123,15 @@ extension SensorMeasurementExtension on SensorMeasurement {
       case SensorMeasurement.humidity:
         return 'Humidity';
       case SensorMeasurement.temperature:
-        return 'Temperature';
+        return 'Fahrenheit';
       case SensorMeasurement.light:
-        return 'Light';
+        return 'Lux';
+      case SensorMeasurement.rain:
+        return 'Dryness Intensity';
+      case SensorMeasurement.frost:
+        return 'Radiation Fahrenheit';
+      case SensorMeasurement.soil:
+        return 'Soil Moisture';
       default:
         return '';
     }
