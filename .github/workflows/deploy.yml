@@ -6,7 +6,7 @@ on:
     - "deploy"
 
 jobs:
-  build-and-push-to-gcr:
+  app-build-and-push-to-gcr:
     runs-on: ubuntu-latest
     permissions:
       contents: 'read'
@@ -57,8 +57,8 @@ jobs:
       #       ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }},
       #       OWNER_EMAIL=${{ vars.OWNER_EMAIL }}
 
-  deploy-gcp-cloud-run:
-    needs: build-and-push-to-gcr
+  app-deploy-gcp-cloud-run:
+    needs: app-build-and-push-to-gcr
     runs-on: ubuntu-latest
 
     permissions:
@@ -84,26 +84,77 @@ jobs:
         image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-webapp-image'
         region: us-east5
 
-    # - name: 'Use output'
-    #   run: 'curl "${{ steps.deploy.outputs.url }}"'
+  # deploy-gcp-cloud-function:
+  #   runs-on: 'ubuntu-latest'
 
-  deploy-gcp-cloud-function:
-    runs-on: 'ubuntu-latest'
+  #   steps:
+  #   - id: 'checkout'
+  #     uses: 'actions/checkout@v3'
+  #   - id: 'auth'
+  #     uses: 'google-github-actions/auth@v1'
+  #     with:
+  #       credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+    
+  #   - id: 'deploy'
+  #     uses: 'google-github-actions/deploy-cloud-functions@v1'
+  #     with:
+  #       name: 'notifications'
+  #       runtime: 'python310'
+  #       source_dir: './application/microservices/py-weather-microservice/'
+  #       timeout: 540
+  #       env_vars: 'LATITUDE=${{vars.SITE_LATITUDE}},LONGITUDE=${{vars.SITE_LONGITUDE}},MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}}'
+  #       # secret_environment_variables: 'MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}}'
+
+  microservice-build-and-push-to-gcr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:      
+      - uses: actions/checkout@v3
+      - name: Authenticate to Google Cloud
+        id: auth
+        # uses: google-github-actions/auth@v0
+        # with:
+        #   workload_identity_provider: projects/123123123/locations/global/workloadIdentityPools/the-workload-pool/providers/the-provider
+        #   service_account: service-324259319471@gcp-sa-cloudbuild.iam.gserviceaccount.com
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          service_account: service-324259319471@gcp-sa-cloudbuild.iam.gserviceaccount.com
+      - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        with:
+          # gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
+          registry: gcr.io
+          project_id: vinovoltaics-webapp
+          image_name: vinovoltaics-alert-microservice-image
+          image_tag: latest
+          dockerfile: ./application/microservices/py-weather-microservice/Dockerfile
+          context: ./application/microservices/py-weather-microservice
+          build_args: >
+            MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }},
+            LATITUDE=${{ vars.SITE_LATITUDE }},
+            LONGITUDE=${{ vars.SITE_LONGITUDE }},
+            EXECUTION_INTERVAL=${{ vars.MICROSERVICE_EXECUTION_INTERVAL }}
+
+  microservice-deploy-gcp-cloud-run:
+    needs: microservice-build-and-push-to-gcr
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
     steps:
-    - id: 'checkout'
-      uses: 'actions/checkout@v3'
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v1'
+    - uses: 'actions/checkout@v3'
+
+    - uses: 'google-github-actions/auth@v1'
       with:
         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-    
+
     - id: 'deploy'
-      uses: 'google-github-actions/deploy-cloud-functions@v1'
+      uses: 'google-github-actions/deploy-cloudrun@v1'
       with:
-        name: 'notifications'
-        runtime: 'python310'
-        source_dir: './application/microservices/py-weather-microservice/'
-        timeout: 540
-        env_vars: 'LATITUDE=${{vars.SITE_LATITUDE}},LONGITUDE=${{vars.SITE_LONGITUDE}},MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}}'
-        # secret_environment_variables: 'MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}}'
+        service: 'vinovoltaics-alert-microservice'
+        image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-alert-microservice-image'
+        region: us-east5

@@ -5,20 +5,27 @@ from twisted.internet import task, reactor
 import pymongo
 
 def notifications():
+    # Initialize Mongo client, database, and collections
     mongo_password = os.environ["MONGO_PASSWORD"]
     client = pymongo.MongoClient(f"mongodb+srv://agrivoltaicsgrafana:{mongo_password}@vinovoltaics-cluster.qhgrw48.mongodb.net/?retryWrites=true&w=majority", 27017)
     db = client.db
     notifications = db.notifications
 
+    # Initialize indexes
+    if "body_index" not in notifications.index_information():
+        notifications.create_index("body", name="body_index", unique=True)
+
+    # Begin task execution
+    execution_interval = os.environ["EXECUTION_INTERVAL"]
     looping_task = task.LoopingCall(notif_loop, notifications)
-    looping_task.start(60.0)
+    looping_task.start(execution_interval)
     reactor.run()
 
 def notif_loop(notification_collection):
-    lat = "32.757484"
-    long = "-89.764933"
-    # lat = os.environ["LATITUDE"]
-    # long = os.environ["LONGITUDE"]
+    # lat = "32.757484"
+    # long = "-89.764933"
+    lat = os.environ["LATITUDE"]
+    long = os.environ["LONGITUDE"]
     response = requests.get(f"https://api.weather.gov/points/{lat},{long}")
     if response.status_code == 200:
         print("Pull successful")
@@ -124,3 +131,5 @@ def notif_loop(notification_collection):
             return "Error: Unable to fetch hazard data"
     else:
         return "Error: Unable to fetch weather data"
+
+notifications()
