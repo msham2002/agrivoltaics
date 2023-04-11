@@ -15,11 +15,12 @@ def notifications():
     if "body_index" not in notifications.index_information():
         notifications.create_index("body", name="body_index", unique=True)
 
-    # Begin task execution
-    execution_interval = os.environ["EXECUTION_INTERVAL"]
-    looping_task = task.LoopingCall(notif_loop, notifications)
-    looping_task.start(execution_interval)
-    reactor.run()
+    # Execute task
+    # execution_interval = os.environ["EXECUTION_INTERVAL"]
+    # looping_task = task.LoopingCall(notif_loop, notifications)
+    # looping_task.start(execution_interval)
+    # reactor.run()
+    notif_loop()
 
 def notif_loop(notification_collection):
     # lat = "32.757484"
