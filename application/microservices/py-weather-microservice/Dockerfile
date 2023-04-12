@@ -1,6 +1,6 @@
 # Set up environment
 FROM python:3.10
-RUN pip install dnspython pymongo requests twisted
+RUN pip install dnspython pymongo requests
 COPY . .
 
 # Define build arguments to be populated by build command (docker build --build-arg BUILD_ARG=value)
@@ -13,7 +13,6 @@ ARG EXECUTION_INTERVAL
 ENV MONGO_PASSWORD=${MONGO_PASSWORD}
 ENV LATITUDE=${LATITUDE}
 ENV LONGITUDE=${LONGITUDE}
-ENV EXECUTION_INTERVAL=${EXECUTION_INTERVAL}
 
 # Define entrypoint
 CMD ["python", "./main.py"]

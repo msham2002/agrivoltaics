@@ -1,7 +1,6 @@
 import os
 import requests
 from datetime import datetime
-from twisted.internet import task, reactor
 import pymongo
 
 def notifications():
@@ -16,10 +15,6 @@ def notifications():
         notifications.create_index("body", name="body_index", unique=True)
 
     # Execute task
-    # execution_interval = os.environ["EXECUTION_INTERVAL"]
-    # looping_task = task.LoopingCall(notif_loop, notifications)
-    # looping_task.start(execution_interval)
-    # reactor.run()
     notif_loop(notifications)
 
 def notif_loop(notification_collection):
