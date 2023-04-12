@@ -1,13 +1,23 @@
+import os
 from flask import Flask, request, jsonify, render_template
-import requests
 import pymongo
 from bson.json_util import dumps
 from datetime import datetime
+import waitress
 
-client = pymongo.MongoClient('localhost', 27017)
+# Initialize Mongo client, database, and collections
+mongo_password = os.environ["MONGO_PASSWORD"]
+client = pymongo.MongoClient(f"mongodb+srv://agrivoltaicsgrafana:{mongo_password}@vinovoltaics-cluster.qhgrw48.mongodb.net/?retryWrites=true&w=majority", 27017)
 db = client.db
 users = db.users
 notifications = db.notifications
+
+# Initialize indexes
+if "body_index" not in notifications.index_information():
+    notifications.create_index("body", name="body_index", unique=True)
+
+if "unique_user_index" not in users.index_information():
+    users.create_index([("email", 1), ("last_read", 1)], name="unique_user_index", unique=True)
 
 app = Flask(__name__)
 
@@ -19,7 +29,7 @@ def fetch_user(email):
     if (user == None):
         user = {
             "email": email,
-            "last_read": datetime.now()
+            "last_read": datetime.utcnow()
         }
         users.insert_one(user)
 
@@ -47,8 +57,8 @@ def read_notifications():
     user = fetch_user(userEmail)
 
     # Update user's last_read attribute
-    users.update_one({"email": user["email"]}, {"$set": {"last_read": datetime.now()}})
+    users.update_one({"email": user["email"]}, {"$set": {"last_read": datetime.utcnow()}})
+    return ''
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
+# Run server
+waitress.serve(app=app, port=8080, url_scheme='http')
