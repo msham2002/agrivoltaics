@@ -11,8 +11,11 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
-    steps:      
-      - uses: actions/checkout@v3
+    steps:    
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@v3
+        
       - name: Authenticate to Google Cloud
         id: auth
         # uses: google-github-actions/auth@v0
@@ -23,7 +26,10 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
           service_account: service-324259319471@gcp-sa-cloudbuild.iam.gserviceaccount.com
-      - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+
+      - name: Push image to Google Cloud Container Registry
+        id: push-image
+        uses: RafikFarhad/push-to-gcr-github-action@v5-beta
         with:
           # gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
           registry: gcr.io
@@ -40,22 +46,6 @@ jobs:
             INFLUXDB_DEBUG=${{ vars.INFLUXDB_DEBUG }},
             ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }},
             OWNER_EMAIL=${{ vars.OWNER_EMAIL }}
-      # - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
-      #   with:
-      #     registry: gcr.io
-      #     project_id: vinovoltaics-webapp
-      #     image_name: vinovoltaics-webapp-image
-      #     image_tag: latest
-      #     dockerfile: ./application/agrivoltaics_flutter_app/Dockerfile
-      #     context: ./application/agrivoltaics_flutter_app
-      #     build_args: >
-      #       INFLUXDB_URL=${{ vars.INFLUXDB_URL }},
-      #       INFLUXDB_TOKEN=${{ secrets.INFLUXDB_TOKEN }},
-      #       INFLUXDB_ORG=${{ vars.INFLUXDB_ORG }},
-      #       INFLUXDB_BUCKET=${{ vars.INFLUXDB_BUCKET }},
-      #       INFLUXDB_DEBUG=${{ vars.INFLUXDB_DEBUG }},
-      #       ADMIN_EMAIL=${{ vars.ADMIN_EMAIL }},
-      #       OWNER_EMAIL=${{ vars.OWNER_EMAIL }}
 
   app-deploy-gcp-cloud-run:
     needs: app-build-and-push-to-gcr
@@ -66,65 +56,45 @@ jobs:
       id-token: 'write'
 
     steps:
-    - uses: 'actions/checkout@v3'
+    - name: Checkout repository
+      id: checkout
+      uses: 'actions/checkout@v3'
 
-#     - uses: 'google-github-actions/auth@v1'
-#       with:
-#         workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-#         service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
-
-    - uses: 'google-github-actions/auth@v1'
+    - name: Authenticate with Google Cloud
+      id: auth
+      uses: 'google-github-actions/auth@v1'
       with:
         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
-    - id: 'deploy'
+    - name: Deploy Cloud Run Service
+      id: deploy
       uses: 'google-github-actions/deploy-cloudrun@v1'
       with:
         service: 'vinovoltaics-webapp'
         image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-webapp-image'
         region: us-east5
 
-  # deploy-gcp-cloud-function:
-  #   runs-on: 'ubuntu-latest'
-
-  #   steps:
-  #   - id: 'checkout'
-  #     uses: 'actions/checkout@v3'
-  #   - id: 'auth'
-  #     uses: 'google-github-actions/auth@v1'
-  #     with:
-  #       credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-    
-  #   - id: 'deploy'
-  #     uses: 'google-github-actions/deploy-cloud-functions@v1'
-  #     with:
-  #       name: 'notifications'
-  #       runtime: 'python310'
-  #       source_dir: './application/microservices/py-weather-microservice/'
-  #       timeout: 540
-  #       env_vars: 'LATITUDE=${{vars.SITE_LATITUDE}},LONGITUDE=${{vars.SITE_LONGITUDE}},MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}}'
-  #       # secret_environment_variables: 'MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}}'
-
   microservice-build-and-push-to-gcr:
     runs-on: ubuntu-latest
     permissions:
       contents: 'read'
       id-token: 'write'
-    steps:      
-      - uses: actions/checkout@v3
+    steps:    
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@v3
+        
       - name: Authenticate to Google Cloud
         id: auth
-        # uses: google-github-actions/auth@v0
-        # with:
-        #   workload_identity_provider: projects/123123123/locations/global/workloadIdentityPools/the-workload-pool/providers/the-provider
-        #   service_account: service-324259319471@gcp-sa-cloudbuild.iam.gserviceaccount.com
         uses: 'google-github-actions/auth@v1'
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
           service_account: service-324259319471@gcp-sa-cloudbuild.iam.gserviceaccount.com
-      - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+
+      - name: Push image to Google Cloud Container Registry
+        id: push-image
+        uses: RafikFarhad/push-to-gcr-github-action@v5-beta
         with:
-          # gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
           registry: gcr.io
           project_id: vinovoltaics-webapp
           image_name: vinovoltaics-alert-microservice-image
@@ -137,25 +107,30 @@ jobs:
             LONGITUDE=${{ vars.SITE_LONGITUDE }},
             EXECUTION_INTERVAL=${{ vars.MICROSERVICE_EXECUTION_INTERVAL }}
 
-  # TODO: deploy as cloud run JOB, not service
-  # microservice-deploy-gcp-cloud-run:
-  #   needs: microservice-build-and-push-to-gcr
-  #   runs-on: ubuntu-latest
+  microservice-deploy-gcp-cloud-run:
+    needs: microservice-build-and-push-to-gcr
+    runs-on: ubuntu-latest
 
-  #   permissions:
-  #     contents: 'read'
-  #     id-token: 'write'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
-  #   steps:
-  #   - uses: 'actions/checkout@v3'
+    steps:
+    - name: Checkout repository
+      id: checkout
+      uses: 'actions/checkout@v3'
 
-  #   - uses: 'google-github-actions/auth@v1'
-  #     with:
-  #       credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+    - name: Authenticate with Google Cloud
+      id: auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
-  #   - id: 'deploy'
-  #     uses: 'google-github-actions/deploy-cloudrun@v1'
-  #     with:
-  #       service: 'vinovoltaics-alert-microservice'
-  #       image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-alert-microservice-image'
-  #       region: us-east5
+    - name: Deploy Cloud Run Job
+      id: deploy
+      # uses: 'google-github-actions/deploy-cloudrun@v1'
+      uses: 'spencercorwin/deploy-cloudrun@v1' # fork from independent contributor to enable jobs
+      with:
+        job: 'vinovoltaics-alert-microservice'
+        image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-alert-microservice-image'
+        region: us-east5
