@@ -133,4 +133,4 @@ jobs:
       with:
         job: 'vinovoltaics-alert-microservice'
         image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-alert-microservice-image'
-        region: us-east5
+        region: us-central1
