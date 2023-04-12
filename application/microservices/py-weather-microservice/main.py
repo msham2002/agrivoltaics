@@ -20,7 +20,7 @@ def notifications():
     # looping_task = task.LoopingCall(notif_loop, notifications)
     # looping_task.start(execution_interval)
     # reactor.run()
-    notif_loop()
+    notif_loop(notifications)
 
 def notif_loop(notification_collection):
     # lat = "32.757484"
