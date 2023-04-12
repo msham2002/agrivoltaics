@@ -129,7 +129,7 @@ jobs:
     - name: Deploy Cloud Run Job
       id: deploy
       # uses: 'google-github-actions/deploy-cloudrun@v1'
-      uses: 'spencercorwin/deploy-cloudrun@v1' # fork from independent contributor to enable jobs
+      uses: 'spencercorwin/deploy-cloudrun@enable-jobs' # fork from independent contributor to enable jobs
       with:
         job: 'vinovoltaics-alert-microservice'
         image: 'gcr.io/vinovoltaics-webapp/vinovoltaics-alert-microservice-image'
