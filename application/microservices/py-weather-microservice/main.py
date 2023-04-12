@@ -113,7 +113,7 @@ def notif_loop(notification_collection):
 
                     notification = {
                         "body": weather_dict,
-                        "timestamp" : datetime.now()
+                        "timestamp" : datetime.utcnow()
                     }
 
                     try:
