@@ -45,9 +45,10 @@ def get_notifications():
     recent_notifications = notifications.find({"timestamp": {"$gt": user["last_read"]}})
     
     # Return response
-    response = {
+    response = Flask.jsonify({
         "notifications": eval(dumps(list(recent_notifications)))
-    }
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 @app.route('/readNotifications', methods=['POST'])
