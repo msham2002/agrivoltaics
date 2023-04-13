@@ -66,7 +66,9 @@ def read_notifications():
 
     # Update user's last_read attribute
     users.update_one({"email": user["email"]}, {"$set": {"last_read": datetime.utcnow()}})
-    return ''
+    response = flask.jsonify()
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 # Run server
 waitress.serve(app=app, port=8080, url_scheme='http')
