@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify, render_template
+import flask
 import pymongo
 from bson.json_util import dumps
 from datetime import datetime
@@ -19,7 +19,7 @@ if "body_index" not in notifications.index_information():
 if "unique_user_index" not in users.index_information():
     users.create_index([("email", 1), ("last_read", 1)], name="unique_user_index", unique=True)
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 def fetch_user(email):
     # Fetch user
@@ -38,14 +38,14 @@ def fetch_user(email):
 @app.route('/getNotifications', methods=['GET'])
 def get_notifications():
     # Fetch user
-    userEmail = request.args.get("email")
+    userEmail = flask.request.args.get("email")
     user = fetch_user(userEmail)
 
     # Fetch notifications posted after user's last_read attribute
     recent_notifications = notifications.find({"timestamp": {"$gt": user["last_read"]}})
     
     # Return response
-    response = Flask.jsonify({
+    response = flask.jsonify({
         "notifications": eval(dumps(list(recent_notifications)))
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -54,7 +54,7 @@ def get_notifications():
 @app.route('/readNotifications', methods=['POST'])
 def read_notifications():
     # Fetch user
-    userEmail = request.args.get("email")
+    userEmail = flask.request.args.get("email")
     user = fetch_user(userEmail)
 
     # Update user's last_read attribute
