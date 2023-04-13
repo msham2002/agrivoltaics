@@ -44,10 +44,17 @@ def get_notifications():
     # Fetch notifications posted after user's last_read attribute
     recent_notifications = notifications.find({"timestamp": {"$gt": user["last_read"]}})
     
-    # Return response
-    response = flask.jsonify({
+    # Format response
+    responseJson = {
         "notifications": eval(dumps(list(recent_notifications)))
-    })
+    }
+    # Undo default bson encoding
+    for notification in responseJson["notifications"]:
+        notification.pop("_id")
+        notification["timestamp"] = notification["timestamp"]["$date"]
+
+    # Return response
+    response = flask.jsonify(responseJson)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
