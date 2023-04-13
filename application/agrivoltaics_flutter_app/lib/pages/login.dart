@@ -1,7 +1,7 @@
 import 'package:agrivoltaics_flutter_app/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'home.dart';
+import 'home/home.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 

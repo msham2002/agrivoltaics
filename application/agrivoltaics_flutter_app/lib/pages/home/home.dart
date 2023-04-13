@@ -19,11 +19,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: const [
-          // NotificationsButton(),
+          NotificationsButton(),
           // SignOutButton()
         ],
       ),
-      // endDrawer: const Drawer(),
+      endDrawer: const Drawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
