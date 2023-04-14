@@ -58,8 +58,8 @@ class App extends StatelessWidget {
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey)
         ),
-        // home: const LoginPage(),
-        home: const HomePage(),
+        home: const LoginPage(),
+        // home: const HomePage(),
         debugShowCheckedModeBanner: false,
       ),
     );

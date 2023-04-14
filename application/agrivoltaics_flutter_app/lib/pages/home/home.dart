@@ -3,6 +3,7 @@ import 'package:agrivoltaics_flutter_app/auth.dart';
 import 'package:agrivoltaics_flutter_app/pages/login.dart';
 import 'package:agrivoltaics_flutter_app/pages/settings.dart';
 import 'package:agrivoltaics_flutter_app/pages/sites.dart';
+import 'package:agrivoltaics_flutter_app/pages/home/notifications.dart';
 import 'package:flutter/material.dart';
 
 /*
@@ -20,10 +21,10 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         actions: const [
           NotificationsButton(),
-          // SignOutButton()
+          SignOutButton()
         ],
       ),
-      endDrawer: const Drawer(),
+      endDrawer: const NotificationsDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -141,49 +142,6 @@ class SignOutDialog extends StatelessWidget {
           child: const Text('Sign out')
         )
       ]
-    );
-  }
-}
-
-/*
-
-Notifications Button
-- Opens drawer containing notifications
-- Alerts user if there are unread notifications
-
-*/
-class NotificationsButton extends StatelessWidget {
-  const NotificationsButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            onPressed: () {
-              Scaffold.of(context).openEndDrawer();
-            },
-            icon: Stack(
-              children: const [
-                Icon(
-                  Icons.notifications,
-                ),
-                Positioned(
-                  child: Icon(
-                    Icons.brightness_1,
-                    color: Colors.red,
-                    size: 9.0
-                  )
-                )
-              ]
-            )
-          ),
-        );
-      }
     );
   }
 }
