@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:agrivoltaics_flutter_app/app_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -68,7 +69,7 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       AppState appState = context.read<AppState>();
-      await readNotifications();
+      await readNotifications(FirebaseAuth.instance.currentUser?.email);
       appState.notifications = [];
       appState.finalizeState();
     });
@@ -101,7 +102,7 @@ class _NotificationsButtonState extends State<NotificationsButton> {
     return Consumer<AppState>(
       builder: (context, appState, child) {
         return FutureBuilder<List<AppNotification>>(
-          future: getNotifications(),
+          future: getNotifications(FirebaseAuth.instance.currentUser?.email),
           builder: (BuildContext context, AsyncSnapshot<List<AppNotification>> snapshot) {
             if (snapshot.hasData) {
               appState.notifications = snapshot.data!;
@@ -165,8 +166,8 @@ class AppNotification {
   }
 }
 
-Future<List<AppNotification>> getNotifications() async {
-  http.Response response = await http.get(Uri.parse('https://vinovoltaics-notification-api-6ajy6wk4ca-ul.a.run.app/getNotifications?email=will@gmail.com'));
+Future<List<AppNotification>> getNotifications(String? email) async {
+  http.Response response = await http.get(Uri.parse('https://vinovoltaics-notification-api-6ajy6wk4ca-ul.a.run.app/getNotifications?email=${email}'));
   List<AppNotification> notifications = [];
   if (response.statusCode == 200) {
     for (var notification in jsonDecode(response.body)['notifications']) {
@@ -176,7 +177,7 @@ Future<List<AppNotification>> getNotifications() async {
   return notifications;
 }
 
-Future<void> readNotifications() async {
-  http.Response response = await http.post(Uri.parse('https://vinovoltaics-notification-api-6ajy6wk4ca-ul.a.run.app/readNotifications?email=will@gmail.com'));
+Future<void> readNotifications(String? email) async {
+  await http.post(Uri.parse('https://vinovoltaics-notification-api-6ajy6wk4ca-ul.a.run.app/readNotifications?email=${email}'));
   return;
 }
