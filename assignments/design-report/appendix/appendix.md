@@ -1,10 +1,10 @@
 # Appendix
 ## Meeting Notes
-* [9-15-22](./meeting%20notes/9-15-22/)
-* [9-25-22](./meeting%20notes/9-25-22/)
-* [9-30-22](./meeting%20notes/9-30-22/)
-* [10-14-22](./meeting%20notes/10-14-22/)
-* [11-10-22](./meeting%20notes/11-10-22/)
+* [9-15-22](./meeting%20notes/fall/9-15-22/)
+* [9-25-22](./meeting%20notes/fall/9-25-22/)
+* [9-30-22](./meeting%20notes/fall/9-30-22/)
+* [10-14-22](./meeting%20notes/fall/10-14-22/)
+* [11-10-22](./meeting%20notes/fall/11-10-22/)
 
 ## References
 * [Climate change is altering the chemistry of wine](./references/Climate%20change%20is%20altering%20the%20chemistry%20of%20wine.pdf)
