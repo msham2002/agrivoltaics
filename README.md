@@ -18,6 +18,34 @@ In this project, we will develop a wireless microclimate sensor system that is c
 ## Project Description
 * [Project Description](./assignments/Senior%20Design%20Project%20Description.pdf)
 
+## Test Plan
+* [Test Plan](./assignments/test-plan/Test Plan.pdf)
+
+## User Manual
+* [User Docs](./assignments/user-docs/)
+
+## Spring Semester Presentation
+* [Spring Presentation](./assignments/slideshow/spring-presentation-slidedeck.pdf)
+
+## Final Expo Poster
+* [Expo Poster](./assignments/expo-poster/Expo Poster.pdf)
+
+## Fall Self-Assessment Essays
+* [James Campbell](./assignments/individual-capstone-assessment/Individual%20Capstone%20Assessment.docx)
+* [Will Hopkins](./assignments/individual-capstone-assessment/individual%20capstone%20assessment%20-%20Hopkins.pdf)
+* [Yulia Martinez](./assignments/individual-capstone-assessment/Senior%20Design%20Individual%20Capstone%20Assessment%20-%20Yulia%20Martinez.pdf)
+* [Anthony Napolitano](./assignments/individual-capstone-assessment/individual%20capstone%20assignment%20-%20Napolitano.pdf)
+
+## Spring Self-Assessment Essays
+
+## Summary of Hours
+
+## Budget
+* [Budget](./assignments/fall-design-report/budget.md)
+
+## Appendix
+* [Appendix](./assignments/fall-design-report/appendix/appendix.md)
+
 ## User Stories and Design Diagrams
 * [User Stories](./assignments/user-stories/user-stories.md)
 * [Design Diagrams](./assignments/design-diagrams/Assignment%20%234%20-%20Design%20Diagrams_R1.pdf)
@@ -29,14 +57,8 @@ In this project, we will develop a wireless microclimate sensor system that is c
 ## Concerns Essay
 * [Project Constraints Essay](./assignments/project-constraints-essay/Project%20Constraint%20Essay.pdf)
 
-## Slideshow
-* [Slideshow](./assignments/slideshow/slideshow.pdf)
-
-## Self-Assessment Essays
-* [James Campbell](./assignments/individual-capstone-assessment/Individual%20Capstone%20Assessment.docx)
-* [Will Hopkins](./assignments/individual-capstone-assessment/individual%20capstone%20assessment%20-%20Hopkins.pdf)
-* [Yulia Martinez](./assignments/individual-capstone-assessment/Senior%20Design%20Individual%20Capstone%20Assessment%20-%20Yulia%20Martinez.pdf)
-* [Anthony Napolitano](./assignments/individual-capstone-assessment/individual%20capstone%20assignment%20-%20Napolitano.pdf)
+## Fall Semester Presentation
+* [Presentation](./assignments/slideshow/slideshow.pdf)
 
 ## Professional Biographies
 * [Alex Campbell](./assignments/professional-bios/james-campbell-ee.pdf)
@@ -45,9 +67,3 @@ In this project, we will develop a wireless microclimate sensor system that is c
 * [Anthony Napolitano](./assignments/professional-bios/anthony-napolitano-ee.pdf)
 * [Rose Saalman](./assignments/professional-bios/Rose%20Saalman_CompE_SeniorDesign.pdf)
 * [Keith Springs](./assignments/professional-bios/Rose%20Saalman_CompE_SeniorDesign.pdf)
-
-## Budget
-* [Budget](./assignments/fall-design-report/budget.md)
-
-## Appendix
-* [Appendix](./assignments/fall-design-report/appendix/appendix.md)
