@@ -19,7 +19,7 @@ In this project, we will develop a wireless microclimate sensor system that is c
 * [Project Description](./assignments/Senior%20Design%20Project%20Description.pdf)
 
 ## Test Plan
-* [Test Plan](./assignments/test-plan/Test Plan.pdf)
+* [Test Plan](./assignments/test-plan/Test-Plan.pdf)
 
 ## User Manual
 * [User Docs](./assignments/user-docs/)
@@ -28,7 +28,7 @@ In this project, we will develop a wireless microclimate sensor system that is c
 * [Spring Presentation](./assignments/slideshow/spring-presentation-slidedeck.pdf)
 
 ## Final Expo Poster
-* [Expo Poster](./assignments/expo-poster/Expo Poster.pdf)
+* [Expo Poster](./assignments/expo-poster/Expo-Poster.pdf)
 
 ## Fall Self-Assessment Essays
 * [James Campbell](./assignments/individual-capstone-assessment/Individual%20Capstone%20Assessment.docx)
