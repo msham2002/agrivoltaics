@@ -40,8 +40,15 @@ In this project, we will develop a wireless microclimate sensor system that is c
 * [Anthony Napolitano](./assignments/individual-capstone-assessment/individual%20capstone%20assignment%20-%20Napolitano.pdf)
 
 ## Spring Self-Assessment Essays
+* [James Campbell]
+* [Will Hopkins]
+* [Yulia Martinez]
+* [Anthony Napolitano]
+* [Rose Saalman]
+* [Keith Springs]
 
 ## Summary of Hours
+* [Hours & Stuff]
 
 ## Budget
 * [Budget](./assignments/fall-design-report/budget.md)
