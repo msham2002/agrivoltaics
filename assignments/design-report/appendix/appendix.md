@@ -8,7 +8,7 @@
 * [11-10-22](./meeting%20notes/fall/11-10-22/)
 
 # Spring Semester
-* [01-20-23](./meeting notes/spring/01-20-23/)
+* [01-20-23](./meeting%20notes/spring/01-20-23/)
 * [01-27-23](.//meeting notes/spring/01-27-23/)
 * [02-03-23](./meeting notes/spring/02-03-23/)
 * [02-05-23](./meeting notes/spring/02-05-23/)
