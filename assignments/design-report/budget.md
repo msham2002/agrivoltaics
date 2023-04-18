@@ -21,7 +21,7 @@
 * 8-IN X 8-IN X 4-IN PVC JN x3 - $116.94
 * GB HEAT SHRINK TUB SPOOL - $5.98
 * GB HEAT SHRINK TUB ASSORT - $2.38
-* Asurion x4 - $38.76
+* Warranty for Solar Panels x4 - $38.76
 * Solar USB Charger x5 - $102.35
 * Lithium Battery x4 - $201.55
 * Solar Panel x4 - $237.17
