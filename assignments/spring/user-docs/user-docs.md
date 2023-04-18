@@ -22,14 +22,18 @@ Be alerted by the National Weather Service when local weather conditions are cha
 Configure the timezone to show when displaying data.
 
 ### Frequently Asked Questions
+-----
 #### How do I add more sites to the webapp? Is there a maximum?
+For the user, this is not currently supported, since it would require programming the micrcontroller to that specific site. The dev team is responsible for this. 
 
 #### How can I add more sensors to a site location on the webapp? Is there a maximum?
+For the user, this is not currently supported since it would require programming a new microcontroller to configure all of the sensor systems to work together. The dev team is responsible for this. 
 
 #### What is the data retention period?
+The data retention period is 180 days. The application will save the sensor readings for up to 180 days. 
 
 #### What sort of notifications can I expect to recieve?
-The notifications that you can expect to see included in the web application include the Weather watch Description, The time that 
+The notifications that you can expect to see included in the web application include the Weather watch Description, The time that the notification was pulled, and if it was a watch, advisory, statement or warning of the hazard. 
 
 
 
