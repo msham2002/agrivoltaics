@@ -13,6 +13,11 @@
 
 ## Spring 2023 Expenses
 * Convex Glass Lens with Edge - 40mm Diameter x6 - $53.90
+* Minature Screws for Sensor Fastening - Blue Hawk Wood Screws 4x1 - $7.52 
+* ESP32 Microcontroller x4 - 356-ESP32-DEVKITC32E - $64.66
+* LM393 Soil Moisture Sensors x5 - $8.51
+* Wiring Kit for Demo Box with Breadboard Connectors Male/Female - $7.52
+* 
 
 ### Total Spring 2023 Expenses
 * $xxx.xx
