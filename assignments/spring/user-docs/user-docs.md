@@ -22,16 +22,16 @@ Be alerted by the National Weather Service when local weather conditions are cha
 Configure the timezone to show when displaying data.
 
 ### Frequently Asked Questions
-# How do I add more sites to the webapp? Is there a maximum?
+#### How do I add more sites to the webapp? Is there a maximum?
 
-# How can I add more sensors to a site location on the webapp? Is there a maximum?
+#### How can I add more sensors to a site location on the webapp? Is there a maximum?
 
-# What is the data retention period?
+#### What is the data retention period?
 
-# What sort of notifications can I expect to recieve?
-The notifications that you can expect to see included in the web application 
+#### What sort of notifications can I expect to recieve?
+The notifications that you can expect to see included in the web application include the Weather watch Description, The time that 
 
-# Dark mode
+
 
 
 # Developer Documentation
