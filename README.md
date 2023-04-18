@@ -41,9 +41,9 @@ In this project, we will develop a wireless microclimate sensor system that is c
 
 ## Spring Self-Assessment Essays
 * [James Campbell]
-* [Will Hopkins]
+* [Will Hopkins](./assignments/spring/individual-assessments-spring/self assessment - Hopkins.pdf)
 * [Yulia Martinez]
-* [Anthony Napolitano]
+* [Anthony Napolitano](./assignments/spring/individual-assessments-spring/Anthony-Self-Assessment-Spring.pdf
 * [Rose Saalman]
 * [Keith Springs]
 
