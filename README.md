@@ -44,7 +44,7 @@ In this project, we will develop a wireless microclimate sensor system that is c
 * [Will Hopkins](./assignments/spring/individual-assessments-spring/self-assessment-Hopkins.pdf)
 * [Yulia Martinez]
 * [Anthony Napolitano](./assignments/spring/individual-assessments-spring/Anthony-Self-Assessment-Spring.pdf)
-* [Rose Saalman]
+* [Rose Saalman](./assignments/spring/individual-assessments-spring/Senior Design Individual Assignment -- Rose Saalman.docx)
 * [Keith Springs]
 
 ## Summary of Hours
