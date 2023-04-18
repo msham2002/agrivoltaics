@@ -19,7 +19,7 @@ In this project, we will develop a wireless microclimate sensor system that is c
 * [Project Description](./assignments/Senior%20Design%20Project%20Description.pdf)
 
 ## User Interface Specification
-* [User Interface Specification]
+* [User Interface Specification](./assignments/spring/user-interface-specification/user-interface-specification.pdf)
 
 ## Test Plan
 * [Test Plan](./assignments/spring/test-plan/Test-Plan.pdf)
