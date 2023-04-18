@@ -12,9 +12,10 @@ Keith Springs (CE) - springkh@mail.uc.edu
 Dr. Mohsen Rezayat – mohsen.rezayat@omid-usa.org​  
 Dr. Je-Hyeong Bahk – bahkjg@ucmail.uc.edu
 
-## Project Description and Abstract
-# Project Abstract
+## Project Abstract
 In this project, we will develop a wireless microclimate sensor system that is capable of sensing local climate components such as air temperature, humidity, light intensity, and wind at an agricultural site as well as the soil conditions such as soil temperature and moisture level. These sensing data will be collected remotely into an application, made accessible to the user, and will be used to make automatic decisions on the adjustment of the PV panel angle and other operations. Some extreme weather events such as hails may not be easily detected or predicted from the microclimate sensing; these will instead be reported from public alert sources.
+
+## Project Description and Abstract
 * [Project Description](./assignments/Senior%20Design%20Project%20Description.pdf)
 
 ## User Interface Specification
