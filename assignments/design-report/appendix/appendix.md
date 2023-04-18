@@ -1,10 +1,30 @@
 # Appendix
 ## Meeting Notes
+# Fall
 * [9-15-22](./meeting%20notes/fall/9-15-22/)
 * [9-25-22](./meeting%20notes/fall/9-25-22/)
 * [9-30-22](./meeting%20notes/fall/9-30-22/)
 * [10-14-22](./meeting%20notes/fall/10-14-22/)
 * [11-10-22](./meeting%20notes/fall/11-10-22/)
+
+# Spring Semester
+* [01-20-23](./assignments/design-report/appendix/meeting notes/spring/01-20-23/)
+* [01-27-23](./assignments/design-report/appendix/meeting notes/spring/01-27-23/)
+* [02-03-23](./assignments/design-report/appendix/meeting notes/spring/02-03-23/)
+* [02-05-23](./assignments/design-report/appendix/meeting notes/spring/02-05-23/)
+* [02-07-23](./assignments/design-report/appendix/meeting notes/spring/02-07-23/)
+* [02-10-23](./assignments/design-report/appendix/meeting notes/spring/02-10-23/)
+* [02-14-23](./assignments/design-report/appendix/meeting notes/spring/02-14-23/)
+* [02-17-23](./assignments/design-report/appendix/meeting notes/spring/02-17-23/)
+* [02-21-23](./assignments/design-report/appendix/meeting notes/spring/02-21-23/)
+* [02-24-23](./assignments/design-report/appendix/meeting notes/spring/02-24-23/)
+* [03-07-23](./assignments/design-report/appendix/meeting notes/spring/03-07-23/)
+* [03-10-23](./assignments/design-report/appendix/meeting notes/spring/03-10-23/)
+* [03-20-23](./assignments/design-report/appendix/meeting notes/spring/03-20-23/)
+* [03-23-23](./assignments/design-report/appendix/meeting notes/spring/03-23-23/)
+* [03-27-23](./assignments/design-report/appendix/meeting notes/spring/03-27-23/)
+* [03-28-23](./assignments/design-report/appendix/meeting notes/spring/03-28-23/)
+* [03-31-23](./assignments/design-report/appendix/meeting notes/spring/03-31-23/)
 
 ## References
 * [Climate change is altering the chemistry of wine](./references/Climate%20change%20is%20altering%20the%20chemistry%20of%20wine.pdf)
@@ -12,3 +32,11 @@
 * [Design and development of smart cover system for vineyards](./references/Smart_Cover_System_Vineyards.pdf)
 * [Vineyard Visit](./references/vineyard-visit/)
 * [SPADE Article](./assignments/fall-design-report/appendix/references/SPADE-article.pdf)
+
+## Datasheet
+* [ESP32 Microcontroller](./assignments/design-report/appendix/datasheets/esp32-wroom-32_datasheet_en.pdf)
+* [Temperature and Humidity Sensor](./assignments/design-report/appendix/datasheets/Temp-Humidity-Sensor Datasheet.pdf)
+* [Light Sensor](./assignments/design-report/appendix/datasheets/Light-Sensor-Datasheet.pdf)
+* [Rainfall Sensor](./assignments/design-report/appendix/datasheets/Rainfall-Sensor-Datasheet.pdf)
+* [Soil Moisture Sensor](./assignments/design-report/appendix/datasheets/SHT1x_datasheet.pdf)
+* [Frost Sensor](./assignments/design-report/appendix/datasheets/Frost-Sensor-Datasheet.pdf)
