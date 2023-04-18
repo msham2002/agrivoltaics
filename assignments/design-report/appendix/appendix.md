@@ -35,7 +35,7 @@
 
 ## Datasheet
 * [ESP32 Microcontroller](./assignments/design-report/appendix/datasheets/esp32-wroom-32_datasheet_en.pdf)
-* [Temperature and Humidity Sensor](./assignments/design-report/appendix/datasheets/Temp-Humidity-Sensor%20Datasheet.pdf)
+* [Temperature and Humidity Sensor](./assignments/design-report/appendix/datasheets/Temp-Humidity-Sensor-Datasheet.pdf)
 * [Light Sensor](./assignments/design-report/appendix/datasheets/Light-Sensor-Datasheet.pdf)
 * [Rainfall Sensor](./assignments/design-report/appendix/datasheets/Rainfall-Sensor-Datasheet.pdf)
 * [Soil Moisture Sensor](./assignments/design-report/appendix/datasheets/SHT1x_datasheet.pdf)
