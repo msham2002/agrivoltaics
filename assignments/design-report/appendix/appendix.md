@@ -34,9 +34,9 @@
 * [SPADE Article](./assignments/fall-design-report/appendix/references/SPADE-article.pdf)
 
 ## Datasheet
-* [ESP32 Microcontroller](./assignments/design-report/appendix/datasheets/esp32-wroom-32_datasheet_en.pdf)
-* [Temperature and Humidity Sensor](./assignments/design-report/appendix/datasheets/Temp-Humidity-Sensor-Datasheet.pdf)
-* [Light Sensor](./assignments/design-report/appendix/datasheets/Light-Sensor-Datasheet.pdf)
-* [Rainfall Sensor](./assignments/design-report/appendix/datasheets/Rainfall-Sensor-Datasheet.pdf)
-* [Soil Moisture Sensor](./assignments/design-report/appendix/datasheets/SHT1x_datasheet.pdf)
-* [Frost Sensor](./assignments/design-report/appendix/datasheets/Frost-Sensor-Datasheet.pdf)
+* [ESP32 Microcontroller](./datasheets/esp32-wroom-32_datasheet_en.pdf)
+* [Temperature and Humidity Sensor](./datasheets/Temp-Humidity-Sensor-Datasheet.pdf)
+* [Light Sensor](./datasheets/Light-Sensor-Datasheet.pdf)
+* [Rainfall Sensor](./datasheets/Rainfall-Sensor-Datasheet.pdf)
+* [Soil Moisture Sensor](./datasheets/SHT1x_datasheet.pdf)
+* [Frost Sensor](./datasheets/Frost-Sensor-Datasheet.pdf)
