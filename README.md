@@ -50,7 +50,7 @@ In this project, we will develop a wireless microclimate sensor system that is c
 ## Summary of Hours
 * [Hours & Stuff](./assignments/design-report/TimeBreakdown..xlsx)
 
-## Budget
+## Summary of Expenses
 * [Budget](./assignments/design-report/budget.md)
 
 ## Appendix
