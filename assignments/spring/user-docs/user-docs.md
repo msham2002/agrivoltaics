@@ -13,7 +13,7 @@ Select between multiple sites. A site is a geographical location. For example, o
 ### Date Range Selection
 Select a range of time for which to display local climate data. View data over the past day, week, month, etc.
 ### Time Interval Selection
-Select the frequency for which to display local climate data over the selected range of time. View measured data 
+Select the frequency for which to display local climate data over the selected range of time. View measured data.
 ### Filter Selection
 Filter local climate data by type of measurement (humidity, light, rainfall, etc.) and by zone (classified within the site).
 ### Notifications
