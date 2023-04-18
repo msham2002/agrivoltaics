@@ -48,7 +48,7 @@ In this project, we will develop a wireless microclimate sensor system that is c
 * [Keith Springs](.//assignments/spring/individual-assessments-spring/Self_Assessment_AssignmentKS.pdf)
 
 ## Summary of Hours
-* [Hours & Stuff]
+* [Hours & Stuff](./assignments/design-report/TimeBreakdown..xlsx)
 
 ## Budget
 * [Budget](./assignments/design-report/budget.md)
