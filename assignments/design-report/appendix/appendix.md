@@ -31,7 +31,7 @@
 * [IoT Sensor Systems for Improving Production and Quality in Vineyards](./references/IoT%20Sensor%20Systems%20for%20Improving%20Production%20%26%20Quality%20in%20Vineyards.pdf)
 * [Design and development of smart cover system for vineyards](./references/Smart_Cover_System_Vineyards.pdf)
 * [Vineyard Visit](./references/vineyard-visit/)
-* [SPADE Article](./assignments/fall-design-report/appendix/references/SPADE-article.pdf)
+* [SPADE Article](./references/SPADE-article.pdf)
 
 ## Datasheet
 * [ESP32 Microcontroller](./datasheets/esp32-wroom-32_datasheet_en.pdf)
