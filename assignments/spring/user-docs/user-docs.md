@@ -29,7 +29,7 @@ Configure the timezone to show when displaying data.
 # What is the data retention period?
 
 # What sort of notifications can I expect to recieve?
-The notifications that you can expect to see include
+The notifications that you can expect to see included in the web application 
 
 # Dark mode
 
