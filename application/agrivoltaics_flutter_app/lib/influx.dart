@@ -38,7 +38,7 @@ String _generateQuery
   |> filter(fn: (r) => r["_measurement"] == "Site ${site}")
   |> filter(fn: (r) => ${zoneQuery})
   |> filter(fn: (r) => ${fieldQuery})
-  |> aggregateWindow(every: ${timeInterval.value}${timeInterval.unit.fluxQuery}, fn: mean, createEmpty: true)
+  |> aggregateWindow(every: ${timeInterval.value}${timeInterval.unit.fluxQuery}, fn: mean, createEmpty: false)
   |> yield(name: "mean")
   ''';
 }
