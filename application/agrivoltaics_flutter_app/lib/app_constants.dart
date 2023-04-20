@@ -39,8 +39,8 @@ abstract class AppConstants {
     defaultValue: 'America/New_York'
   );
   
-  static const int numSites = 2;
-  static const int numZones = 2;
+  static const int numSites = 1;
+  static const int numZones = 4;
 
   static const Map<int, String> siteConfiguration = {
     1: '172.20.10.5:80'
