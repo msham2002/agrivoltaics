@@ -400,6 +400,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.2+5"
+  g_recaptcha_v3:
+    dependency: "direct main"
+    description:
+      name: g_recaptcha_v3
+      sha256: ee754d0a5621646e200b2d5d9c918d64725fb53d6a1b65cbd6f294c08e0fe529
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5"
   get_it:
     dependency: "direct main"
     description:

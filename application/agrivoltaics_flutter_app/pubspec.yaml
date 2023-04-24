@@ -57,6 +57,7 @@ dependencies:
   flutter_native_timezone: ^2.0.0
   http: ^0.13.5
   timer_builder: ^2.0.0
+  g_recaptcha_v3: ^0.0.5
 
 dev_dependencies:
   flutter_test:
