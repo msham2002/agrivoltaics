@@ -52,7 +52,6 @@ class App extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AppState(),
       child: MaterialApp(
-        // TODO: Choose app name
         title: 'Vinovoltaics',
         theme: ThemeData(
           useMaterial3: true,
