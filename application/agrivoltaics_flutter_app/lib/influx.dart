@@ -17,8 +17,8 @@ String _generateQuery
   PickerDateRange timeUnit,
   TimeInterval timeInterval
 ) {
-  var startDate = DateFormat('yyyy-MM-dd').format(timeUnit.startDate!);
-  var endDate = DateFormat('yyyy-MM-dd').format(timeUnit.endDate!);
+  var startDate = DateFormat('yyyy-MM-dd').format(timeUnit.startDate!.toUtc());
+  var endDate = DateFormat('yyyy-MM-dd').format(timeUnit.endDate!.toUtc());
 
   String zoneQuery = 'r["Zone"] == "${zones[0]}"';
   for (int zone in zones.sublist(1, zones.length)) {
@@ -93,7 +93,7 @@ class InfluxDatapoint {
     this.timeStamp = DateFormat('yyyy-MM-dd kk:mm:ss').format(tz.TZDateTime.from(timeStamp, timezone));
   }
   late String timeStamp;
-  final double value;
+  final double? value;
   final String unit;
 }
 
@@ -102,7 +102,7 @@ class InfluxData {
     for (var record in this.data.value) {
       DateTime timestamp = DateTime.parse(record['_time']);
       String field = record['_field'];
-      double value = record['_value'];
+      double? value = record['_value'];
       String unit = SensorMeasurement.values.firstWhere((e) => e.fluxQuery == field).unit;
       this.datapoints.add(InfluxDatapoint(timestamp, value, unit, timezone));
     }

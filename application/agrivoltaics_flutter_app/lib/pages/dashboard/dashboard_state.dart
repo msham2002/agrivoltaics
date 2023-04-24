@@ -14,8 +14,8 @@ class DashboardState extends ChangeNotifier {
     this.siteSelection = site;
 
     // Initialize date range selection as past week
-    var today = DateTime.now();
-    var initialDateRange = PickerDateRange(DateTime(today.year, today.month, today.day - 7, today.hour, today.minute), today);
+    var now = DateTime.now();
+    var initialDateRange = PickerDateRange(DateTime(now.year, now.month, now.day, now.hour - 24, now.minute), now);
     this.dateRangeSelection = initialDateRange;
 
     // Initialize zone selection 

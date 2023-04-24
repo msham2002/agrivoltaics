@@ -26,8 +26,7 @@ ARG INFLUXDB_TOKEN
 ARG INFLUXDB_ORG
 ARG INFLUXDB_BUCKET
 ARG INFLUXDB_DEBUG
-ARG ADMIN_EMAIL
-ARG OWNER_EMAIL
+ARG AUTHORIZED_EMAILS
 
 # Copy files to container and build
 RUN mkdir /app/
@@ -38,8 +37,7 @@ RUN flutter build web --dart-define=INFLUXDB_URL=${INFLUXDB_URL} \
 --dart-define=INFLUXDB_ORG=${INFLUXDB_ORG} \
 --dart-define=INFLUXDB_BUCKET=${INFLUXDB_BUCKET} \
 --dart-define=INFLUXDB_DEBUG=${INFLUXDB_DEBUG} \
---dart-define=ADMIN_EMAIL=${ADMIN_EMAIL} \
---dart-define=OWNER_EMAIL=${OWNER_EMAIL}
+--dart-define=AUTHORIZED_EMAILS=${AUTHORIZED_EMAILS}
 
 # Record the exposed port
 EXPOSE 5000

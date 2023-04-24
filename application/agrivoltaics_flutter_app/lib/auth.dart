@@ -28,6 +28,5 @@ Future<void> signOut() async {
 
 bool authorizeUser(UserCredential userCredential) {
   var userEmail = userCredential.user?.email;
-  // TODO: remove admin email
-  return userEmail == AppConstants.ownerEmail || userEmail == AppConstants.adminEmail;
+  return (AppConstants.authorizedEmails.contains(userEmail));
 }

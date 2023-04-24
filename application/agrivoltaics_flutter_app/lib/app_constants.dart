@@ -24,15 +24,10 @@ abstract class AppConstants {
     defaultValue: false
   );
 
-  static const String adminEmail = String.fromEnvironment(
-    'ADMIN_EMAIL',
+  static List<String> authorizedEmails = const String.fromEnvironment(
+    'AUTHORIZED_EMAILS',
     defaultValue: ''
-  );
-
-  static const String ownerEmail = String.fromEnvironment(
-    'OWNER_EMAIL',
-    defaultValue: ''
-  );
+  ).split(',');
 
   static const String timezone = String.fromEnvironment(
     'TIMEZONE',
