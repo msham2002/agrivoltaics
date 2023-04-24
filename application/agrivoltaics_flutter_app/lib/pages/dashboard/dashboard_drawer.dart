@@ -139,7 +139,7 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
               padding: const EdgeInsets.all(8.0),
               child: DropdownButton(
                 items: const [
-                  // DropdownMenuItem( // TODO: remove this, debugging purposes only
+                  // DropdownMenuItem( // TODO: debugging purposes only
                   //   value: TimeUnit.second,
                   //   child: Text('seconds')
                   // ),
