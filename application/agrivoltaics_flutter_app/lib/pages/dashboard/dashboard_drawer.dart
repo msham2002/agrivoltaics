@@ -1,3 +1,4 @@
+import 'package:agrivoltaics_flutter_app/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -17,7 +18,7 @@ class DashboardDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var dashboardState = context.watch<DashboardState>();
+    var appState = context.watch<AppState>();
     var horizontalPhone = (MediaQuery.of(context).orientation == Orientation.landscape) || (MediaQuery.of(context).size.shortestSide > 600.0);
 
     return Drawer(
@@ -38,7 +39,7 @@ class DashboardDrawer extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed:() {
-                      dashboardState.finalizeState();
+                      appState.finalizeState();
                     },
                     child: const Text('Apply')
                   ),
@@ -70,7 +71,7 @@ class DateRangePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var dashboardState = context.watch<DashboardState>();
+    var appState = context.watch<AppState>();
     
     return SizedBox(
       width: this.width,
@@ -78,9 +79,9 @@ class DateRangePicker extends StatelessWidget {
       child: Center(
         child: SfDateRangePicker(
           onSelectionChanged: (args) {
-            dashboardState.dateRangeSelection = args.value;
+            appState.dateRangeSelection = args.value;
           },
-          initialSelectedRange: dashboardState.dateRangeSelection,
+          initialSelectedRange: appState.dateRangeSelection,
           selectionMode: DateRangePickerSelectionMode.extendableRange
         )
       ),
@@ -111,8 +112,8 @@ class TimeRangePicker extends StatefulWidget {
 class _TimeRangePickerState extends State<TimeRangePicker> {
   @override
   Widget build(BuildContext context) {
-    var dashboardState = context.watch<DashboardState>();
-    TimeUnit dropdownValue = dashboardState.timeInterval.unit;
+    var appState = context.watch<AppState>();
+    TimeUnit dropdownValue = appState.timeInterval.unit;
 
     return SizedBox(
       height: widget.height,
@@ -127,7 +128,7 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
                   keyboardType: TextInputType.number,
                   maxLength: 2,
                   onChanged: (value) {
-                    dashboardState.timeInterval.value = int.parse(value);
+                    appState.timeInterval.value = int.parse(value);
                   },
                   decoration: const InputDecoration(
                     hintText: 'Interval'
@@ -165,7 +166,7 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
                   )
                 ],
                 onChanged: (value) {
-                  dashboardState.timeInterval.unit = value!;
+                  appState.timeInterval.unit = value!;
                   setState(() {
                     dropdownValue = value;
                   });

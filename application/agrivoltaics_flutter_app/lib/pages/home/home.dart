@@ -1,10 +1,14 @@
 import 'package:agrivoltaics_flutter_app/app_constants.dart';
+import 'package:agrivoltaics_flutter_app/app_state.dart';
 import 'package:agrivoltaics_flutter_app/auth.dart';
 import 'package:agrivoltaics_flutter_app/pages/login.dart';
 import 'package:agrivoltaics_flutter_app/pages/settings.dart';
 import 'package:agrivoltaics_flutter_app/pages/sites.dart';
 import 'package:agrivoltaics_flutter_app/pages/home/notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../dashboard/dashboard.dart';
 
 /*
 
@@ -14,9 +18,11 @@ Home Page
 */
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
+    final appState = AppState(); 
+
     return Scaffold(
       appBar: AppBar(
         actions: const [
@@ -37,11 +43,13 @@ class HomePage extends StatelessWidget {
             ),
             ElevatedButton(
               child: const Text('View Data'),
-              onPressed: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SitesPage(destination: SiteRoute.dashboard)
+                    onPressed: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                              DashboardPage(), 
+                              maintainState: false // This allows the graph to update after adjusting date and time interval
                     )
                   )
               },
@@ -63,7 +71,7 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingsPage()
+                    builder: (context) => const SettingsPage()
                   )
                 )
               },
@@ -88,6 +96,7 @@ class SignOutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Builder(
       builder: (context) {
         return Padding(

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:agrivoltaics_flutter_app/app_state.dart';
 import 'package:agrivoltaics_flutter_app/pages/home/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,7 +42,16 @@ void main() async {
   tz.initializeTimeZones();
 
   // Launch application
-  runApp(const App());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AppState())
+      ], 
+      child: const App(),
+    )
+    );
+
+  
 }
 
 // Root application
