@@ -155,13 +155,17 @@ Color generateRandomColor({int minIntensityThreshold = 600, double minColorDista
     Color newColor;
     bool isSimilarColor;
 
-    do {
-      newColor = generateColor();
-      isSimilarColor = ColorList.any((Color color) {
-        final double distance = calculateColorDistance(color, newColor);
-        return distance < minColorDistance;
-      });
-    } while (isSimilarColor);
+    // similar color currently causing the graph to sometimes get stuck and not load. 
+    //Sometimes it gets stuck because it ends up being in a infinite loop if it can't find colors 
+    //that can be in the different range from the mincolordistant variable
+
+    // do {
+    newColor = generateColor();
+      // isSimilarColor = ColorList.any((Color color) {
+      //   final double distance = calculateColorDistance(color, newColor);
+      //   return distance < minColorDistance;
+      // });
+    // } while (isSimilarColor);
     if (legendColorList.length != EntryAmount) {
       legendColorList.add(newColor);
     } else {
