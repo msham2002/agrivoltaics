@@ -33,7 +33,7 @@ class AppState with ChangeNotifier {
     // Initialize site selection
     this.siteSelection = 1;
 
-    this.singleGraphToggle = true;
+    this.singleGraphToggle = false;
 
     // Initialize date range selection as past week
     var now = DateTime.now();
@@ -125,7 +125,7 @@ class AppState with ChangeNotifier {
       sites[siteIndex].zones.removeAt(zoneIndex);
       for (int i = 0; i < sites.length; i++) {
         for (int j = 0; j < sites[i].zones.length; j++) {
-          sites[i].zones[j].name = 'Site ${j + 1}';
+          sites[i].zones[j].name = 'Zone ${j + 1}';
         }
       }
       notifyListeners();
