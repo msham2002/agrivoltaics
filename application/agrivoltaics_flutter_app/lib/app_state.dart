@@ -89,7 +89,20 @@ class AppState with ChangeNotifier {
 
   void addSite() {
       sites.add(
-        Site(name: 'Site ${sites.length + 1}', zones: [], checked: true),
+        Site(name: 'Site ${sites.length + 1}',         
+        zones: [
+          Zone(
+            name: 'Zone 1',
+            fields: {
+        SensorMeasurement.humidity: true,
+        SensorMeasurement.temperature: true,
+        SensorMeasurement.light: true,
+        SensorMeasurement.frost: true,
+        SensorMeasurement.rain: true,
+        SensorMeasurement.soil: true
+      },
+          ),
+        ], checked: true),
       );
       notifyListeners();
   }
