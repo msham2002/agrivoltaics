@@ -68,13 +68,13 @@ Widget build(BuildContext context) {
         }
     }
   }
-  int graphsPerRow = 2;
+  int graphsPerRow = 1;
   int numberOfRows = (numberOfGraphs / graphsPerRow).ceil();
 
   return LayoutBuilder(
     builder: (context, constraints) {
       double rowWidth = constraints.maxWidth;
-      double rowHeight = constraints.maxHeight / numberOfRows;
+      double rowHeight = constraints.maxHeight;
 
       return ListView.builder(
         itemCount: numberOfRows,
@@ -124,7 +124,7 @@ class DashboardGraph extends StatefulWidget {
   _DashboardGraphState createState() => _DashboardGraphState(numberOfZones: numberOfZones);
 }
 
-class _DashboardGraphState extends State<DashboardGraph>  {
+class _DashboardGraphState extends State<DashboardGraph> with AutomaticKeepAliveClientMixin{
   late int numberOfZones;
   int colorIndex = 0;
   List<Color> legendColorList = [];
@@ -132,62 +132,26 @@ class _DashboardGraphState extends State<DashboardGraph>  {
 
   _DashboardGraphState({required this.numberOfZones});
 
-Color generateRandomColor({int minIntensityThreshold = 600, double minColorDistance = 200.0, required List<Color> ColorList, required int EntryAmount}) {
-  final Random random = Random();
-
-  Color generateColor() {
-    int red = random.nextInt(256);
-    int green = random.nextInt(256);
-    int blue = random.nextInt(256);
-
-    return Color.fromARGB(255, red, green, blue);
-  }
-
-  double calculateColorDistance(Color color1, Color color2) {
-    final int deltaRed = color1.red - color2.red;
-    final int deltaGreen = color1.green - color2.green;
-    final int deltaBlue = color1.blue - color2.blue;
-
-    return math.sqrt(deltaRed * deltaRed + deltaGreen * deltaGreen + deltaBlue * deltaBlue);
-  }
-
-  Color generateUniqueColor() {
-    Color newColor;
-    bool isSimilarColor;
-
-    // similar color currently causing the graph to sometimes get stuck and not load. 
-    //Sometimes it gets stuck because it ends up being in a infinite loop if it can't find colors 
-    //that can be in the different range from the mincolordistant variable
-
-    // do {
-    newColor = generateColor();
-      // isSimilarColor = ColorList.any((Color color) {
-      //   final double distance = calculateColorDistance(color, newColor);
-      //   return distance < minColorDistance;
-      // });
-    // } while (isSimilarColor);
-    if (legendColorList.length != EntryAmount) {
-      legendColorList.add(newColor);
-    } else {
-        colorIndex += 1;
-        if (colorIndex == EntryAmount && colorIndex != 0) {
-          colorIndex = 0;
-          return legendColorList[EntryAmount-1];
-        }
-      return legendColorList[colorIndex-1];
+  Color assignColorToField(MapEntry<String, List<FluxRecord>> fieldData) {
+    if (fieldData.key.contains("Humidity")) {
+      return Colors.blue;
+    } else if (fieldData.key.contains("Temperature")) {
+      return Colors.red;
+    } else if (fieldData.key.contains("Lux")) {
+      return Colors.yellow;
+    } else if (fieldData.key.contains("Rain")) {
+      return Colors.purple;
+    } else if (fieldData.key.contains("Frost")) {
+      return Colors.green;
+    } else if (fieldData.key.contains("Soil")) {
+      return Colors.grey;
     }
 
-    
-    
-
-    return newColor;
+      return Colors.black;
   }
 
-  return generateUniqueColor();
-}
-
-
   @override
+  bool get wantKeepAlive => true;
   Widget build(BuildContext context) {
     var appState = context.watch<AppState>();
     
@@ -213,8 +177,6 @@ Color generateRandomColor({int minIntensityThreshold = 600, double minColorDista
         if (appState.sites[i-1].checked) {
           for (int j = 1; j <= appState.sites[i-1].zones.length; j++) {
             if (appState.sites[i-1].zones[j-1].checked) {
-            
-            
             zoneValue -= 1;
             if (zoneValue == 0) {
               graphTitle += '${appState.sites[i-1].name}, Zone $j';
@@ -257,7 +219,7 @@ Color generateRandomColor({int minIntensityThreshold = 600, double minColorDista
                     LineSeries<InfluxDatapoint, String>(
                       // dataSource: InfluxData(data.value, appState.timezone).data,
                       dataSource: InfluxData(data, appState.timezone).datapoints,
-                      color: generateRandomColor(ColorList: legendColorList, EntryAmount: snapshot.data!.entries.length),
+                      color: assignColorToField(data),
                       xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
                       yValueMapper: (InfluxDatapoint d, _) => d.value,
                       legendItemText: data.key,
