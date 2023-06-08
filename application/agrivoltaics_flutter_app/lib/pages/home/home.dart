@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:agrivoltaics_flutter_app/app_constants.dart';
 import 'package:agrivoltaics_flutter_app/app_state.dart';
 import 'package:agrivoltaics_flutter_app/auth.dart';
@@ -5,10 +7,21 @@ import 'package:agrivoltaics_flutter_app/pages/login.dart';
 import 'package:agrivoltaics_flutter_app/pages/settings.dart';
 import 'package:agrivoltaics_flutter_app/pages/sites.dart';
 import 'package:agrivoltaics_flutter_app/pages/home/notifications.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../dashboard/dashboard.dart';
+
+class HomeState extends StatefulWidget {
+  const HomeState({
+    super.key
+  });
+
+  @override
+  State<HomeState> createState() => HomePage();
+}
 
 /*
 
@@ -16,13 +29,10 @@ Home Page
 - All navigations redirect back here
 
 */
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-  
+class HomePage extends State<HomeState> {
   @override
   Widget build(BuildContext context) {
-    final appState = AppState(); 
-
+    final appState = Provider.of<AppState>(context);
     return Scaffold(
       appBar: AppBar(
         actions: const [
@@ -80,6 +90,18 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      AppState appState = context.read<AppState>();
+      await getSettings(FirebaseAuth.instance.currentUser?.email, appState);
+      // appState.addSite();
+      appState.finalizeState();
+    });
   }
 }
 
@@ -152,5 +174,60 @@ class SignOutDialog extends StatelessWidget {
         )
       ]
     );
+  }
+}
+
+class AppSettings {
+  AppSettings(this.body, this.siteChecked);
+  AppNotificationBody body;
+  String siteChecked;
+
+  factory AppSettings.fromJson(Map<String, dynamic> json) {
+    print(json['site1'].toString());
+    return AppSettings(
+      AppNotificationBody.fromJson(json['settings']),
+      json['site1'].toString().split('/')[0]
+    );
+  }
+}
+
+Future<void> getSettings(String? email, AppState appstate) async {
+  try {
+  http.Response response = await http.get(Uri.parse('https://vinovoltaics-notification-api-6ajy6wk4ca-ul.a.run.app/getSettings?email=${email}'));
+  
+  if (response.statusCode == 200) {
+    appstate.sites = [];
+    bool siteChecked = false;
+    bool zoneChecked = false;
+    bool temperature = false;
+    bool humidity = false;
+    bool frost = false;
+    bool rain = false;
+    bool soil = false;
+    bool light = false;
+
+    for (int i = 0; i < jsonDecode(response.body)['settings'].length; i++) {
+      for (int j = 0; j < jsonDecode(response.body)['settings']['site${i+1}'].length - 1; j++) {
+        siteChecked = json.decode(response.body)['settings']['site${i+1}']["site_checked"];
+        zoneChecked = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["zone_checked"];
+        temperature = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["temperature"];
+        humidity = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["humidity"];
+        frost = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["light"];
+        rain = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["rain"];
+        soil = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["frost"];
+        light = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["soil"];
+
+        if (j == 0) {
+          appstate.addSiteFromDB(siteChecked, zoneChecked, humidity, temperature, light, frost, rain, soil);
+        } else {
+          appstate.addZoneFromDB(i, zoneChecked, humidity, temperature, light, frost, rain, soil);
+        }
+      }
+    }
+  }
+
+  // ignore: empty_catches
+  } catch (e) {
+    print(e);
   }
 }

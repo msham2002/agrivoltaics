@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:agrivoltaics_flutter_app/pages/home/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -91,80 +94,6 @@ class ToggleButton extends StatelessWidget {
 class Setting extends StatelessWidget {
   const Setting({super.key});
 
-  
-
-  // void renameSite(int siteIndex) {
-  //   final TextEditingController controller = TextEditingController(
-  //     text: appState.sites[siteIndex].name,
-  //   );
-
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: const Text('Rename Site'),
-  //         content: TextField(
-  //           controller: controller,
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: const Text('Cancel'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: const Text('Save'),
-  //             onPressed: () {
-  //               setState(() {
-  //                 appState.sites[siteIndex].name = controller.text;
-  //                 appState.notifyListeners();
-  //               });
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
-  // void renameZone(int siteIndex, int zoneIndex) {
-  //   final TextEditingController controller = TextEditingController(
-  //     text: .sites[siteIndex].zones[zoneIndex].name,
-  //   );
-
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: const Text('Rename Zone'),
-  //         content: TextField(
-  //           controller: controller,
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: const Text('Cancel'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: const Text('Save'),
-  //             onPressed: () {
-  //               setState(() {
-  //                 context .sites[siteIndex].zones[zoneIndex].name = controller.text;
-  //                 appState.notifyListeners();
-  //               });
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     Map<SensorMeasurement, String> measurementNames = {
@@ -175,8 +104,6 @@ class Setting extends StatelessWidget {
       SensorMeasurement.frost: 'Frost',
       SensorMeasurement.soil: 'Soil',
     };
-
-    
 
     return Container(
       child: Column(
@@ -267,8 +194,15 @@ class Setting extends StatelessWidget {
             },
           ),
           ElevatedButton(
-            child: const Text('Add Site'),
             onPressed: context.read<AppState>().addSite,
+            child: const Text('Add Site')
+          ),
+          ElevatedButton(
+            onPressed: () {
+              context.read<AppState>().updateSettingsInDB();
+              Navigator.of(context).pop(); // Navigates back to the previous page
+            },
+            child: Text('Save Default Settings '),
           ),
         ],
       ),
