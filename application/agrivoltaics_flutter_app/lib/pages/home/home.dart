@@ -9,6 +9,7 @@ import 'package:agrivoltaics_flutter_app/pages/sites.dart';
 import 'package:agrivoltaics_flutter_app/pages/home/notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -206,7 +207,7 @@ Future<void> getSettings(String? email, AppState appstate) async {
     bool soil = false;
     bool light = false;
 
-    for (int i = 0; i < jsonDecode(response.body)['settings'].length; i++) {
+    for (int i = 0; i < jsonDecode(response.body)['settings'].length - 2; i++) {
       for (int j = 0; j < jsonDecode(response.body)['settings']['site${i+1}'].length - 1; j++) {
         siteChecked = json.decode(response.body)['settings']['site${i+1}']["site_checked"];
         zoneChecked = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["zone_checked"];
@@ -224,6 +225,9 @@ Future<void> getSettings(String? email, AppState appstate) async {
         }
       }
     }
+
+    appstate.singleGraphToggle = json.decode(response.body)['settings']['singleGraphToggle'];
+    appstate.timezone = tz.getLocation(json.decode(response.body)['settings']['timeZone']); 
   }
 
   // ignore: empty_catches

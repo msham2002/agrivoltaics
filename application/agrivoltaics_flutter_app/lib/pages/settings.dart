@@ -42,31 +42,36 @@ class TimezoneDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<AppState>();
     Map<String, tz.Location> locations = tz.timeZoneDatabase.locations;
-    dropdownValue = context.read<AppState>().timezone;
+    tz.Location dropdownValue = appState.timezone;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text('Timezone:'),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: DropdownButton<tz.Location>(
-            items: locations.values.map((location) {
-              return DropdownMenuItem<tz.Location>(
-                value: location,
-                child: Text(location.toString()),
-              );
-            }).toList(),
-            onChanged: (value) {
-              appState.timezone = value!;
-                dropdownValue = value;
-                appState.finalizeState();
-            },
-            value: dropdownValue,
-          ),
-        ),
-      ],
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Timezone:'),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DropdownButton(
+              items: [
+                for (var location in locations.values)...[
+                  DropdownMenuItem(
+                    value: location,
+                    child: Text(location.toString())
+                  )
+                ]
+              ],
+              onChanged: (value) {
+                appState.timezone = value!;
+                  dropdownValue = value;
+                  appState.finalizeState();
+              },
+              value: dropdownValue
+            )
+          )
+        ],
+      ),
     );
   }
 }
@@ -193,17 +198,30 @@ class Setting extends StatelessWidget {
               );
             },
           ),
-          ElevatedButton(
-            onPressed: context.read<AppState>().addSite,
-            child: const Text('Add Site')
-          ),
-          ElevatedButton(
-            onPressed: () {
-              context.read<AppState>().updateSettingsInDB();
-              Navigator.of(context).pop(); // Navigates back to the previous page
-            },
-            child: Text('Save Default Settings '),
-          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0), 
+            child: Row(
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                      onPressed: context.read<AppState>().addSite,
+                      child: const Text('Add Site'),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8.0),
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<AppState>().updateSettingsInDB();
+                    Navigator.of(context).pop(); // Navigates back to the previous page
+                  },
+                  child: Text('Save Settings'),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

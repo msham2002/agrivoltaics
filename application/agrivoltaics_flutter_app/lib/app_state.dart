@@ -209,34 +209,34 @@ class AppState with ChangeNotifier {
 
   void updateSettingsInDB() async {
 
-  // Convert sites list to Map<String, dynamic>
-  Map<String, dynamic> convertedSites = {};
+    // Convert sites list to Map<String, dynamic>
+    Map<String, dynamic> convertedSites = {};
 
-for (int i = 0; i < sites.length; i++) {
-  Site site = sites[i];
-  
-  Map<String, dynamic> siteData = {
-    'site_checked': site.checked,
-  };
-  
-  for (int j = 0; j < site.zones.length; j++) {
-    Zone zone = site.zones[j];
-    
-    Map<String, dynamic> zoneData = {
-      'zone_checked': zone.checked,
-      'humidity': zone.fields.containsKey(SensorMeasurement.humidity) ? zone.fields[SensorMeasurement.humidity] : false,
-      'temperature': zone.fields.containsKey(SensorMeasurement.temperature) ? zone.fields[SensorMeasurement.temperature] : false,
-      'light': zone.fields.containsKey(SensorMeasurement.light) ? zone.fields[SensorMeasurement.light] : false,
-      'rain': zone.fields.containsKey(SensorMeasurement.rain) ? zone.fields[SensorMeasurement.rain] : false,
-      'frost': zone.fields.containsKey(SensorMeasurement.frost) ? zone.fields[SensorMeasurement.frost] : false,
-      'soil': zone.fields.containsKey(SensorMeasurement.soil) ? zone.fields[SensorMeasurement.soil] : false,
-    };
-    
-    siteData['zone${j+1}'] = zoneData;
-  }
-  
-  convertedSites['site${i + 1}'] = siteData;
-}
+    for (int i = 0; i < sites.length; i++) {
+      Site site = sites[i];
+      
+      Map<String, dynamic> siteData = {
+        'site_checked': site.checked,
+      };
+      
+      for (int j = 0; j < site.zones.length; j++) {
+        Zone zone = site.zones[j];
+        
+        Map<String, dynamic> zoneData = {
+          'zone_checked': zone.checked,
+          'humidity': zone.fields.containsKey(SensorMeasurement.humidity) ? zone.fields[SensorMeasurement.humidity] : false,
+          'temperature': zone.fields.containsKey(SensorMeasurement.temperature) ? zone.fields[SensorMeasurement.temperature] : false,
+          'light': zone.fields.containsKey(SensorMeasurement.light) ? zone.fields[SensorMeasurement.light] : false,
+          'rain': zone.fields.containsKey(SensorMeasurement.rain) ? zone.fields[SensorMeasurement.rain] : false,
+          'frost': zone.fields.containsKey(SensorMeasurement.frost) ? zone.fields[SensorMeasurement.frost] : false,
+          'soil': zone.fields.containsKey(SensorMeasurement.soil) ? zone.fields[SensorMeasurement.soil] : false,
+        };
+        
+        siteData['zone${j+1}'] = zoneData;
+      }
+      
+      convertedSites['site${i + 1}'] = siteData;
+    }
 
     String? userEmail = "";
     userEmail = FirebaseAuth.instance.currentUser?.email;
@@ -245,6 +245,7 @@ for (int i = 0; i < sites.length; i++) {
       "email": userEmail,
       "settings": {
         'singleGraphToggle': singleGraphToggle,
+        'timeZone': timezone.toString(),
         ...convertedSites,
       },
     };
