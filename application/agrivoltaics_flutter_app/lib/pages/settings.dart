@@ -8,16 +8,24 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../app_constants.dart';
 import '../app_state.dart';
+import 'dashboard/dashboard.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+        context.read<AppState>().updateSettingsInDB();
+        Navigator.pop(context);
+      },
+    ),
+  ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -215,9 +223,16 @@ class Setting extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     context.read<AppState>().updateSettingsInDB();
-                    Navigator.of(context).pop(); // Navigates back to the previous page
+                    Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                              DashboardPage(), 
+                              maintainState: false // This allows the graph to update after adjusting date and time interval
+                    )
+                  ); 
                   },
-                  child: Text('Save Settings'),
+                  child: const Text('View Data'),
                 ),
               ],
             ),
