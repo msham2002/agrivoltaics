@@ -15,6 +15,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context);
 
     return Scaffold(
       appBar: AppBar(
