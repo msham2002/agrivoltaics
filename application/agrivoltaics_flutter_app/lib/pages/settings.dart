@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:agrivoltaics_flutter_app/pages/home/notifications.dart';
 import 'package:flutter/material.dart';
@@ -223,6 +224,19 @@ class Setting extends StatelessWidget {
                 const SizedBox(width: 8.0),
                 ElevatedButton(
                   onPressed: () {
+                    toggleAllSensors(context.read<AppState>(), true);
+                  },
+                  child: const Text('Sensors On'),
+                ),
+                const SizedBox(width: 8.0),
+                ElevatedButton(
+                  onPressed: () {
+                    toggleAllSensors(context.read<AppState>(), false);
+                  },
+                  child: const Text('Sensors Off'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
                     context.read<AppState>().updateSettingsInDB();
                     Navigator.push(
                           context,
@@ -230,8 +244,8 @@ class Setting extends StatelessWidget {
                             builder: (context) =>
                               DashboardPage(), 
                               maintainState: false // This allows the graph to update after adjusting date and time interval
-                    )
-                  ); 
+                      )
+                    ); 
                   },
                   child: const Text('View Data'),
                 ),
@@ -242,4 +256,18 @@ class Setting extends StatelessWidget {
       ),
     );
   }
+}
+
+void toggleAllSensors(AppState appState, bool toggleOn) {
+  for (int i = 0; i < appState.sites.length; i++) {
+    for (int j = 0; j < appState.sites[i].zones.length; j++) {
+      appState.sites[i].zones[j].fields[SensorMeasurement.humidity] = toggleOn;
+      appState.sites[i].zones[j].fields[SensorMeasurement.frost] = toggleOn;
+      appState.sites[i].zones[j].fields[SensorMeasurement.light] = toggleOn;
+      appState.sites[i].zones[j].fields[SensorMeasurement.rain] = toggleOn;
+      appState.sites[i].zones[j].fields[SensorMeasurement.soil] = toggleOn;
+      appState.sites[i].zones[j].fields[SensorMeasurement.temperature] = toggleOn;
+    }
+  }
+  appState.finalizeState();
 }
