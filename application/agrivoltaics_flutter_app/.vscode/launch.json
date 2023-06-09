@@ -9,12 +9,13 @@
             "request": "launch",
             "type": "dart",
             "args": [
-                "--dart-define=INFLUXDB_URL=https://us-east-1-1.aws.cloud2.influxdata.com",
-                "--dart-define=INFLUXDB_TOKEN=04Jp10DtN5eThatcNnnUAxdqnEmCRKPjX0t0RudEcw9GnC5CJo-gEaMO4YxJmZYV-dQstd6_BCvA3lBHWoTL3w==",
-                "--dart-define=INFLUXDB_ORG=11188411442f6b61",
-                "--dart-define=INFLUXDB_BUCKET=Presentation_Day",
-                "--dart-define=INFLUXDB_DEBUG=true",
-                "--dart-define=AUTHORIZED_EMAILS=ferko410us@gmail.com|agrivoltaicsgrafana@gmail.com"
+                "--dart-define=INFLUXDB_URL=CHANGE_ME",
+                "--dart-define=INFLUXDB_TOKEN=CHANGE_ME",
+                "--dart-define=INFLUXDB_ORG=CHANGE_ME",
+                "--dart-define=INFLUXDB_BUCKET=CHANGE_ME",
+                "--dart-define=INFLUXDB_DEBUG=false",
+                "--dart-define=ADMIN_EMAIL=",
+                "--dart-define=OWNER_EMAIL="
             ]
         },
         {
