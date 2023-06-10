@@ -213,10 +213,10 @@ Future<void> getSettings(String? email, AppState appstate) async {
         zoneChecked = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["zone_checked"];
         temperature = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["temperature"];
         humidity = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["humidity"];
-        frost = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["light"];
+        frost = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["frost"];
         rain = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["rain"];
-        soil = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["frost"];
-        light = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["soil"];
+        soil = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["soil"];
+        light = json.decode(response.body)['settings']['site${i+1}']["zone${j+1}"]["light"];
 
         if (j == 0) {
           appstate.addSiteFromDB(siteChecked, zoneChecked, humidity, temperature, light, frost, rain, soil);

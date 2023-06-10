@@ -36,40 +36,46 @@ if (singleGraphToggle == false) {
             query += '(r["_measurement"] == "${sites[i-1].name}" and (r["Zone"] == "$j"';
             List<MapEntry<SensorMeasurement, bool>> fieldEntries = sites[i-1].zones[j-1].fields.entries.toList();
 
-            int trueCount = 0;
+            int fieldCount = 0;
 
             for (var entry in fieldEntries) {
-            bool checked = entry.value;
+              bool checked = entry.value;
 
-            if (checked == true) {
-              trueCount++;
+              if (checked == true) {
+                fieldCount++;
+              }
             }
+
+            if (fieldCount == 0) {
+              query += ' and (r["_field"] == "N/A"))';
             }
+            else {
+              bool firstCheckedSite = true;
+              for (int k = 1; k <= sites[i-1].zones[j-1].fields.length; k++) {
+                MapEntry<SensorMeasurement, bool> firstEntry = fieldEntries[k-1];
+                String measurement = firstEntry.key.fluxQuery;
+                bool checked = firstEntry.value;
 
-            for (int k = 1; k <= sites[i-1].zones[j-1].fields.length; k++) {
-              MapEntry<SensorMeasurement, bool> firstEntry = fieldEntries[k-1];
-              String measurement = firstEntry.key.fluxQuery;
-              bool checked = firstEntry.value;
-
-              if (checked) {
-                if (trueCount == 1) {
-                  query += ' and (r["_field"] == "$measurement"))';
-                }
-                else if (k == 1) {
-                  query += ' and (r["_field"] == "$measurement"';
-                } else if (k != sites[i-1].zones[j-1].fields.length) {
-                  query += ' or r["_field"] == "$measurement"';
-                } else {
-                  query += ' or r["_field"] == "$measurement"))';
+                if (checked) {
+                  if (fieldCount == 1) {
+                    query += ' and (r["_field"] == "$measurement"))';
+                  }
+                  else if (k == 1 || firstCheckedSite == true) {
+                    query += ' and (r["_field"] == "$measurement"';
+                    firstCheckedSite = false;
+                  } else if (k != sites[i-1].zones[j-1].fields.length) {
+                    query += ' or r["_field"] == "$measurement"';
+                  } else {
+                    query += ' or r["_field"] == "$measurement"))';
+                  }
                 }
               }
             }
           }
-          }
         }
       }
     }
-  
+  }
 } else {
   
   for (int l = 1; l <= sites.length; l++) {
@@ -123,7 +129,7 @@ if (singleGraphToggle == false) {
               query += ' or (r["Zone"] == "$i"';
             } 
             
-
+            bool firstCheckedSite = true;
             for (int j = 1; j <= sites[l-1].zones[i-1].fields.length; j++) {
               MapEntry<SensorMeasurement, bool> firstEntry = fieldEntries[j-1];
               String measurement = firstEntry.key.fluxQuery;
@@ -133,8 +139,9 @@ if (singleGraphToggle == false) {
                 if (trueCount == 1) {
                   query += ' and (r["_field"] == "$measurement"))';
                 }
-                else if (j == 1) {
+                else if (j == 1 || firstCheckedSite == true) {
                   query += ' and (r["_field"] == "$measurement"';
+                  firstCheckedSite = false;
                 } else if (j != sites[l-1].zones[i-1].fields.length) {
                   query += ' or r["_field"] == "$measurement"';
                 } else {
