@@ -29,8 +29,26 @@ def fetch_user(email):
     if (user == None):
         user = {
             "email": email,
-            "last_read": datetime.utcnow()
+            "last_read": datetime.utcnow(),
+            "settings": {
+                "singleGraphToggle": False,
+                "timeZone": "America/New_York",
+                "site1": {
+                    "site_checked": True,
+                    "nickName": "",
+                    "zone1": {
+                        "zone_checked": True,
+                        "nickName": "",
+                        "humidity": True,
+                        "temperature": True,
+                        "light": True,
+                        "rain": True,
+                        "frost": True,
+                        "soil": True
+                }
+            }
         }
+    }
         users.insert_one(user)
 
     return user

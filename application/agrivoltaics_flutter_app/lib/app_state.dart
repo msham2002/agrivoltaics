@@ -10,23 +10,27 @@ import 'package:http/http.dart' as http;
 
 class Zone {
   String name;
+  String nickName;
   Map<SensorMeasurement, bool> fields;
   bool checked;
   
   Zone({
     required this.name,
+    required this.nickName,
     required this.fields,
-    this.checked = true,
+    this.checked = true
   });
 }
 
 class Site {
   String name;
+  String nickName;
   List<Zone> zones;
   bool checked;
 
   Site({
     required this.name,
+    required this.nickName,
     required this.zones,
     this.checked = true,
   });
@@ -49,9 +53,11 @@ class AppState with ChangeNotifier {
     this.sites = [
       Site(
         name: 'Site 1',
+        nickName: '',
         zones: [
           Zone(
             name: 'Zone 1',
+            nickName: '',
             fields: {
         SensorMeasurement.humidity: true,
         SensorMeasurement.temperature: true,
@@ -93,9 +99,11 @@ class AppState with ChangeNotifier {
   void addSite() {
       sites.add(
         Site(name: 'Site ${sites.length + 1}',         
+        nickName: '',
         zones: [
           Zone(
             name: 'Zone 1',
+            nickName: '',
             fields: {
         SensorMeasurement.humidity: true,
         SensorMeasurement.temperature: true,
@@ -123,6 +131,7 @@ class AppState with ChangeNotifier {
       sites[siteIndex].zones.add(
         Zone(
           name: 'Zone ${sites[siteIndex].zones.length + 1}',
+          nickName: '',
           fields: {
             SensorMeasurement.humidity: true,
             SensorMeasurement.temperature: true,
@@ -137,12 +146,14 @@ class AppState with ChangeNotifier {
       notifyListeners();
   }
 
-     void addSiteFromDB(bool siteChecked, bool zoneChecked, bool humidity, bool temperature, bool light, bool frost, bool rain, bool soil) {
+     void addSiteFromDB(bool siteChecked, String siteNickName, bool zoneChecked, String zoneNickName, bool humidity, bool temperature, bool light, bool frost, bool rain, bool soil) {
       sites.add(
         Site(name: 'Site ${sites.length + 1}',         
+        nickName: siteNickName,
         zones: [
           Zone(
             name: 'Zone 1',
+            nickName: zoneNickName,
             fields: {
         SensorMeasurement.humidity: humidity,
         SensorMeasurement.temperature: temperature,
@@ -157,10 +168,11 @@ class AppState with ChangeNotifier {
       notifyListeners();
   }
 
-  void addZoneFromDB(int siteIndex, bool zoneChecked, bool humidity, bool temperature, bool light, bool frost, bool rain, bool soil) {
+  void addZoneFromDB(int siteIndex, bool zoneChecked, String zoneNickName, bool humidity, bool temperature, bool light, bool frost, bool rain, bool soil) {
       sites[siteIndex].zones.add(
         Zone(
           name: 'Zone ${sites[siteIndex].zones.length + 1}',
+          nickName: zoneNickName,
           fields: {
             SensorMeasurement.humidity: humidity,
             SensorMeasurement.temperature: temperature,
@@ -217,6 +229,7 @@ class AppState with ChangeNotifier {
       
       Map<String, dynamic> siteData = {
         'site_checked': site.checked,
+        'nickName': site.nickName
       };
       
       for (int j = 0; j < site.zones.length; j++) {
@@ -224,6 +237,7 @@ class AppState with ChangeNotifier {
         
         Map<String, dynamic> zoneData = {
           'zone_checked': zone.checked,
+          'nickName' : zone.nickName,
           'humidity': zone.fields.containsKey(SensorMeasurement.humidity) ? zone.fields[SensorMeasurement.humidity] : false,
           'temperature': zone.fields.containsKey(SensorMeasurement.temperature) ? zone.fields[SensorMeasurement.temperature] : false,
           'light': zone.fields.containsKey(SensorMeasurement.light) ? zone.fields[SensorMeasurement.light] : false,

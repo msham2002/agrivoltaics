@@ -163,13 +163,14 @@ class _DashboardGraphState extends State<DashboardGraph> with AutomaticKeepAlive
 
 
 
+    String siteGraphTitle = '';
+    String zoneGraphTitle = '';
     String graphTitle = '';
     int zoneValue = numberOfZones;
     if (appState.singleGraphToggle) {
       graphTitle = "All Data selected";
     } else {
       for (int i = 1; i <= appState.sites.length; i++) {
-        
         if (zoneValue == 0) {
           break;
         }
@@ -179,7 +180,22 @@ class _DashboardGraphState extends State<DashboardGraph> with AutomaticKeepAlive
             if (appState.sites[i-1].zones[j-1].checked) {
             zoneValue -= 1;
             if (zoneValue == 0) {
-              graphTitle += '${appState.sites[i-1].name}, Zone $j';
+              if (appState.sites[i-1].nickName == '') {
+                siteGraphTitle = appState.sites[i-1].name;
+              } else {
+                siteGraphTitle += '(${appState.sites[i-1].name}) ${appState.sites[i-1].nickName}';
+              }
+              
+              if (appState.sites[i-1].zones[j-1].nickName == '') {
+                zoneGraphTitle = appState.sites[i-1].zones[j-1].name;
+              } else {
+                zoneGraphTitle = '(${appState.sites[i-1].zones[j-1].name}) ${appState.sites[i-1].zones[j-1].nickName}';
+              }
+              
+              graphTitle = '$siteGraphTitle, $zoneGraphTitle';
+              
+
+              
             }
             }
           }

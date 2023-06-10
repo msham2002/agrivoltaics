@@ -108,6 +108,7 @@ class ToggleButton extends StatelessWidget {
 
 class Setting extends StatelessWidget {
   const Setting({super.key});
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +120,87 @@ class Setting extends StatelessWidget {
       SensorMeasurement.frost: 'Frost',
       SensorMeasurement.soil: 'Soil',
     };
+    TextEditingController _SiteNameEditingController = TextEditingController();
+    TextEditingController _ZoneNameEditingController = TextEditingController();
+    String siteName;
+    String zoneName;
+
+    void renameSite(int siteIndex) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          String newName = context.read<AppState>().sites[siteIndex].nickName;
+         _SiteNameEditingController.text = newName;
+          return AlertDialog(
+            title: const Text('Rename Site'),
+            content: TextField(
+              controller: _SiteNameEditingController,
+              onChanged: (value) {
+                newName = value;
+              },
+              decoration: const InputDecoration(
+                labelText: 'New Name',
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                    context.read<AppState>().sites[siteIndex].nickName = newName;
+                    context.read<AppState>().finalizeState();
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Rename'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    void renameZone(int siteIndex, int zoneIndex) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          String newName = context.read<AppState>().sites[siteIndex].zones[zoneIndex].nickName;
+          _ZoneNameEditingController.text = newName;
+
+          return AlertDialog(
+            title: const Text('Rename Zone'),
+            content: TextField(
+              controller: _ZoneNameEditingController,
+              onChanged: (value) {
+                newName = value;
+              },
+              decoration: const InputDecoration(
+                labelText: 'New Name',
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                    context.read<AppState>().sites[siteIndex].zones[zoneIndex].nickName = newName;
+                    context.read<AppState>().finalizeState();
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Rename'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+            ],
+          );
+        },
+      );
+    }
 
     return Container(
       child: Column(
@@ -128,14 +210,21 @@ class Setting extends StatelessWidget {
             itemCount: context.read<AppState>().sites.length,
             itemBuilder: (BuildContext context, int siteIndex) {
               Site site = context.read<AppState>().sites[siteIndex];
-
+            if (site.nickName == '') {
+              siteName = site.name;
+            } else {
+              siteName = '(${site.name}) ${site.nickName}';
+            }
               return Card(
                 elevation: 0.0,
+                
                 child: Column(
+                  
                   children: [
+                    
                     ListTile(
                       title: Text(
-                        site.name,
+                        siteName,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       leading: Checkbox(
@@ -147,7 +236,7 @@ class Setting extends StatelessWidget {
                         children: [
                           IconButton(
                             icon: const Icon(Icons.edit),
-                            onPressed: () => null,
+                            onPressed: () => renameSite(siteIndex),
                           ),
                           IconButton(
                             icon: const Icon(Icons.delete),
@@ -161,9 +250,14 @@ class Setting extends StatelessWidget {
                       itemCount: site.zones.length,
                       itemBuilder: (BuildContext context, int zoneIndex) {
                         Zone zone = site.zones[zoneIndex];
-
+                        if (zone.nickName == '') {
+                          zoneName = zone.name;
+                        } else {
+                          zoneName = '(${zone.name}) ${zone.nickName}';
+                        }
+                        
                         return ListTile(
-                          title: Text(zone.name),
+                          title: Text(zoneName),
                           leading: Checkbox(
                             value: zone.checked,
                             onChanged: (_) => context.read<AppState>().toggleZoneChecked(siteIndex, zoneIndex),
@@ -173,7 +267,7 @@ class Setting extends StatelessWidget {
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.edit),
-                                onPressed: () => null,
+                                onPressed: () => renameZone(siteIndex, zoneIndex),
                               ),
                               IconButton(
                                 icon: const Icon(Icons.delete),
