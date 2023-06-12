@@ -106,22 +106,25 @@ if (singleGraphToggle == false) {
          
           List<MapEntry<SensorMeasurement, bool>> fieldEntries = sites[l-1].zones[i-1].fields.entries.toList();
 
-          int trueCount = 0;
+          int fieldCount = 0;
 
           for (var entry in fieldEntries) {
             bool checked = entry.value;
 
             if (checked == true) {
-              trueCount++;
+              fieldCount++;
             }
           }
          
-          if ((!sites[l-1].zones[i-1].checked || trueCount == 0) && !zoneWasEmptyBefore) {
+          if ((!sites[l-1].zones[i-1].checked || fieldCount == 0) && !zoneWasEmptyBefore) {
             firstZoneIsEmpty = true;
             continue;
           }
           else if (sites[l-1].zones[i-1].checked) {
-            if (i == 1 || firstZoneIsEmpty) {
+            if (fieldCount == 0) {
+              continue;
+            }
+            else if (i == 1 || firstZoneIsEmpty) {
               zoneWasEmptyBefore = true;
               firstZoneIsEmpty = false;
               query += 'and (r["Zone"] == "$i"';
@@ -136,7 +139,7 @@ if (singleGraphToggle == false) {
               bool checked = firstEntry.value;
 
               if (checked) {
-                if (trueCount == 1) {
+                if (fieldCount == 1) {
                   query += ' and (r["_field"] == "$measurement"))';
                 }
                 else if (j == 1 || firstCheckedSite == true) {
