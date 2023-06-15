@@ -208,7 +208,7 @@ Future<void> getSettings(String? email, AppState appstate) async {
     bool soil = false;
     bool light = false;
 
-    for (int i = 0; i < jsonDecode(response.body)['settings'].length - 2; i++) {
+    for (int i = 0; i < jsonDecode(response.body)['settings'].length - 3; i++) {
       for (int j = 0; j < jsonDecode(response.body)['settings']['site${i+1}'].length - 2; j++) {
         siteChecked = json.decode(response.body)['settings']['site${i+1}']['site_checked'];
         siteNickName = json.decode(response.body)['settings']['site${i+1}']['nickName'];
@@ -231,6 +231,7 @@ Future<void> getSettings(String? email, AppState appstate) async {
 
     appstate.singleGraphToggle = json.decode(response.body)['settings']['singleGraphToggle'];
     appstate.timezone = tz.getLocation(json.decode(response.body)['settings']['timeZone']); 
+    appstate.returnDataValue = json.decode(response.body)['settings']['returnDataFilter'];
   }
 
   // ignore: empty_catches

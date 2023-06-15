@@ -33,6 +33,7 @@ def fetch_user(email):
             "settings": {
                 "singleGraphToggle": False,
                 "timeZone": "America/New_York",
+                "returnDataFilter": "max",
                 "site1": {
                     "site_checked": True,
                     "nickName": "",

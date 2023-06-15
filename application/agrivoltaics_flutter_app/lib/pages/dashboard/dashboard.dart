@@ -211,7 +211,8 @@ class _DashboardGraphState extends State<DashboardGraph> with AutomaticKeepAlive
             appState.timeInterval,
             appState.sites,
             appState.singleGraphToggle,
-            numberOfZones
+            numberOfZones,
+            appState.returnDataValue
           ),
 
           builder: (BuildContext context, AsyncSnapshot<Map<String, List<FluxRecord>>> snapshot) {

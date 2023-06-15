@@ -17,7 +17,8 @@ String _generateQuery
   TimeInterval timeInterval,
   List<Site> sites,
   bool singleGraphToggle,
-  int numberOfZones
+  int numberOfZones,
+  String returnDataValue
 ) {
   var startDate = DateFormat('yyyy-MM-dd').format(timeUnit.startDate!.toUtc());
   var endDate = DateFormat('yyyy-MM-dd').format(timeUnit.endDate!.toUtc());
@@ -173,8 +174,8 @@ if (balance > 0) {
   from(bucket: "${AppConstants.influxdbBucket}")
   |> range(start: ${startDate}T00:00:00Z, stop: ${endDate}T23:59:00Z)
   $query
-  |> aggregateWindow(every: ${timeInterval.value}${timeInterval.unit.fluxQuery}, fn: mean, createEmpty: false)
-  |> yield(name: "mean")
+  |> aggregateWindow(every: ${timeInterval.value}${timeInterval.unit.fluxQuery}, fn: $returnDataValue, createEmpty: false)
+  |> yield(name: "$returnDataValue")
   ''';
 }
 
@@ -185,12 +186,13 @@ Future<Map<String, List<FluxRecord>>> getInfluxData
   TimeInterval timeInterval,
   List<Site> sites,
   bool singleGraphToggle,
-  int numberOfZones
+  int numberOfZones,
+  String returnDataValue
 ) async {
   var queryService = influxDBClient.getQueryService();
 
   var dataSets = <String, List<FluxRecord>>{};    
-  String query = _generateQuery(timeUnit, timeInterval, sites, singleGraphToggle, numberOfZones);
+  String query = _generateQuery(timeUnit, timeInterval, sites, singleGraphToggle, numberOfZones, returnDataValue);
   Stream<FluxRecord> recordStream = await queryService.query(query);
 
   List<FluxRecord> records = await recordStream.toList();

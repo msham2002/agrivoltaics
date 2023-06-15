@@ -34,6 +34,8 @@ class SettingsPage extends StatelessWidget {
             children: [
               TimezoneDropdown(),
               const SizedBox(height: 16.0),
+              ToggleButtonGroup(),
+              const SizedBox(height: 16.0),
               ToggleButton(),
               const SizedBox(height: 16.0),
               Setting(),
@@ -85,6 +87,115 @@ class TimezoneDropdown extends StatelessWidget {
     );
   }
 }
+
+class ToggleButtonGroup extends StatelessWidget {
+  ToggleButtonGroup({super.key});
+  late AppState appState;
+  late int _selectedIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<AppState>();
+
+    if (appState.returnDataValue == 'min') {
+      _selectedIndex = 0;
+    } else if (appState.returnDataValue == 'max') {
+      _selectedIndex = 1;
+    } else if (appState.returnDataValue == 'mean') {
+     _selectedIndex = 2;
+    }
+    
+    return Align(
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          const Text(
+            'Return Data Filter',
+          ),
+          const SizedBox(height: 10),
+          Center(
+            child: Row(
+               mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ToggleButtonSingleSelect(
+                  index: 0,
+                  selectedIndex: _selectedIndex,
+                  onPressed: _handleButtonPressed,
+                  name: 'Min',
+                ),
+                ToggleButtonSingleSelect(
+                  index: 1,
+                  selectedIndex: _selectedIndex,
+                  onPressed: _handleButtonPressed,
+                  name: 'Max',
+                ),
+                ToggleButtonSingleSelect(
+                  index: 2,
+                  selectedIndex: _selectedIndex,
+                  onPressed: _handleButtonPressed,
+                  name: 'Mean',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _handleButtonPressed(int index, AppState appState) {
+      if (index == 0) {
+        appState.returnDataValue = 'min';
+      } else if (index == 1) {
+        appState.returnDataValue = 'max';
+      } else if (index == 2) {
+        appState.returnDataValue = 'mean';
+      }
+
+      appState.finalizeState();
+  }
+}
+
+class ToggleButtonSingleSelect extends StatelessWidget {
+  final int index;
+  final int selectedIndex;
+  final Function(int, AppState) onPressed;
+  final String name;
+
+  ToggleButtonSingleSelect({super.key, 
+    required this.index,
+    required this.selectedIndex,
+    required this.onPressed,
+    required this.name,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context);
+    final bool isSelected = index == selectedIndex;
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      
+      child: ElevatedButton(
+        onPressed: () => onPressed(index, appState),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            isSelected ? Colors.blue : Colors.grey[300]!,
+          ),
+        ),
+        child: Text(
+          name,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 
 class ToggleButton extends StatelessWidget {
   @override

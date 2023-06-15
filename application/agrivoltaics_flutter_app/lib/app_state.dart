@@ -49,6 +49,8 @@ class AppState with ChangeNotifier {
     this.dateRangeSelection = initialDateRange;
 
     this.timezone = tz.getLocation(AppConstants.timezone);
+
+    this.returnDataValue = 'min';
     
     this.sites = [
       Site(
@@ -87,6 +89,8 @@ class AppState with ChangeNotifier {
 
   // Sites and Zones
   List<Site> sites = [];
+
+  late String returnDataValue;
 
   // Notifications
   List<AppNotification> notifications = [];
@@ -259,6 +263,7 @@ class AppState with ChangeNotifier {
       "email": userEmail,
       "settings": {
         'singleGraphToggle': singleGraphToggle,
+        'returnDataFilter': returnDataValue,
         'timeZone': timezone.toString(),
         ...convertedSites,
       },
