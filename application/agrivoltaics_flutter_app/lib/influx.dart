@@ -134,19 +134,21 @@ if (singleGraphToggle == false) {
             } 
             
             bool firstCheckedSite = true;
+            int checkedCount = 0;
             for (int j = 1; j <= sites[l-1].zones[i-1].fields.length; j++) {
               MapEntry<SensorMeasurement, bool> firstEntry = fieldEntries[j-1];
               String measurement = firstEntry.key.fluxQuery;
               bool checked = firstEntry.value;
-
+              
               if (checked) {
+                checkedCount += 1;
                 if (fieldCount == 1) {
                   query += ' and (r["_field"] == "$measurement"))';
                 }
                 else if (j == 1 || firstCheckedSite == true) {
                   query += ' and (r["_field"] == "$measurement"';
                   firstCheckedSite = false;
-                } else if (j != sites[l-1].zones[i-1].fields.length) {
+                } else if (checkedCount != fieldCount) {
                   query += ' or r["_field"] == "$measurement"';
                 } else {
                   query += ' or r["_field"] == "$measurement"))';
