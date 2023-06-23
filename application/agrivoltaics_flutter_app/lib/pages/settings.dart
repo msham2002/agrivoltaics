@@ -452,7 +452,7 @@ class Setting extends StatelessWidget {
                       )
                     ); 
                   },
-                  child: const Text('View Data'),
+                  child: const Text('Save & View'),
                 ),
               ],
             ),
