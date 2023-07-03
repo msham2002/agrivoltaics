@@ -1,6 +1,7 @@
 import os
 import flask
 import pymongo
+import json
 from bson.json_util import dumps
 from datetime import datetime
 import waitress
@@ -88,6 +89,53 @@ def read_notifications():
     response = flask.jsonify()
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
+@app.route('/getSettings', methods=['GET'])
+def get_settings():
+    # Fetch user
+    userEmail = flask.request.args.get("email")
+    user = fetch_user(userEmail)
+
+    user.pop("_id")
+    user.pop("last_read")
+    user.pop("email")
+
+    # Return response
+    response = flask.jsonify(user)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+@app.route('/updateSettings', methods=['POST'])
+def update_settings():
+    # Fetch user
+    requestData  = flask.request.args.get("settings")
+    
+    object = json.loads(requestData)
+    userEmail = object.get("email")
+    settings = object.get("settings")
+    user = fetch_user(userEmail)
+    
+    users.update_one({"email": user["email"]}, {"$set": {"settings": settings}})
+    
+    # Return response
+    response = flask.jsonify(requestData)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+@app.route('/getInfluxNotifications', methods=['GET'])
+def get_influx_notifications():
+    userEmail = flask.request.args.get("email")
+    user = fetch_user(userEmail)
+
+    user.pop("_id")
+    user.pop("last_read")
+    user.pop("email")
+    user.pop("settings")
+
+    response = flask.jsonify(user)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    
+    return response;
 
 # Run server
 waitress.serve(app=app, port=8080, url_scheme='http')
