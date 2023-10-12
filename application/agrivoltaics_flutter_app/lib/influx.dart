@@ -10,7 +10,7 @@ import 'package:timezone/standalone.dart' as tz;
 var getIt = GetIt.instance;
 var influxDBClient = getIt.get<InfluxDBClient>();
 
-// Generate InfluxDB Flux query
+// Generate InfluxDB Flux Query
 String _generateQuery
 (
   PickerDateRange timeUnit,
