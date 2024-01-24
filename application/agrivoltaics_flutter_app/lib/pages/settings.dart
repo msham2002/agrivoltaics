@@ -21,25 +21,29 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: () {
-        context.read<AppState>().updateSettingsInDB();
-        Navigator.pop(context);
-      },
-    ),
-  ),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.read<AppState>().updateSettingsInDB();
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Center(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TimezoneDropdown(),
-              const SizedBox(height: 16.0),
-              ToggleButtonGroup(),
-              const SizedBox(height: 16.0),
-              ToggleButton(),
-              const SizedBox(height: 16.0),
-              Setting(),
-            ],
+          scrollDirection: Axis.vertical, // Set scroll direction to horizontal
+          child: Padding(
+            padding: const EdgeInsets.all(100.0), // Add padding for blank space on the right
+            child: Column(
+              children: [
+                TimezoneDropdown(),
+                const SizedBox(height: 16.0),
+                ToggleButtonGroup(),
+                const SizedBox(height: 16.0),
+                ToggleButton(),
+                const SizedBox(height: 16.0),
+                Setting(),
+              ],
+            ),
           ),
         ),
       ),

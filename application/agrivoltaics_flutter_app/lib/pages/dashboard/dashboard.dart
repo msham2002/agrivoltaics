@@ -72,31 +72,35 @@ Widget build(BuildContext context) {
   int numberOfRows = (numberOfGraphs / graphsPerRow).ceil();
 
   return LayoutBuilder(
-    builder: (context, constraints) {
-      double rowWidth = constraints.maxWidth;
-      double rowHeight = constraints.maxHeight;
+      builder: (context, constraints) {
+        double rowWidth = constraints.maxWidth;
+        double rowHeight = constraints.maxHeight;
 
-      return ListView.builder(
-        itemCount: numberOfRows,
-        itemBuilder: (context, rowIndex) {
-          int startIndex = rowIndex * graphsPerRow;
-          int endIndex = startIndex + graphsPerRow;
-          endIndex = endIndex > numberOfGraphs ? numberOfGraphs : endIndex;
+        return ListView.builder(
+          itemCount: numberOfRows,
+          scrollDirection: Axis.vertical,  // Set scroll direction to horizontal
+          itemBuilder: (context, rowIndex) {
+            int startIndex = rowIndex * graphsPerRow;
+            int endIndex = startIndex + graphsPerRow;
+            endIndex = endIndex > numberOfGraphs ? numberOfGraphs : endIndex;
 
-          List<Widget> rowChildren = List.generate(
-            endIndex - startIndex,
-            (index) =>  Expanded(
-              child: DashboardGraph(
-                numberOfZones: numberOfZones += 1,
+            List<Widget> rowChildren = List.generate(
+              endIndex - startIndex,
+              (index) => Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 100.0),  // Add right padding for blank space
+                  child: DashboardGraph(
+                    numberOfZones: numberOfZones += 1,
+                  ),
+                ),
               ),
-            ),
-          );
+            );
 
-          return Container(
-            width: rowWidth,
-            height: rowHeight,
-            child: Row(
-              children: rowChildren,
+            return Container(
+              width: rowWidth,
+              height: rowHeight,
+              child: Row(
+                children: rowChildren,
             ),
           );
         },
