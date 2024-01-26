@@ -30,9 +30,9 @@ class SettingsPage extends StatelessWidget {
       ),
       body: Center(
         child: SingleChildScrollView(
-          scrollDirection: Axis.vertical, // Set scroll direction to horizontal
+          scrollDirection: Axis.vertical, // Set scroll direction to vertical 
           child: Padding(
-            padding: const EdgeInsets.all(100.0), // Add padding for blank space on the right
+            padding: const EdgeInsets.all(65.0), // Add padding for blank space on the right to embrace touch capatability
             child: Column(
               children: [
                 TimezoneDropdown(),
@@ -349,13 +349,19 @@ class Setting extends StatelessWidget {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () => renameSite(siteIndex),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16.0),  // Adjusted padding here
+                            child: IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () => renameSite(siteIndex),
+                            ),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () => context.read<AppState>().removeSite(siteIndex),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16.0),  // Adjusted padding here
+                            child: IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () => context.read<AppState>().removeSite(siteIndex),
+                            ),
                           ),
                         ],
                       ),
@@ -380,13 +386,19 @@ class Setting extends StatelessWidget {
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () => renameZone(siteIndex, zoneIndex),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 16.0),  // Adjusted padding here
+                                child: IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () => renameZone(siteIndex, zoneIndex),
+                                ),
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () => context.read<AppState>().removeZone(siteIndex, zoneIndex),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 16.0),  // Adjusted padding here
+                                child: IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () => context.read<AppState>().removeZone(siteIndex, zoneIndex),
+                                ),
                               ),
                             ],
                           ),
@@ -396,11 +408,17 @@ class Setting extends StatelessWidget {
                               SensorMeasurement measurement = entry.key;
                               String name = entry.value;
 
-                              return FilterChip(
-                                label: Text(name),
-                                onSelected: (_) =>
-                                    context.read<AppState>().toggleMeasurementChecked(siteIndex, zoneIndex, measurement),
-                                selected: zone.fields[measurement]!,
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  FilterChip(
+                                    label: Text(name),
+                                    onSelected: (_) =>
+                                        context.read<AppState>().toggleMeasurementChecked(siteIndex, zoneIndex, measurement),
+                                    selected: zone.fields[measurement]!,
+                                  ),
+                                  SizedBox(height: 16.0), // controls spacing between settings buttons when resizing settings page
+                                ],
                               );
                             }).toList(),
                           ),
@@ -418,49 +436,57 @@ class Setting extends StatelessWidget {
             },
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0), 
-            child: Row(
-              children: [
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: ElevatedButton(
-                      onPressed: context.read<AppState>().addSite,
-                      child: const Text('Add Site'),
-                    ),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Adjust the alignment as needed
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: context.read<AppState>().addSite,
+                    child: const Text('Add Site'),
                   ),
                 ),
-                const SizedBox(width: 8.0),
-                ElevatedButton(
+              ),
+              const SizedBox(width: 8.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ElevatedButton(
                   onPressed: () {
                     toggleAllSensors(context.read<AppState>(), true);
                   },
                   child: const Text('Sensors On'),
                 ),
-                const SizedBox(width: 8.0),
-                ElevatedButton(
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ElevatedButton(
                   onPressed: () {
                     toggleAllSensors(context.read<AppState>(), false);
                   },
                   child: const Text('Sensors Off'),
                 ),
-                ElevatedButton(
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ElevatedButton(
                   onPressed: () {
                     context.read<AppState>().updateSettingsInDB();
                     Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                              DashboardPage(), 
-                              maintainState: false // This allows the graph to update after adjusting date and time interval
-                      )
-                    ); 
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DashboardPage(),
+                        maintainState: false,
+                      ),
+                    );
                   },
                   child: const Text('Save & View'),
                 ),
-              ],
-            ),
-          )
+              ),
+            ],
+          ),
+        ),
         ],
       ),
     );

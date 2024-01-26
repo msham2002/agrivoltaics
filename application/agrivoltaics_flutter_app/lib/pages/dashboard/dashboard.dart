@@ -78,7 +78,7 @@ Widget build(BuildContext context) {
 
         return ListView.builder(
           itemCount: numberOfRows,
-          scrollDirection: Axis.vertical,  // Set scroll direction to horizontal
+          scrollDirection: Axis.vertical,  // Set scroll direction to vertical
           itemBuilder: (context, rowIndex) {
             int startIndex = rowIndex * graphsPerRow;
             int endIndex = startIndex + graphsPerRow;
@@ -88,7 +88,7 @@ Widget build(BuildContext context) {
               endIndex - startIndex,
               (index) => Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 100.0),  // Add right padding for blank space
+                  padding: const EdgeInsets.only(right: 100.0),  // Add right padding for blank space to embrace touch capatability
                   child: DashboardGraph(
                     numberOfZones: numberOfZones += 1,
                   ),
