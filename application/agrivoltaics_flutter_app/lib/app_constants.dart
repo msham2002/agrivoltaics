@@ -67,7 +67,7 @@ extension TimeIntervalExtension on TimeInterval {
       case TimeUnit.second:
         return Duration(seconds: this.value);
       case TimeUnit.minute:
-        return Duration(minutes: this.value);
+        return Duration(minutes: this.value * 15); // changes the graph interval to 15 miute intervals 
       case TimeUnit.hour:
         return Duration(hours: this.value);
       case TimeUnit.day:

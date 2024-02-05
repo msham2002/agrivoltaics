@@ -146,7 +146,7 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
                   // ),
                   DropdownMenuItem(
                     value: TimeUnit.minute,
-                    child: Text('minutes')
+                    child: Text('15 minutes')
                   ),
                   DropdownMenuItem(
                     value: TimeUnit.hour,
