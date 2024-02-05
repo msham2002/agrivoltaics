@@ -9,12 +9,13 @@
             "request": "launch",
             "type": "dart",
             "args": [
-                "--dart-define=INFLUXDB_URL=https://us-east-1-1.aws.cloud2.influxdata.com",
-                "--dart-define=INFLUXDB_TOKEN=eCXQIpE_UwpEb34RBJ7Wos47vlIjK32mI_jPjrj9otOlOGDUCiqXZlc0qkDPpzxmCciuAKO1YuJrGK0YZKiG0Q==",
-                "--dart-define=INFLUXDB_ORG=65831f5e68f42d85",
-                "--dart-define=INFLUXDB_BUCKET=agrivoltaics_application",
-                "--dart-define=INFLUXDB_DEBUG=true",
-                "--dart-define=AUTHORIZED_EMAILS=agrivoltaicsgrafana@gmail.com"
+                "--dart-define=INFLUXDB_URL=CHANGE_ME",
+                "--dart-define=INFLUXDB_TOKEN=CHANGE_ME",
+                "--dart-define=INFLUXDB_ORG=CHANGE_ME",
+                "--dart-define=INFLUXDB_BUCKET=CHANGE_ME",
+                "--dart-define=INFLUXDB_DEBUG=false",
+                "--dart-define=ADMIN_EMAIL=",
+                "--dart-define=OWNER_EMAIL="
             ]
         },
         {
