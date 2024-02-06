@@ -223,7 +223,6 @@ class ToggleButton extends StatelessWidget {
 
 class Setting extends StatelessWidget {
   const Setting({super.key});
- 
 
   @override
   Widget build(BuildContext context) {
@@ -245,7 +244,7 @@ class Setting extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           String newName = context.read<AppState>().sites[siteIndex].nickName;
-         _SiteNameEditingController.text = newName;
+          _SiteNameEditingController.text = newName;
           return AlertDialog(
             title: const Text('Rename Site'),
             content: TextField(
@@ -260,8 +259,8 @@ class Setting extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () {
-                    context.read<AppState>().sites[siteIndex].nickName = newName;
-                    context.read<AppState>().finalizeState();
+                  context.read<AppState>().sites[siteIndex].nickName = newName;
+                  context.read<AppState>().finalizeState();
                   Navigator.of(context).pop();
                 },
                 child: const Text('Rename'),
@@ -299,8 +298,8 @@ class Setting extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () {
-                    context.read<AppState>().sites[siteIndex].zones[zoneIndex].nickName = newName;
-                    context.read<AppState>().finalizeState();
+                  context.read<AppState>().sites[siteIndex].zones[zoneIndex].nickName = newName;
+                  context.read<AppState>().finalizeState();
                   Navigator.of(context).pop();
                 },
                 child: const Text('Rename'),
@@ -325,18 +324,18 @@ class Setting extends StatelessWidget {
             itemCount: context.read<AppState>().sites.length,
             itemBuilder: (BuildContext context, int siteIndex) {
               Site site = context.read<AppState>().sites[siteIndex];
-            if (site.nickName == '') {
-              siteName = site.name;
-            } else {
-              siteName = '(${site.name}) ${site.nickName}';
-            }
+              if (site.nickName == '') {
+                siteName = site.name;
+              } else {
+                siteName = '(${site.name}) ${site.nickName}';
+              }
               return Card(
                 elevation: 0.0,
-                
+
                 child: Column(
-                  
+
                   children: [
-                    
+
                     ListTile(
                       title: Text(
                         siteName,
@@ -376,7 +375,7 @@ class Setting extends StatelessWidget {
                         } else {
                           zoneName = '(${zone.name}) ${zone.nickName}';
                         }
-                        
+
                         return ListTile(
                           title: Text(zoneName),
                           leading: Checkbox(
@@ -436,62 +435,124 @@ class Setting extends StatelessWidget {
             },
           ),
           Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Adjust the alignment as needed
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Center(
-                  child: ElevatedButton(
-                    onPressed: context.read<AppState>().addSite,
-                    child: const Text('Add Site'),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    toggleAllSensors(context.read<AppState>(), true);
-                  },
-                  child: const Text('Sensors On'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    toggleAllSensors(context.read<AppState>(), false);
-                  },
-                  child: const Text('Sensors Off'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.read<AppState>().updateSettingsInDB();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DashboardPage(),
-                        maintainState: false,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                if (constraints.maxWidth < 500) {
+                  // If screen width is less than 500 pixels, stack the buttons
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0), // Added top and bottom padding
+                        child: ElevatedButton(
+                          onPressed: context.read<AppState>().addSite,
+                          child: const Text('Add Site'),
+                        ),
                       ),
-                    );
-                  },
-                  child: const Text('Save & View'),
-                ),
-              ),
-            ],
+                      const SizedBox(width: 8.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0), // Added top and bottom padding
+                        child: ElevatedButton(
+                          onPressed: () {
+                            toggleAllSensors(context.read<AppState>(), true);
+                          },
+                          child: const Text('Sensors On'),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0), // Added top and bottom padding
+                        child: ElevatedButton(
+                          onPressed: () {
+                            toggleAllSensors(context.read<AppState>(), false);
+                          },
+                          child: const Text('Sensors Off'),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0), // Added top and bottom padding
+                        child: ElevatedButton(
+                          onPressed: () {
+                            context.read<AppState>().updateSettingsInDB();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DashboardPage(),
+                                maintainState: false,
+                              ),
+                            );
+                          },
+                          child: const Text('Save & View'),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  // Otherwise, display the buttons in a row
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: ElevatedButton(
+                              onPressed: context.read<AppState>().addSite,
+                              child: const Text('Add Site'),
+                            ),
+                          ),
+                          const SizedBox(width: 8.0),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                toggleAllSensors(context.read<AppState>(), true);
+                              },
+                              child: const Text('Sensors On'),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                toggleAllSensors(context.read<AppState>(), false);
+                              },
+                              child: const Text('Sensors Off'),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context.read<AppState>().updateSettingsInDB();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DashboardPage(),
+                                    maintainState: false,
+                                  ),
+                                );
+                              },
+                              child: const Text('Save & View'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
           ),
-        ),
         ],
       ),
     );
   }
 }
+
+
 
 void toggleAllSensors(AppState appState, bool toggleOn) {
   for (int i = 0; i < appState.sites.length; i++) {
