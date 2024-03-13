@@ -109,24 +109,27 @@ enum SensorMeasurement {
   light,
   rain,
   frost,
-  soil
+  soil,
+  rssi
 }
 
 extension SensorMeasurementExtension on SensorMeasurement {
   String get fluxQuery {
     switch (this) {
       case SensorMeasurement.humidity:
-        return 'Humidity';
+        return 'humidity';
       case SensorMeasurement.temperature:
-        return 'Fahrenheit';
+        return 'temperature';
       case SensorMeasurement.light:
-        return 'Lux';
+        return 'light_intensity';
       case SensorMeasurement.rain:
-        return 'Dryness Intensity';
+        return 'rain_events';
       case SensorMeasurement.frost:
         return 'Radiation Fahrenheit';
       case SensorMeasurement.soil:
-        return 'Soil Moisture';
+        return 'soil_moisture';
+      case SensorMeasurement.rssi:
+        return 'rssi';
       default:
         return '';
     }

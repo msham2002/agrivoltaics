@@ -34,7 +34,7 @@ if (singleGraphToggle == false) {
 
           numberOfZones -= 1;
           if (numberOfZones == 0) {
-            query += '(r["_measurement"] == "${sites[i-1].name}" and (r["Zone"] == "$j"';
+            query += '(r._measurement == "${sites[i-1].name}" and (r.Zone == "$j"';
             List<MapEntry<SensorMeasurement, bool>> fieldEntries = sites[i-1].zones[j-1].fields.entries.toList();
 
             int fieldCount = 0;
@@ -48,7 +48,7 @@ if (singleGraphToggle == false) {
             }
 
             if (fieldCount == 0) {
-              query += ' and (r["_field"] == "N/A"))';
+              query += ' and (r._field == "N/A"))';
             }
             else {
               bool firstCheckedSite = true;
@@ -59,15 +59,15 @@ if (singleGraphToggle == false) {
 
                 if (checked) {
                   if (fieldCount == 1) {
-                    query += ' and (r["_field"] == "$measurement"))';
+                    query += ' and (r._field == "$measurement"))';
                   }
                   else if (k == 1 || firstCheckedSite == true) {
-                    query += ' and (r["_field"] == "$measurement"';
+                    query += ' and (r._field == "$measurement"';
                     firstCheckedSite = false;
                   } else if (k != sites[i-1].zones[j-1].fields.length) {
-                    query += ' or r["_field"] == "$measurement"';
+                    query += ' or r._field  == "$measurement"';
                   } else {
-                    query += ' or r["_field"] == "$measurement"))';
+                    query += ' or r._field  == "$measurement"))';
                   }
                 }
               }
@@ -99,9 +99,9 @@ if (singleGraphToggle == false) {
          continue;
        }
        else if (l == 1) {
-         query += '(r["_measurement"] == "${sites[l-1].name}" ';
+         query += '(r._measurement == "${sites[l-1].name}" ';
        } else {
-         query += ') or (r["_measurement"] == "${sites[l-1].name}" ';
+         query += ') or (r._measurement == "${sites[l-1].name}" ';
        }
        for (int i = 1; i <= sites[l-1].zones.length; i++) {
          
@@ -128,9 +128,9 @@ if (singleGraphToggle == false) {
             else if (i == 1 || firstZoneIsEmpty) {
               zoneWasEmptyBefore = true;
               firstZoneIsEmpty = false;
-              query += 'and (r["Zone"] == "$i"';
+              query += 'and (r.Zone == "$i"';
             } else {
-              query += ' or (r["Zone"] == "$i"';
+              query += ' or (r.Zone == "$i"';
             } 
             
             bool firstCheckedSite = true;
@@ -143,15 +143,15 @@ if (singleGraphToggle == false) {
               if (checked) {
                 checkedCount += 1;
                 if (fieldCount == 1) {
-                  query += ' and (r["_field"] == "$measurement"))';
+                  query += ' and (r._field == "$measurement"))';
                 }
                 else if (j == 1 || firstCheckedSite == true) {
-                  query += ' and (r["_field"] == "$measurement"';
+                  query += ' and (r._field == "$measurement"';
                   firstCheckedSite = false;
                 } else if (checkedCount != fieldCount) {
-                  query += ' or r["_field"] == "$measurement"';
+                  query += ' or r._field == "$measurement"';
                 } else {
-                  query += ' or r["_field"] == "$measurement"))';
+                  query += ' or r._field == "$measurement"))';
                 }
               }
             }
@@ -195,6 +195,7 @@ Future<Map<String, List<FluxRecord>>> getInfluxData
 
   var dataSets = <String, List<FluxRecord>>{};    
   String query = _generateQuery(timeUnit, timeInterval, sites, singleGraphToggle, numberOfZones, returnDataValue);
+
   Stream<FluxRecord> recordStream = await queryService.query(query);
 
   List<FluxRecord> records = await recordStream.toList();

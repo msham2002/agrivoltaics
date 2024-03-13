@@ -54,7 +54,7 @@ class AppState with ChangeNotifier {
     
     this.sites = [
       Site(
-        name: 'Site 1',
+        name: 'site 1',
         nickName: '',
         zones: [
           Zone(
@@ -102,7 +102,7 @@ class AppState with ChangeNotifier {
 
   void addSite() {
       sites.add(
-        Site(name: 'Site ${sites.length + 1}',         
+        Site(name: 'site ${sites.length + 1}',         
         nickName: '',
         zones: [
           Zone(
@@ -152,7 +152,7 @@ class AppState with ChangeNotifier {
 
      void addSiteFromDB(bool siteChecked, String siteNickName, bool zoneChecked, String zoneNickName, bool humidity, bool temperature, bool light, bool frost, bool rain, bool soil) {
       sites.add(
-        Site(name: 'Site ${sites.length + 1}',         
+        Site(name: 'site ${sites.length + 1}',         
         nickName: siteNickName,
         zones: [
           Zone(
