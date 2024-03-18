@@ -140,7 +140,7 @@ extension SensorMeasurementExtension on SensorMeasurement {
       case SensorMeasurement.humidity:
         return 'Humidity';
       case SensorMeasurement.temperature:
-        return 'Temperature';
+        return 'Temp';
       case SensorMeasurement.light:
         return 'Light';
       case SensorMeasurement.rain:
@@ -159,7 +159,7 @@ extension SensorMeasurementExtension on SensorMeasurement {
       case SensorMeasurement.humidity:
         return '%';
       case SensorMeasurement.temperature:
-        return 'Fahrenheit';
+        return 'F';
       case SensorMeasurement.light:
         return 'Lux';
       case SensorMeasurement.rain:

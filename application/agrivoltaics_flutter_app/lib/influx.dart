@@ -176,6 +176,10 @@ if (balance > 0) {
   from(bucket: "${AppConstants.influxdbBucket}")
   |> range(start: ${startDate}T00:00:00Z, stop: ${endDate}T23:59:00Z)
   $query
+  |> map(fn: (r) => ({
+      r with
+      _value: if r._field == "temperature" then float(v: r._value) * 9.0/5.0 + 32.0 else float(v: r._value)
+    }))
   |> aggregateWindow(every: ${timeInterval.value}${timeInterval.unit.fluxQuery}, fn: $returnDataValue, createEmpty: false)
   |> yield(name: "$returnDataValue")
   ''';

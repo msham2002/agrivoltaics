@@ -24,28 +24,28 @@ class DashboardDrawer extends StatelessWidget {
     return Drawer(
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          return Column(
-            children: [
-              DateRangePicker(
-                height: horizontalPhone ? constraints.maxHeight * 0.65 : null,
-              ),
-              TimeRangePicker(
-                height: horizontalPhone ? constraints.maxHeight * (0.35 / 2) : null,
-                width: constraints.maxWidth * 0.6
-              ),
-              SizedBox(
-                height: horizontalPhone ? constraints.maxHeight * (0.35 / 2) : null,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+          return Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0), // Adjust padding values as needed
+            child: Column(
+              children: [
+                DateRangePicker(
+                  height: horizontalPhone ? constraints.maxHeight * 0.65 : null,
+                ),
+                TimeRangePicker(
+                  height: horizontalPhone ? constraints.maxHeight * (0.35 / 2) : null,
+                  width: constraints.maxWidth * 0.6
+                ),
+                SizedBox(
+                  height: 40.0, // Adjust the height as needed
                   child: ElevatedButton(
                     onPressed:() {
                       appState.finalizeState();
                     },
-                    child: const Text('Apply')
+                    child: const Text('Apply', style: TextStyle(fontSize: 18)), // Adjust font size if needed
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         }
       ),
