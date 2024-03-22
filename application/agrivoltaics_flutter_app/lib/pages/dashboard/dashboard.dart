@@ -231,7 +231,7 @@ class _DashboardGraphState extends State<DashboardGraph> with AutomaticKeepAlive
                   tooltipSettings: const InteractiveTooltip(
                     enable: true,
                     format: 'series.name\npoint.y | point.x',
-                    borderWidth: 20
+                    borderWidth: 3
                   )
                 ),
                 primaryXAxis: CategoryAxis(),
@@ -241,9 +241,11 @@ class _DashboardGraphState extends State<DashboardGraph> with AutomaticKeepAlive
                       // dataSource: InfluxData(data.value, appState.timezone).data,
                       dataSource: InfluxData(data, appState.timezone).datapoints,
                       color: assignColorToField(data),
-                      xValueMapper: (InfluxDatapoint d, _) => d.timeStamp,
+                      // labels would always have '00' making them larger and more likely to overlap, below removes those two characters
+                      xValueMapper: (InfluxDatapoint d, _) => d.timeStamp.substring(0, d.timeStamp.length - 2),
                       yValueMapper: (InfluxDatapoint d, _) => d.value,
-                      legendItemText: data.key,
+                      // below cuts off zone (number) from legend, but keeps it on the boxes when hovering over the graph
+                      legendItemText: data.key.contains('Z') ? data.key.substring(0, data.key.indexOf('Z')) : data.key,
                       name: data.key
                     )
                   ]
