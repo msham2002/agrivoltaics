@@ -139,7 +139,7 @@ class _DashboardGraphState extends State<DashboardGraph> with AutomaticKeepAlive
   Color assignColorToField(MapEntry<String, List<FluxRecord>> fieldData) {
     if (fieldData.key.contains("Humidity")) {
       return Colors.blue;
-    } else if (fieldData.key.contains("Temperature")) {
+    } else if (fieldData.key.contains("Temp")) {
       return Colors.red;
     } else if (fieldData.key.contains("Lux")) {
       return Colors.yellow;
