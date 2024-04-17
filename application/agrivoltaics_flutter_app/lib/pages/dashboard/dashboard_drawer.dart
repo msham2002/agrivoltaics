@@ -119,50 +119,58 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
       height: widget.height,
       width: widget.width,
       child: Center(
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: Center(
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  maxLength: 2,
-                  onChanged: (value) {
-                    appState.timeInterval.value = int.parse(value);
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'Interval'
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 80, // Adjust width here
+                  child: Center(
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      maxLength: 2,
+                      onChanged: (value) {
+                        appState.timeInterval.value = int.parse(value);
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Interval',
+                      ),
+                    ),
                   ),
-                )
-              )
+                ),
+              ],
             ),
+            SizedBox(height: 5), // Add some space between TextField and label
+            Text(
+              'Note: Maximum 2 digit interval',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            SizedBox(height: 5), // Add some space between label and DropdownButton
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: DropdownButton(
                 items: const [
-                  // DropdownMenuItem( // TODO: debugging purposes only
-                  //   value: TimeUnit.second,
-                  //   child: Text('seconds')
-                  // ),
                   DropdownMenuItem(
                     value: TimeUnit.minute,
-                    child: Text('15 minutes')
+                    child: Text('15 minutes'),
                   ),
                   DropdownMenuItem(
                     value: TimeUnit.hour,
-                    child: Text('hours')
+                    child: Text('hours'),
                   ),
                   DropdownMenuItem(
                     value: TimeUnit.day,
-                    child: Text('days')
+                    child: Text('days'),
                   ),
                   DropdownMenuItem(
                     value: TimeUnit.week,
-                    child: Text('weeks')
+                    child: Text('weeks'),
                   ),
                   DropdownMenuItem(
                     value: TimeUnit.month,
-                    child: Text('months')
+                    child: Text('months'),
                   )
                 ],
                 onChanged: (value) {
@@ -171,11 +179,11 @@ class _TimeRangePickerState extends State<TimeRangePicker> {
                     dropdownValue = value;
                   });
                 },
-                value: dropdownValue
+                value: dropdownValue,
               ),
             ),
           ],
-        )
+        ),
       ),
     );
   }

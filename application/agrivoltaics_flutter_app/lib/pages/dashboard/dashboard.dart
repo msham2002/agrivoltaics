@@ -237,18 +237,26 @@ class _DashboardGraphState extends State<DashboardGraph> with AutomaticKeepAlive
                 primaryXAxis: CategoryAxis(),
                 series: <LineSeries<InfluxDatapoint, String>>[
                   for (var data in snapshot.data!.entries)...[
-                    LineSeries<InfluxDatapoint, String>(
-                      // dataSource: InfluxData(data.value, appState.timezone).data,
-                      dataSource: InfluxData(data, appState.timezone).datapoints,
-                      color: assignColorToField(data),
-                      // labels would always have '00' making them larger and more likely to overlap, below removes those two characters
-                      xValueMapper: (InfluxDatapoint d, _) => d.timeStamp.substring(0, d.timeStamp.length - 2),
-                      yValueMapper: (InfluxDatapoint d, _) => d.value,
-                      // below cuts off zone (number) from legend, but keeps it on the boxes when hovering over the graph
-                      legendItemText: data.key.contains('Z') ? data.key.substring(0, data.key.indexOf('Z')) : data.key,
-                      name: data.key
-                    )
-                  ]
+                    // if single graph is off then zone won't appear in legend, if it is on the zone appears in legend
+                    if (appState.singleGraphToggle == false)
+                      LineSeries<InfluxDatapoint, String>(
+                        dataSource: InfluxData(data, appState.timezone).datapoints,
+                        color: assignColorToField(data),
+                        xValueMapper: (InfluxDatapoint d, _) => d.timeStamp.substring(0, d.timeStamp.length - 2),
+                        yValueMapper: (InfluxDatapoint d, _) => d.value,
+                        legendItemText: data.key.contains('Z') ? data.key.substring(0, data.key.indexOf('Z')) : data.key,
+                        name: data.key,
+                      )
+                    else
+                      LineSeries<InfluxDatapoint, String>(
+                        dataSource: InfluxData(data, appState.timezone).datapoints,
+                        color: assignColorToField(data),
+                        xValueMapper: (InfluxDatapoint d, _) => d.timeStamp.substring(0, d.timeStamp.length - 2),
+                        yValueMapper: (InfluxDatapoint d, _) => d.value,
+                        legendItemText: data.key,
+                        name: data.key,
+                      )
+                  ],
                 ],
                 zoomPanBehavior: ZoomPanBehavior(
                   enablePinching: true
