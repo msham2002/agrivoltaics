@@ -19,9 +19,9 @@
   //#include "BluetoothSerial.h"  
 
   // WiFi AP SSID
-  #define WIFI_SSID  "1819_Guest" //"1819_Guest" //"Anthony's iPhone" //"UC_Secure" //"iPhone" //"TeneComp"
+  #define WIFI_SSID  "main" //"1819_Guest" //"Anthony's iPhone" //"UC_Secure" //"iPhone" //"TeneComp"
   // WiFi password
-  #define WIFI_PASSWORD "NULL" //"NULL" //"EKkJ-Txsy-3LNB-NqiN" //"Priv0naut~" //"tzrkh9gzw16ku" //"~!IWantOut!~"
+  #define WIFI_PASSWORD "5139191357" //"NULL" //"EKkJ-Txsy-3LNB-NqiN" //"Priv0naut~" //"tzrkh9gzw16ku" //"~!IWantOut!~"
   
   #define INFLUXDB_URL "https://us-east-1-1.aws.cloud2.influxdata.com"
   #define INFLUXDB_TOKEN "04Jp10DtN5eThatcNnnUAxdqnEmCRKPjX0t0RudEcw9GnC5CJo-gEaMO4YxJmZYV-dQstd6_BCvA3lBHWoTL3w=="
@@ -71,7 +71,7 @@ void setup() {
 
     // Setup wifi
     WiFi.mode(WIFI_STA);
-    wifiMulti.addAP(WIFI_SSID); //WIFI_PASSWORD MUST BE ADDED, DON'T FORGET. IF THERE IS ON WIFI_PASSWORD GET RID OF THE VALUE AND WRITE NULL FOR THE PASSWORD INITIALIZATION
+    wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD); //WIFI_PASSWORD MUST BE ADDED, DON'T FORGET. IF THERE IS ON WIFI_PASSWORD GET RID OF THE VALUE AND WRITE NULL FOR THE PASSWORD INITIALIZATION
     Serial.print("Connecting to wifi");
     while (wifiMulti.run() != WL_CONNECTED) {
       Serial.print(".");
