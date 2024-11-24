@@ -8,6 +8,8 @@ RUN apt-get clean
 
 # download Flutter SDK from Flutter Github repo
 RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
+WORKDIR /usr/local/flutter
+RUN git checkout 3.7.12
 
 # Set flutter environment path
 ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
@@ -16,8 +18,6 @@ ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PAT
 RUN flutter doctor
 
 # Enable flutter web
-RUN flutter channel master
-RUN flutter upgrade
 RUN flutter config --enable-web
 
 # Define build arguments to be populated by build command (docker build --build-arg BUILD_ARG=value)
