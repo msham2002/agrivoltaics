@@ -64,10 +64,60 @@ class App extends StatelessWidget {
       create: (context) => AppState(),
       child: MaterialApp(
         title: 'Vinovoltaics',
-        theme: ThemeData(
+        /*theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey)
+        ),*/
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: const ColorScheme.light(
+            primary: Color(0xFF2D53DA),           // Primary accent (buttons, selected icons)
+            onPrimary: Colors.white,              // Text on primary
+            secondary: Colors.blueGrey,           // Optional
+            onSecondary: Colors.white,
+            background: Color(0xFFF2F5FD),        // App background
+            onBackground: Colors.black,
+            surface: Colors.white,                // Cards, nav rail
+            onSurface: Colors.black,
+            error: Colors.red,
+            onError: Colors.white,
+          ),
+          scaffoldBackgroundColor: Color(0xFFF2F5FD),
+          cardTheme: CardTheme(
+            color: Colors.white,
+            surfaceTintColor: Colors.white,
+            elevation: 4,
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            elevation: 1,
+          ),
+          navigationRailTheme: const NavigationRailThemeData(
+            backgroundColor: Colors.white,
+            selectedIconTheme: IconThemeData(color: Color(0xFF2D53DA)),
+            selectedLabelTextStyle: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+            unselectedIconTheme: IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
+            unselectedLabelTextStyle: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+            indicatorColor: Color.fromARGB(255, 255, 255, 255), // No oval
+            labelType: NavigationRailLabelType.none,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF2D53DA),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
         ),
+
+
         home: const LoginPage(),
         // home: const HomePage(),
         debugShowCheckedModeBanner: false,
