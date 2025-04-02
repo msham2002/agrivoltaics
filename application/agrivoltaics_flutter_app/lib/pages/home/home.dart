@@ -12,6 +12,8 @@ import 'package:http/http.dart' as http;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 
 import '../dashboard/dashboard.dart';
 import '../dashboard/dashboard_new.dart';
@@ -105,14 +107,14 @@ class HomePage extends State<HomeState> {
                       onDestinationSelected: _selectPage,
                       labelType: NavigationRailLabelType.none,
                       // extended: true, // If you want wide rail with text shown
-                      destinations: const [
+                      destinations: [
                         NavigationRailDestination(
-                          icon: Icon(Icons.radar),
+                          icon: Icon(MdiIcons.radioTower),
                           label: Text('Stationary Sensors', style: TextStyle(fontSize: 14),),
                           padding: EdgeInsets.only(bottom: 16),
                         ),
                         NavigationRailDestination(
-                          icon: Icon(Icons.camera_alt),
+                          icon: Icon(MdiIcons.quadcopter),
                           label: Text('Mobile Sensors', style: TextStyle(fontSize: 14),),
                           padding: EdgeInsets.only(bottom: 16),
                         ),
@@ -129,7 +131,7 @@ class HomePage extends State<HomeState> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: IconButton(
-                      icon: const Icon(Icons.power_settings_new, color: Colors.white),
+                      icon: Icon(MdiIcons.logout, color: Colors.white),
                       onPressed: () {
                         showDialog(
                           context: context,
@@ -286,7 +288,7 @@ class SignOutButton extends StatelessWidget {
                 builder: (BuildContext context) => SignOutDialog()
               );
             },
-            icon: Icon(Icons.power_settings_new_rounded)
+            icon: Icon(MdiIcons.logout)
           ),
         );
       }

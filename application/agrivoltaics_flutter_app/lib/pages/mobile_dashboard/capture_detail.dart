@@ -66,7 +66,7 @@ class CaptureDetailPage extends StatelessWidget {
                 // === DISEASE STATUS CHIP ===
                 Chip(
                   label: Text(
-                    data['detected_disesase'] == true
+                    data['detected_disease'] == true
                         ? 'Disease Detected'
                         : 'No Disease Detected',
                     style: const TextStyle(
@@ -75,7 +75,7 @@ class CaptureDetailPage extends StatelessWidget {
                     ),
                   ),
                   backgroundColor:
-                      data['detected_disesase'] == true ? Colors.red : Colors.green,
+                      data['detected_disease'] == true ? Colors.red : Colors.green,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                     side: BorderSide.none,
