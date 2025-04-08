@@ -14,7 +14,7 @@
                 "--dart-define=INFLUXDB_ORG=65831f5e68f42d85",
                 "--dart-define=INFLUXDB_BUCKET=esp32_testing",
                 "--dart-define=INFLUXDB_DEBUG=true",
-                "--dart-define=AUTHORIZED_EMAILS="
+                "--dart-define=AUTHORIZED_EMAILS=joshmckettrick@gmail.com,agrivoltaicsgrafana@gmail.com,dcmcavoy73@gmail.com,mahsenr2@gmail.com,kel.m.say@gmail.com,claire.2001.elizabeth@gmail.com,combstommy78@gmail.com,joshring51@gmail.com,mille3ep@gmail.com,tilak4059@gmail.com,owenlisac@gmail.com,jack.j.troy@gmail.com,msham2002@gmail.com,powerbook500@gmail.com,brycekleinschmidt@gmail.com"
             ]
         },
         {
