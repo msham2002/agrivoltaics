@@ -118,11 +118,12 @@ class HomePage extends State<HomeState> {
                           label: Text('Mobile Sensors', style: TextStyle(fontSize: 14),),
                           padding: EdgeInsets.only(bottom: 16),
                         ),
-                        NavigationRailDestination(
+                        /* settings already found in stationary dashboard
+                          NavigationRailDestination(
                           icon: Icon(Icons.settings),
                           label: Text('Settings', style: TextStyle(fontSize: 14),),
                           padding: EdgeInsets.only(bottom: 16),
-                        ),
+                        ),*/
                       ],
                     ),
                   ),

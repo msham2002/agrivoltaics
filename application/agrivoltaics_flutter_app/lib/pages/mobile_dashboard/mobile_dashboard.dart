@@ -16,7 +16,7 @@ class MobileDashboardPage extends StatefulWidget {
 }
 
 class _MobileDashboardPageState extends State<MobileDashboardPage> {
-  bool showAllCaptures = false;
+  bool showAllCaptures = true;
   DocumentSnapshot? selectedCapture;
 
    void selectCapture(DocumentSnapshot doc) {
@@ -35,7 +35,7 @@ class _MobileDashboardPageState extends State<MobileDashboardPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 16, top: 24, bottom: 16, right: 28),
+              padding: const EdgeInsets.only(left: 16, top: 36, bottom: 16, right: 36),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -74,8 +74,6 @@ class _MobileDashboardPageState extends State<MobileDashboardPage> {
                 ],
               ),
             ),
-
-            // 3) Then your main content
             Expanded(
               child: selectedCapture != null
                   ? CaptureDetailPage(document: selectedCapture!)

@@ -22,6 +22,139 @@ class TabbedDashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final appState = context.watch<AppState>();
     final sites = appState.sites;
+
+    if (sites.isEmpty) {
+      return const Scaffold(
+        body: Center(child: Text('No sites available.')),
+      );
+    }
+
+    return DefaultTabController(
+      length: sites.length,
+      child: Scaffold(
+        appBar: DashboardAppBar(
+          tabBar: TabBar(
+            isScrollable: true,
+            tabs: sites.map((site) {
+              final tabText = site.nickName.isNotEmpty ? site.nickName : site.name;
+              return Tab(text: tabText);
+            }).toList(),
+          ),
+        ),
+        body: TabBarView(
+          children: sites.map((site) {
+            final zoneKeys = <GlobalKey>[];
+            final scrollController = ScrollController();
+
+            for (int i = 0; i < site.zones.length; i++) {
+              zoneKeys.add(GlobalKey());
+            }
+
+            return Row(
+              children: [
+                // Left pane: zone graphs
+                Expanded(
+                  flex: 3,
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: List.generate(site.zones.length, (index) {
+                        final zone = site.zones[index];
+                        if (!zone.checked) return const SizedBox.shrink();
+
+                        final zoneTitle = zone.nickName.isNotEmpty
+                            ? zone.nickName
+                            : zone.name;
+
+                        return Card(
+                          key: zoneKeys[index],
+                          margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Zone: $zoneTitle',
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 600,
+                                  child: DashboardGraph(
+                                    numberOfZones: index + 1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                ),
+
+                // Right pane: zone jump list
+                Container(
+                  width: 350,
+                  padding: const EdgeInsets.only(top: 16, right: 12),
+                  child: Card(
+                    elevation: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text("Zones", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 8),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: site.zones.length,
+                              itemBuilder: (context, index) {
+                                final zone = site.zones[index];
+                                if (!zone.checked) return const SizedBox.shrink();
+
+                                final zoneLabel = zone.nickName.isNotEmpty
+                                    ? zone.nickName
+                                    : zone.name;
+
+                                return ListTile(
+                                  title: Text(zoneLabel),
+                                  onTap: () {
+                                    final keyContext = zoneKeys[index].currentContext;
+                                    if (keyContext != null) {
+                                      Scrollable.ensureVisible(
+                                        keyContext,
+                                        duration: const Duration(milliseconds: 500),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    }
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
+
+/*
+class TabbedDashboardPage extends StatelessWidget {
+  const TabbedDashboardPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final appState = context.watch<AppState>();
+    final sites = appState.sites;
     int numberOfZones = 0;
 
     // Each site will be its own tab. If there are no sites, show a simple message.
@@ -61,7 +194,7 @@ class TabbedDashboardPage extends StatelessWidget {
                       : zone.name;
 
                   return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -70,9 +203,8 @@ class TabbedDashboardPage extends StatelessWidget {
                             'Zone: $zoneTitle',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          // Show your chart for this zone
                           SizedBox(
-                            height: 300,
+                            height: 500,
                             child: DashboardGraph(
                               numberOfZones: numberOfZones += 1,
                             ),
@@ -89,8 +221,8 @@ class TabbedDashboardPage extends StatelessWidget {
       ),
     );
   }
-}
-
+} 
+*/
 
 class DashboardGraph extends StatefulWidget {
   final int numberOfZones;

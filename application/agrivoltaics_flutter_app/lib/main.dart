@@ -73,7 +73,7 @@ class App extends StatelessWidget {
           colorScheme: const ColorScheme.light(
             primary: Color(0xFF2D53DA),           // Primary accent (buttons, selected icons)
             onPrimary: Colors.white,              // Text on primary
-            secondary: Colors.blueGrey,           // Optional
+            secondary: Color(0xFF2D53DA),           // Optional
             onSecondary: Colors.white,
             background: Color(0xFFF2F5FD),        // App background
             onBackground: Colors.black,
