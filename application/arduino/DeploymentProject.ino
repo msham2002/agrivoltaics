@@ -19,7 +19,7 @@
   //#include "BluetoothSerial.h"  
 
   // WiFi AP SSID
-  #define WIFI_SSID  "main" //"1819_Guest" //"Anthony's iPhone" //"UC_Secure" //"iPhone" //"TeneComp"
+  #define WIFI_SSID  "main" //"1819_Guest" //"1819_Guest" //"Anthony's iPhone" //"UC_Secure" //"iPhone" //"TeneComp"
   // WiFi password
   #define WIFI_PASSWORD "5139191357" //"NULL" //"EKkJ-Txsy-3LNB-NqiN" //"Priv0naut~" //"tzrkh9gzw16ku" //"~!IWantOut!~"
   

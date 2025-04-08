@@ -12,8 +12,12 @@ import 'package:http/http.dart' as http;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 
 import '../dashboard/dashboard.dart';
+import '../dashboard/dashboard_new.dart';
+import '../mobile_dashboard/mobile_dashboard.dart';
 
 class HomeState extends StatefulWidget {
   const HomeState({
@@ -31,68 +35,222 @@ Home Page
 
 */
 class HomePage extends State<HomeState> {
+
+  int _selectedIndex = 0;
+
+  static final List<Widget> _pages = [
+    TabbedDashboardPage(),         // Stationary Sensors
+    MobileDashboardPage(),   // Mobile Sensors
+    SettingsPage(),          // Settings
+  ];
+
+  void _selectPage(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
-    return Scaffold(
-      appBar: AppBar(
-        actions: const [
-          NotificationsButton(),
-          SignOutButton()
-        ],
-      ),
-      endDrawer: const NotificationsDrawer(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Text(
-              'Vinovoltaics',
-              style: TextStyle(
-                fontSize: 50
+    final isWideScreen = MediaQuery.of(context).size.width >= 600;
+     return Scaffold(
+      // 1) No AppBar here—removed entirely
+      // 2) Row that holds [ Nav Rail (left) | Main Content (right) ]
+      body: Row(
+        children: [
+          // Only show side nav on wide screens
+          if (isWideScreen)
+            // Container for the brand + navigation rail + sign-out
+            Container(
+              width: 220,
+              decoration: BoxDecoration(
+                // You can replace this gradient with a single color if you prefer
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF2D53DA), // start (primary color)
+                    Color(0xFF1B2A99), // end (darker variant)
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  // Logo/Title at the top
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.eco, color: Colors.white, size: 24),
+                      SizedBox(width: 8),
+                      Text(
+                        "Vinovoltaics",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const Divider(color: Colors.white38),
+                  const SizedBox(height: 8),
+
+                  // Our actual NavRail, but transparent so the gradient shows through
+                  Expanded(
+                    child: NavigationRail(
+                      extended: true,
+                      backgroundColor: Colors.transparent,
+                      selectedIndex: _selectedIndex,
+                      onDestinationSelected: _selectPage,
+                      labelType: NavigationRailLabelType.none,
+                      // extended: true, // If you want wide rail with text shown
+                      destinations: [
+                        NavigationRailDestination(
+                          icon: Icon(MdiIcons.radioTower),
+                          label: Text('Stationary Sensors', style: TextStyle(fontSize: 14),),
+                          padding: EdgeInsets.only(bottom: 16),
+                        ),
+                        NavigationRailDestination(
+                          icon: Icon(MdiIcons.quadcopter),
+                          label: Text('Mobile Sensors', style: TextStyle(fontSize: 14),),
+                          padding: EdgeInsets.only(bottom: 16),
+                        ),
+                        /* settings already found in stationary dashboard
+                          NavigationRailDestination(
+                          icon: Icon(Icons.settings),
+                          label: Text('Settings', style: TextStyle(fontSize: 14),),
+                          padding: EdgeInsets.only(bottom: 16),
+                        ),*/
+                      ],
+                    ),
+                  ),
+
+                  // Sign Out button at the bottom
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: IconButton(
+                      icon: Icon(MdiIcons.logout, color: Colors.white),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => const SignOutDialog(),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-            ElevatedButton(
-              child: const Text('View Data'),
-                    onPressed: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                              DashboardPage(), 
-                              maintainState: false // This allows the graph to update after adjusting date and time interval
-                    )
-                  )
-              },
-            ),
-            // ElevatedButton(
-            //   child: const Text('Manage Sensors'),
-            //   onPressed: () => {
-            //     Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => SitesPage(destination: SiteRoute.sensorManagement)
-            //         )
-            //       )
-            //   },
-            // ),
-            ElevatedButton(
-              child: const Text('Settings'),
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SettingsPage()
-                  )
-                )
-              },
-            )
-          ],
-        ),
+          // Main content area
+          Expanded(
+            child: _pages[_selectedIndex],
+          ),
+        ],
       ),
+
+      // 3) Mobile bottom nav bar remains
+      bottomNavigationBar: !isWideScreen
+          ? BottomNavigationBar(
+              currentIndex: _selectedIndex,
+              selectedItemColor: Theme.of(context).colorScheme.primary,
+              unselectedItemColor: Colors.grey,
+              onTap: _selectPage,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.radar),
+                  label: 'Stationary',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.camera_alt),
+                  label: 'Mobile',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.settings),
+                  label: 'Settings',
+                ),
+              ],
+            )
+          : null,
     );
   }
 
+
+    /*
+    return Scaffold(
+      appBar: AppBar(
+        surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
+          /*flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF004D40), // teal dark
+                Color(0xFF00796B), // teal
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),*/
+        title: const Text('Vinovoltaics'),
+      ),
+      body: Row(
+        children: [
+          if (isWideScreen) NavigationRail(
+            
+            extended: true,
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: _selectPage,
+            labelType: NavigationRailLabelType.none,
+            //backgroundColor: Colors.blueGrey[50],
+            destinations: const [
+              NavigationRailDestination(
+                icon: Icon(Icons.radar),
+                label: Text('Stationary Sensors', style: TextStyle(fontSize: 14),),
+                padding: EdgeInsets.only(bottom: 16),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.camera_alt),
+                label: Text('Mobile Sensors', style: TextStyle(fontSize: 14),),
+                padding: EdgeInsets.only(bottom: 16),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.settings),
+                label: Text('Settings', style: TextStyle(fontSize: 14),),
+                padding: EdgeInsets.only(bottom: 16),
+              ),
+            ],
+          ),
+          Expanded(
+            child: _pages[_selectedIndex],
+          ),
+        ],
+      ),
+      bottomNavigationBar: !isWideScreen ? BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blueGrey,
+        onTap: _selectPage,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.show_chart),
+            label: 'Stationary',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera_alt),
+            label: 'Mobile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+      ) : null,
+    );
+  }
+  */
   @override
   void initState() {
     super.initState();
@@ -131,7 +289,7 @@ class SignOutButton extends StatelessWidget {
                 builder: (BuildContext context) => SignOutDialog()
               );
             },
-            icon: Icon(Icons.power_settings_new_rounded)
+            icon: Icon(MdiIcons.logout)
           ),
         );
       }

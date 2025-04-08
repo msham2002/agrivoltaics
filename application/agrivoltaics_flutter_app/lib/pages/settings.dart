@@ -474,7 +474,7 @@ class Setting extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             context.read<AppState>().updateSettingsInDB();
-                            Navigator.push(
+                            Navigator.push( //change to Nivagator.pop(context) so it goes back to the dashboard properly. however, TODO: dashboard updates without needing to go to a different page then back to it
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DashboardPage(),

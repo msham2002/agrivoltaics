@@ -3,6 +3,7 @@ import 'package:agrivoltaics_flutter_app/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../app_constants.dart';
+import 'package:agrivoltaics_flutter_app/pages/dashboard/dashboard_datetime_filter.dart';
 
 /*
 
@@ -12,9 +13,12 @@ Controls navigation. Contains buttons ("actions")
 
 */
 class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
+   final TabBar? tabBar;
+
   const DashboardAppBar({
-    super.key,
-  });
+    Key? key,
+    this.tabBar,
+  }) : super(key: key);
 
   @override
 Widget build(BuildContext context) {
@@ -32,16 +36,23 @@ Widget build(BuildContext context) {
         ),
         IconButton(
           onPressed: () {
-            Scaffold.of(context).openEndDrawer();
+            showDateTimeModal(context);
           },
           icon: const Icon(Icons.analytics_outlined)
         ),
       ],
+      bottom: tabBar,
     );
   }
   
+  //@override
+  //Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize {
+    final tabBarHeight = (tabBar == null) ? 0.0 : 48.0; // typical TabBar height
+    return Size.fromHeight(kToolbarHeight + tabBarHeight);
+  }
 }
 
 /*
