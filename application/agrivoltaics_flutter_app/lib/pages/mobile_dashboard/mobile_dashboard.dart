@@ -86,38 +86,6 @@ class _MobileDashboardPageState extends State<MobileDashboardPage> {
         ),
       ),
     );
-    /*return Scaffold(
-      endDrawer: const DashboardDrawer(),
-      appBar: AppBar(
-        title: Text(showAllCaptures
-            ? (selectedCapture != null ? 'Capture Details' : 'All Captures')
-            : (selectedCapture != null ? 'Capture Details' : 'Flagged Captures')),
-        actions: selectedCapture == null
-            ? [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() => showAllCaptures = !showAllCaptures);
-                  }, 
-                  child: Text(
-                    showAllCaptures ? 'Show Flagged Only' : 'Show All',
-                    //style: const TextStyle(color: Colors.white),
-                  ),
-                )
-              ]
-            : [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.black),
-                  onPressed: goBackToGrid,
-                ),
-              ],
-      ),
-      body: selectedCapture != null
-          ? CaptureDetailPage(document: selectedCapture!)
-          : MobileDashboard(
-              showAllCaptures: showAllCaptures,
-              onCaptureSelected: selectCapture,
-            ),
-    );*/
   }
 }
 
@@ -135,7 +103,6 @@ class MobileDashboard extends StatelessWidget {
 
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
     final isWideScreen = MediaQuery.of(context).size.width >= 1280 || screenHeight < screenWidth;
 
     final stream = showAllCaptures

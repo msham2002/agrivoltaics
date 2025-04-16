@@ -170,10 +170,6 @@ class HomePage extends State<HomeState> {
                   icon: Icon(Icons.camera_alt),
                   label: 'Mobile',
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  label: 'Settings',
-                ),
               ],
             )
           : null,

@@ -13,15 +13,34 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:influxdb_client/api.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-//import 'stationary_dashboard_graph.dart'; // We'll define this next
 
 class TabbedDashboardPage extends StatelessWidget {
-  const TabbedDashboardPage({Key? key}) : super(key: key);
+  TabbedDashboardPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final appState = context.watch<AppState>();
+    int numberOfGraphs = 0;
+    int numberOfZones = 0;
+    final appState = Provider.of<AppState>(context);
     final sites = appState.sites;
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isWideScreen = MediaQuery.of(context).size.width >= 1280 || screenHeight < screenWidth;
+
+    if (context.read<AppState>().singleGraphToggle) {
+      numberOfGraphs = 1;
+    } else {
+      for (int i = 0; i < context.read<AppState>().sites.length; i++) {
+          for (int j = 0; j < context.read<AppState>().sites[i].zones.length; j++) {
+            if (context.read<AppState>().sites[i].zones[j].checked) {
+              numberOfGraphs += 1;
+            }
+          }
+      }
+    }
+    int graphsPerRow = 1;
+    int numberOfRows = (numberOfGraphs / graphsPerRow).ceil();
 
     if (sites.isEmpty) {
       return const Scaffold(
@@ -50,170 +69,132 @@ class TabbedDashboardPage extends StatelessWidget {
               zoneKeys.add(GlobalKey());
             }
 
-            return Row(
-              children: [
-                // Left pane: zone graphs
-                Expanded(
-                  flex: 3,
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      children: List.generate(site.zones.length, (index) {
-                        final zone = site.zones[index];
-                        if (!zone.checked) return const SizedBox.shrink();
+            if (isWideScreen){
+              return Row(
+                children: [
+                  // Left pane: zone graphs
+                  Expanded(
+                    flex: 3,
+                    child: SingleChildScrollView(
+                      controller: scrollController,
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: List.generate(site.zones.length, (index) {
+                          final zone = site.zones[index];
+                          if (!zone.checked) return const SizedBox.shrink();
 
-                        final zoneTitle = zone.nickName.isNotEmpty
-                            ? zone.nickName
-                            : zone.name;
+                          final zoneTitle = zone.nickName.isNotEmpty
+                              ? zone.nickName
+                              : zone.name;
 
-                        return Card(
-                          key: zoneKeys[index],
-                          margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Zone: $zoneTitle',
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: 600,
-                                  child: DashboardGraph(
-                                    numberOfZones: index + 1,
+                          return Card(
+                            key: zoneKeys[index],
+                            margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Zone: $zoneTitle',
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(
+                                    height: 600,
+                                    child: DashboardGraph(
+                                      numberOfZones: numberOfZones += 1,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      }),
-                    ),
-                  ),
-                ),
-
-                // Right pane: zone jump list
-                Container(
-                  width: 350,
-                  padding: const EdgeInsets.only(top: 16, right: 12),
-                  child: Card(
-                    elevation: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text("Zones", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 8),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: site.zones.length,
-                              itemBuilder: (context, index) {
-                                final zone = site.zones[index];
-                                if (!zone.checked) return const SizedBox.shrink();
-
-                                final zoneLabel = zone.nickName.isNotEmpty
-                                    ? zone.nickName
-                                    : zone.name;
-
-                                return ListTile(
-                                  title: Text(zoneLabel),
-                                  onTap: () {
-                                    final keyContext = zoneKeys[index].currentContext;
-                                    if (keyContext != null) {
-                                      Scrollable.ensureVisible(
-                                        keyContext,
-                                        duration: const Duration(milliseconds: 500),
-                                        curve: Curves.easeInOut,
-                                      );
-                                    }
-                                  },
-                                );
-                              },
-                            ),
-                          ),
-                        ],
+                          );
+                        }),
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
-}
 
-/*
-class TabbedDashboardPage extends StatelessWidget {
-  const TabbedDashboardPage({Key? key}) : super(key: key);
+                  // Right pane: zone jump list
+                  Container(
+                    width: 350,
+                    padding: const EdgeInsets.only(top: 16, right: 12),
+                    child: Card(
+                      elevation: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Zones", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 8),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: site.zones.length,
+                                itemBuilder: (context, index) {
+                                  final zone = site.zones[index];
+                                  if (!zone.checked) return const SizedBox.shrink();
 
-  @override
-  Widget build(BuildContext context) {
-    final appState = context.watch<AppState>();
-    final sites = appState.sites;
-    int numberOfZones = 0;
+                                  final zoneLabel = zone.nickName.isNotEmpty
+                                      ? zone.nickName
+                                      : zone.name;
 
-    // Each site will be its own tab. If there are no sites, show a simple message.
-    if (sites.isEmpty) {
-      return const Scaffold(
-        body: Center(child: Text('No sites available.')),
-      );
-    }
-
-    // A DefaultTabController is required for TabBar / TabBarView to work together.
-    return DefaultTabController(
-      length: sites.length,
-      child: Scaffold(
-        appBar: DashboardAppBar(
-          tabBar: TabBar(
-            isScrollable: true, 
-            tabs: sites.map((site) {
-              // Decide what text to display on the tab
-              final tabText = site.nickName.isNotEmpty ? site.nickName : site.name;
-              return Tab(text: tabText);
-            }).toList(),
-          ),
-        ),
-        // TabBarView shows a "page" for each tab
-        body: TabBarView(
-          children: sites.map((site) {
-            // A SingleChildScrollView to allow vertical scrolling of zone charts
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                children: site.zones.map((zone) {
-                  // Only create a chart if the zone is checked
-                  if (!zone.checked) return const SizedBox.shrink();
-
-                  final zoneTitle = zone.nickName.isNotEmpty
-                      ? zone.nickName
-                      : zone.name;
-
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Zone: $zoneTitle',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 500,
-                            child: DashboardGraph(
-                              numberOfZones: numberOfZones += 1,
+                                  return ListTile(
+                                    title: Text(zoneLabel),
+                                    onTap: () {
+                                      final keyContext = zoneKeys[index].currentContext;
+                                      if (keyContext != null) {
+                                        Scrollable.ensureVisible(
+                                          keyContext,
+                                          duration: const Duration(milliseconds: 500),
+                                          curve: Curves.easeInOut,
+                                        );
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  );
-                }).toList(),
+                  ),
+                ],
+              );
+            }
+            return Container(
+              child: SingleChildScrollView(
+                controller: scrollController,
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  children: List.generate(site.zones.length, (index) {
+                    final zone = site.zones[index];
+                    if (!zone.checked) return const SizedBox.shrink();
+                    final zoneTitle = zone.nickName.isNotEmpty
+                        ? zone.nickName
+                        : zone.name;
+                    return Card(
+                      key: zoneKeys[index],
+                      margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Zone: $zoneTitle',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 600,
+                              child: DashboardGraph(
+                                numberOfZones: numberOfZones += 1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                ),
               ),
             );
           }).toList(),
@@ -221,8 +202,7 @@ class TabbedDashboardPage extends StatelessWidget {
       ),
     );
   }
-} 
-*/
+}
 
 class DashboardGraph extends StatefulWidget {
   final int numberOfZones;
