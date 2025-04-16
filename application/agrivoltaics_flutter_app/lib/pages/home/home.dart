@@ -53,7 +53,10 @@ class HomePage extends State<HomeState> {
 
   @override
   Widget build(BuildContext context) {
-    final isWideScreen = MediaQuery.of(context).size.width >= 600;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final isWideScreen = MediaQuery.of(context).size.width >= 1280 || screenHeight < screenWidth;
      return Scaffold(
       // 1) No AppBar here—removed entirely
       // 2) Row that holds [ Nav Rail (left) | Main Content (right) ]
