@@ -26,7 +26,7 @@ class TabbedDashboardPage extends StatelessWidget {
 
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isWideScreen = MediaQuery.of(context).size.width >= 1280 || screenHeight < screenWidth;
+    final isWideScreen = MediaQuery.of(context).size.width >= 1920 || screenHeight < screenWidth;
 
     if (context.read<AppState>().singleGraphToggle) {
       numberOfGraphs = 1;
