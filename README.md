@@ -24,6 +24,8 @@ The drone focuses on a X650 Holybro Drone kit while ensuring compatibility with 
 ## Final Expo Poster
 * [Expo Poster](./assignments/2024-2025%20documents/final-poster.pdf)
 
+> Previous team below
+
 ## Team Information
 ### Team - Da Boyz (Yueithony Roillex)
 Alex Campbell (EE) - campb4ja@mail.uc.edu  
